@@ -37,5 +37,9 @@ public class Main {
 
         // INSERTE EXPRESION LAMBDA ACA PARA OBTENER EL MISMO RESULTADO
         // ....
+
+        ShapeMultiplier<Circle, Double> shapeMultiplier2 = (x,y) -> x.scale(y);
+        Circle newJFCircle = shapeMultiplier2.multiply(circle, 200D);
+        System.out.println("new area jairofernando84: " + newJFCircle.area());
     }
 }
