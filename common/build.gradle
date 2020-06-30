@@ -1,0 +1,19 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+
+group 'co.edu.cedesistemas'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.springframework:spring-context:${versions.spring}"
+    //implementation "mysql:mysql-connector-java:${versions.mysqljdbc}"
+    //implementation "org.springframework:spring-web:${versions.spring}"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
+}
+
