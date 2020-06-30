@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group 'co.edu.cedesistemas'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
+    testImplementation "io.rest-assured:json-path:${versions.restAssured}"
+    testImplementation "io.rest-assured:xml-path:${versions.restAssured}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "org.hamcrest:hamcrest:${versions.hamcrest}"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
