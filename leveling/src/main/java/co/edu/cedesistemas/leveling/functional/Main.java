@@ -2,6 +2,7 @@ package co.edu.cedesistemas.leveling.functional;
 
 import co.edu.cedesistemas.leveling.generics.Sorter;
 import co.edu.cedesistemas.leveling.model.geometry.Circle;
+import co.edu.cedesistemas.leveling.model.geometry.Scalable;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,5 +38,10 @@ public class Main {
 
         // INSERTE EXPRESION LAMBDA ACA PARA OBTENER EL MISMO RESULTADO
         // ....
+        ShapeMultiplier<Circle, Double> shapeMultiplierF = (c, v) -> c.scale(v);
+        Circle newCircleF = shapeMultiplierF.multiply(circle, 200D);
+        Double area2 = newCircleF.area();
+        System.out.println("new area: " + area2);
+
     }
 }
