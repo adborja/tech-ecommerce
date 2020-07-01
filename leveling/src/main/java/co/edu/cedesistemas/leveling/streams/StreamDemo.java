@@ -1,10 +1,12 @@
 package co.edu.cedesistemas.leveling.streams;
 
 
+import co.edu.cedesistemas.leveling.functional.ShapeMultiplier;
 import co.edu.cedesistemas.leveling.model.geometry.Scalable;
 import co.edu.cedesistemas.leveling.model.geometry.Shape;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StreamDemo {
     /**
@@ -15,7 +17,7 @@ public class StreamDemo {
      * @return Lista filtrada con las figuras que tienen un área menor o igual a la especificada.
      * */
     public static List<? extends Shape> filterShapes(double areaLimit, List<? extends Shape> shapes) {
-        return null;
+        return shapes.stream().filter(s -> s.area() <= areaLimit).collect(Collectors.toList());
     }
 
     /**
@@ -26,6 +28,9 @@ public class StreamDemo {
      * @return Lista con objetos escalados
      * */
     public static <T extends Scalable<T, U>, U extends Number> List<T> scale(List<T> scalables, U value) {
-        return null;
+    	ShapeMultiplier<T, U> multiplier = (s,u) -> s.scale(u);
+    	
+        return scalables.stream().map(scalable -> multiplier.multiply(scalable, value))
+        		.collect(Collectors.toList());
     }
 }

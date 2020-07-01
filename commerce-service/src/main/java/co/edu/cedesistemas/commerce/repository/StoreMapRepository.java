@@ -12,6 +12,10 @@ import java.util.stream.Collectors;
 @Repository
 public class StoreMapRepository implements StoreRepository {
     private final Map<String, Store> dataMap;
+    
+    public StoreMapRepository(Map<String,Store> dataMap) {
+		this.dataMap = dataMap;
+	}
 
     @Override
     public List<Store> findByName(String name) {

@@ -13,6 +13,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StoreService {
     private final StoreRepository repository;
+    
+    public StoreService (StoreRepository repository){
+    	this.repository = repository;
+    }
 
     public Store createStore(final Store store) {
         store.setId(UUID.randomUUID().toString());

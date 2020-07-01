@@ -12,7 +12,7 @@ public class Main {
         // Ordenar numeros ...
         List<Integer> numbers = Arrays.asList(5, 8, 2, 10, 4, 6, 1);
         // Solucion 1: Usando clase anonima
-        SortFunction<Integer> sorter1 = new SortFunction<>() {
+        SortFunction<Integer> sorter1 = new SortFunction<Integer>() {
             @Override
             public void sort(List<Integer> list) {
                 Collections.sort(list);
@@ -29,13 +29,17 @@ public class Main {
         // EJERCICIO:
         Circle circle = new Circle(30);
         // ************ CAMBIAR ESTAS LINEAS POR EXPRESION LAMBDA **********************
-        ShapeMultiplier<Circle, Double> shapeMultiplier = new ShapeMultiplierImpl<>();
+        ShapeMultiplier<Circle, Double> shapeMultiplier = (s,u) -> s.scale(u);
         Circle newCircle = shapeMultiplier.multiply(circle, 200D);
         double area = newCircle.area();
         System.out.println("new area: " + area);
+        
+        
         // *****************************************************************************
 
         // INSERTE EXPRESION LAMBDA ACA PARA OBTENER EL MISMO RESULTADO
         // ....
+        
+        
     }
 }
