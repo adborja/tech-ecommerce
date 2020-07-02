@@ -2,6 +2,7 @@ package co.edu.cedesistemas.leveling.functional;
 
 import co.edu.cedesistemas.leveling.generics.Sorter;
 import co.edu.cedesistemas.leveling.model.geometry.Circle;
+import co.edu.cedesistemas.leveling.model.geometry.Scalable;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,14 +12,14 @@ public class Main {
     public static void main(String[] args) {
         // Ordenar numeros ...
         List<Integer> numbers = Arrays.asList(5, 8, 2, 10, 4, 6, 1);
-        // Solucion 1: Usando clase anonima
-        SortFunction<Integer> sorter1 = new SortFunction<>() {
-            @Override
-            public void sort(List<Integer> list) {
-                Collections.sort(list);
-            }
-        };
-        sorter1.sort(numbers);
+        //Solucion 1: Usando clase anonima
+//        SortFunction<Integer> sorter1 = new SortFunction<>() {
+//            @Override
+//            public void sort(List<Integer> list) {
+//                Collections.sort(list);
+//            }
+//        };
+        //sorter1.sort(numbers);
         System.out.println(numbers);
 
         // Solucion 2: Usando expresión lambda:
@@ -29,9 +30,15 @@ public class Main {
         // EJERCICIO:
         Circle circle = new Circle(30);
         // ************ CAMBIAR ESTAS LINEAS POR EXPRESION LAMBDA **********************
-        ShapeMultiplier<Circle, Double> shapeMultiplier = new ShapeMultiplierImpl<>();
-        Circle newCircle = shapeMultiplier.multiply(circle, 200D);
+        //ShapeMultiplier<Circle, Double> shapeMultiplier = new ShapeMultiplierImpl<>();
+        //Circle newCircle = shapeMultiplier.multiply(circle, 200D);
+        //double area = newCircle.area();
+
+        ShapeMultiplier shapeMultiplier = (T, U) -> (Scalable) T.scale(U);
+        //ShapeMultiplier shapeMultiplier = Circle::scale;
+        Circle newCircle = (Circle) shapeMultiplier.multiply(circle,200D);
         double area = newCircle.area();
+
         System.out.println("new area: " + area);
         // *****************************************************************************
 
