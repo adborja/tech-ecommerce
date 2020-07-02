@@ -22,6 +22,10 @@ public class FunctionHandler {
     }
 
     public static Function<List<? extends Shape>, Map<? extends Shape, Double>> getAreaMapper() {
+
+
+
+
         return null;
     }
 }
