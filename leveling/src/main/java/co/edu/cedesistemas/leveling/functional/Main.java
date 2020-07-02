@@ -22,6 +22,8 @@ public class Main {
         sorter1.sort(numbers);
         System.out.println(numbers);
 
+         */
+
         // Solucion 2: Usando expresión lambda:
         SortFunction<Integer> sorter2 = l -> Sorter.bubbleSort(numbers);
         sorter2.sort(numbers);
