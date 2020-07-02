@@ -6,6 +6,7 @@ import co.edu.cedesistemas.leveling.model.geometry.Circle;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 public class Main {
     public static void main(String[] args) {
@@ -37,5 +38,11 @@ public class Main {
 
         // INSERTE EXPRESION LAMBDA ACA PARA OBTENER EL MISMO RESULTADO
         // ....
+
+        Function<Circle, Double> newCr = shape ->
+                shape.scale(200D).area();
+        System.out.println("new area: " + newCr.apply(circle));
+
+
     }
 }
