@@ -30,19 +30,17 @@ public class Main {
         // EJERCICIO:
         Circle circle = new Circle(30);
         // ************ CAMBIAR ESTAS LINEAS POR EXPRESION LAMBDA **********************
-        //ShapeMultiplier<Circle, Double> shapeMultiplier = new ShapeMultiplierImpl<>();
-        //Circle newCircle = shapeMultiplier.multiply(circle, 200D);
-        //double area = newCircle.area();
-
-        ShapeMultiplier shapeMultiplier = (T, U) -> (Scalable) T.scale(U);
-        //ShapeMultiplier shapeMultiplier = Circle::scale;
-        Circle newCircle = (Circle) shapeMultiplier.multiply(circle,200D);
+        ShapeMultiplier<Circle, Double> shapeMultiplier = new ShapeMultiplierImpl<>();
+        Circle newCircle = shapeMultiplier.multiply(circle, 200D);
         double area = newCircle.area();
 
         System.out.println("new area: " + area);
         // *****************************************************************************
-
         // INSERTE EXPRESION LAMBDA ACA PARA OBTENER EL MISMO RESULTADO
         // ....
+        ShapeMultiplier shapeMultiplier2 = (T, U) -> (Scalable) T.scale(U);
+        Circle newCircle2 = (Circle) shapeMultiplier2.multiply(circle,200D);
+        double area2 = newCircle2.area();
+        System.out.println("new area: " + area2);
     }
 }
