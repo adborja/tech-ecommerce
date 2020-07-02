@@ -14,14 +14,16 @@ public class FunctionHandler {
     }
 
     public static <T extends Scalable<T, U>, U extends Number> T getMultiplied(ShapeMultiplier<T, U> f, T shape, U value) {
-        return null;
+        return f.multiply(shape, value);
     }
 
     public static <T> void consume(Consumer<List<T>> consumer, List<T> list) {
-
+        consumer.accept(list);
     }
 
     public static Function<List<? extends Shape>, Map<? extends Shape, Double>> getAreaMapper() {
-        return null;
+
+        return (list) -> list.stream()
+                .collect(Collectors.toMap(s -> s, Shape::area));
     }
 }
