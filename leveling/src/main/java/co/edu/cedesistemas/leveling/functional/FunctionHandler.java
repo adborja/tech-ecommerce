@@ -1,10 +1,11 @@
 package co.edu.cedesistemas.leveling.functional;
 
+import co.edu.cedesistemas.leveling.model.geometry.Rectangle;
 import co.edu.cedesistemas.leveling.model.geometry.Scalable;
 import co.edu.cedesistemas.leveling.model.geometry.Shape;
+import co.edu.cedesistemas.leveling.model.geometry.Square;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -22,6 +23,11 @@ public class FunctionHandler {
     }
 
     public static Function<List<? extends Shape>, Map<? extends Shape, Double>> getAreaMapper() {
-        return null;
+
+        return (List<? extends Shape> l) -> {
+            Map<? extends Shape, Double> result = new HashMap<>();
+            return l.stream().forEach((item) -> result.put(item, item.area()));
+        };
+
     }
 }
