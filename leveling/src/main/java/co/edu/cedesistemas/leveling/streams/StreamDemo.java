@@ -37,18 +37,6 @@ public class StreamDemo {
                 map(s -> s.scale(value)).collect(Collectors.toList());
 
 
-        /*
-        * private static void demoCollect() {
-        System.out.println("********* demo collect **********");
-        List<String> list = Arrays.asList("vaso", "cuchara", "cuchillo", "tenedor", "plato",
-                "sarten", "servilleta", "mantel");
-        List<String> newList = list.stream()
-                .map(s -> s.toUpperCase())
-                .collect(Collectors.toList());
-        //newList.forEach(s -> System.out.println(s));
-        newList.forEach(s -> System.out.println(s));
-    }
-        *
-        * */
+        
     }
 }
