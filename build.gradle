@@ -17,7 +17,7 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'co.edu.cedesistemas'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '8'
 
 configurations {
     compileOnly {
@@ -26,9 +26,13 @@ configurations {
 }
 
 repositories {
-    mavenLocal()
+    //mavenLocal()
     mavenCentral()
-    jcenter()
+    //jcenter()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+
+//    maven {url "https://artifactory.apps.bancolombia.com/maven-bancolombia"}
 }
 
 ext {
@@ -50,13 +54,13 @@ ext {
 dependencies {
     compileOnly "org.projectlombok:lombok:${versions.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+    /*testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    }*/
     testImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
     testImplementation "io.rest-assured:json-path:${versions.restAssured}"
     testImplementation "io.rest-assured:xml-path:${versions.restAssured}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation "org.hamcrest:hamcrest:${versions.hamcrest}"
-    testImplementation 'org.springframework.security:spring-security-test'
+    //testImplementation 'org.springframework.security:spring-security-test'
 }

@@ -14,13 +14,13 @@ dependencies {
     implementation "org.springframework:spring-context:${versions.spring}"
     compileOnly "org.projectlombok:lombok:${versions.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+    /*testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    }*/
     testImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
     testImplementation "io.rest-assured:json-path:${versions.restAssured}"
     testImplementation "io.rest-assured:xml-path:${versions.restAssured}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation "org.hamcrest:hamcrest:${versions.hamcrest}"
-    testImplementation 'org.springframework.security:spring-security-test'
+    //testImplementation 'org.springframework.security:spring-security-test'
 }
