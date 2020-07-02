@@ -12,7 +12,8 @@ public class Main {
         // Ordenar numeros ...
         List<Integer> numbers = Arrays.asList(5, 8, 2, 10, 4, 6, 1);
         // Solucion 1: Usando clase anonima
-        SortFunction<Integer> sorter1 = new SortFunction<Integer>() {
+        /*
+        SortFunction<Integer> sorter1 = new SortFunction<>() {
             @Override
             public void sort(List<Integer> list) {
                 Collections.sort(list);
@@ -20,6 +21,8 @@ public class Main {
         };
         sorter1.sort(numbers);
         System.out.println(numbers);
+
+         */
 
         // Solucion 2: Usando expresión lambda:
         SortFunction<Integer> sorter2 = l -> Sorter.bubbleSort(numbers);
