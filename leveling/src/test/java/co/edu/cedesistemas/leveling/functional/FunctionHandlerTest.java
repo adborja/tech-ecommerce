@@ -1,10 +1,6 @@
 package co.edu.cedesistemas.leveling.functional;
 
-import co.edu.cedesistemas.leveling.model.geometry.Circle;
-import co.edu.cedesistemas.leveling.model.geometry.Point;
-import co.edu.cedesistemas.leveling.model.geometry.Rectangle;
-import co.edu.cedesistemas.leveling.model.geometry.Shape;
-import co.edu.cedesistemas.leveling.model.geometry.Square;
+import co.edu.cedesistemas.leveling.model.geometry.*;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -15,9 +11,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 public class FunctionHandlerTest {
     @Test
@@ -47,7 +41,7 @@ public class FunctionHandlerTest {
     @Test
     public void testGetRectangleWidth() {
         Function<Rectangle, Double> f = s -> s.getWidth();
-        Double width  = FunctionHandler.applyFunction(f, new Square(Point.of(0.0, 0.0), 15));
+        Double width = FunctionHandler.applyFunction(f, new Square(Point.of(0.0, 0.0), 15));
         assertThat(width, equalTo(15.0));
     }
 

@@ -39,9 +39,9 @@ public class Main {
         // INSERTE EXPRESION LAMBDA ACA PARA OBTENER EL MISMO RESULTADO
         // ....
 
-        Function<Circle, Double> newCr = shape ->
-                shape.scale(200D).area();
-        System.out.println("new area: " + newCr.apply(circle));
+        ShapeMultiplier<Circle, Double> shapeMultiplier2 = (c, v) -> c.scale(v);
+        Circle circle1 = shapeMultiplier2.multiply(circle, 200D);
+        System.out.println("new area: " + circle1.area());
 
 
     }
