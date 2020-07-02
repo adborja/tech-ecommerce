@@ -32,16 +32,16 @@ public class FunctionHandler {
 
     public static Function<List<? extends Shape>, Map<? extends Shape, Double>> getAreaMapper() {
 
-        return (l) -> {
+    	
+    	return (l) -> {
 
-            Map<Shape,Double> map=new HashMap<Shape,Double>();
-            for (int i = 0; i < l.size(); i++) {
-                Shape shape = l.get(i);
-                map.put(shape,shape.area());
-            }
-            //return map;
-            //return null;
-        }
-
+    		Map<Shape,Double> map=new HashMap<Shape,Double>(); 
+    		for (int i = 0; i < l.size(); i++) { 
+    			Shape shape = l.get(i); 
+    			map.put(shape,shape.area()); 
+    			}
+    			return map;
+    		};
+			 
     }
 }
