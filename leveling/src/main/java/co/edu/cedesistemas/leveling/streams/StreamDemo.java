@@ -37,6 +37,6 @@ public class StreamDemo {
                 map(s -> s.scale(value)).collect(Collectors.toList());
 
 
-        
+
     }
 }
