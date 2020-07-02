@@ -1,10 +1,14 @@
 package co.edu.cedesistemas.leveling.streams;
 
 
+import co.edu.cedesistemas.leveling.model.geometry.Circle;
 import co.edu.cedesistemas.leveling.model.geometry.Scalable;
 import co.edu.cedesistemas.leveling.model.geometry.Shape;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StreamDemo {
     /**
@@ -15,7 +19,8 @@ public class StreamDemo {
      * @return Lista filtrada con las figuras que tienen un área menor o igual a la especificada.
      * */
     public static List<? extends Shape> filterShapes(double areaLimit, List<? extends Shape> shapes) {
-        return null;
+
+        return shapes.stream().filter(shape -> shape.area()<= areaLimit).collect(Collectors.toList());
     }
 
     /**
@@ -26,6 +31,24 @@ public class StreamDemo {
      * @return Lista con objetos escalados
      * */
     public static <T extends Scalable<T, U>, U extends Number> List<T> scale(List<T> scalables, U value) {
-        return null;
+
+
+        return scalables.stream().
+                map(s -> s.scale(value)).collect(Collectors.toList());
+
+
+        /*
+        * private static void demoCollect() {
+        System.out.println("********* demo collect **********");
+        List<String> list = Arrays.asList("vaso", "cuchara", "cuchillo", "tenedor", "plato",
+                "sarten", "servilleta", "mantel");
+        List<String> newList = list.stream()
+                .map(s -> s.toUpperCase())
+                .collect(Collectors.toList());
+        //newList.forEach(s -> System.out.println(s));
+        newList.forEach(s -> System.out.println(s));
+    }
+        *
+        * */
     }
 }
