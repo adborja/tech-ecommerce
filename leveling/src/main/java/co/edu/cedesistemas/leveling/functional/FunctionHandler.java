@@ -24,6 +24,6 @@ public class FunctionHandler {
     }
 
     public static Function<List<? extends Shape>, Map<? extends Shape, Double>> getAreaMapper() {
-        return null;
+        return shapes -> shapes.stream().collect(Collectors.toMap(shape -> shape, Shape::area));
     }
 }
