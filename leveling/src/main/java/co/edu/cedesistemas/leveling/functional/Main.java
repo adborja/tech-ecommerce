@@ -2,19 +2,21 @@ package co.edu.cedesistemas.leveling.functional;
 
 import co.edu.cedesistemas.leveling.generics.Sorter;
 import co.edu.cedesistemas.leveling.model.geometry.Circle;
+import co.edu.cedesistemas.leveling.model.geometry.Scalable;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 public class Main {
     public static void main(String[] args) {
         // Ordenar numeros ...
         List<Integer> numbers = Arrays.asList(5, 8, 2, 10, 4, 6, 1);
         // Solucion 1: Usando clase anonima
-        SortFunction<Integer> sorter1 = new SortFunction<>() {
+        SortFunction<Integer> sorter1 = new SortFunction() {
             @Override
-            public void sort(List<Integer> list) {
+            public void sort(List list) {
                 Collections.sort(list);
             }
         };
@@ -37,5 +39,11 @@ public class Main {
 
         // INSERTE EXPRESION LAMBDA ACA PARA OBTENER EL MISMO RESULTADO
         // ....
+        ShapeMultiplier<Circle, Double> shapeMultiplier1 = Circle::scale;
+        Circle newCircle1 = shapeMultiplier1.multiply(circle, 200D);
+        Double area1 = newCircle1.area();
+        System.out.println("new area: " + area);
+
+
     }
 }
