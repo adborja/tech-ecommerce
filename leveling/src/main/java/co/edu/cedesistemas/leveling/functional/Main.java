@@ -36,6 +36,9 @@ public class Main {
         // *****************************************************************************
 
         // INSERTE EXPRESION LAMBDA ACA PARA OBTENER EL MISMO RESULTADO
-        // ....
+        ShapeMultiplier<Circle, Double> shapeMultiplier1 = (Circle::scale);
+        Circle newCircle1 = shapeMultiplier1.multiply(circle, 200D);
+        double area1 = newCircle1.area();
+        System.out.println("new lambda area: "+area1);
     }
 }
