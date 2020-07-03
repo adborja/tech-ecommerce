@@ -24,10 +24,13 @@ public class FunctionHandler {
 
     public static Function<List<? extends Shape>, Map<? extends Shape, Double>> getAreaMapper() {
 
-        return (List<? extends Shape> l) -> {
-            Map<? extends Shape, Double> result = new HashMap<>();
-            return l.stream().forEach((item) -> result.put(item, item.area()));
+        return (list) -> {
+            Map<Shape, Double> result = new HashMap<>();
+            for(int i=0;i<list.size();i++){
+                Shape shape = list.get(i);
+                result.put(shape,shape.area());
+            }
+            return result;
         };
-
     }
 }
