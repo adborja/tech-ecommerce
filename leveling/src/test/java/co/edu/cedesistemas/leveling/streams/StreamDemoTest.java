@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -76,20 +77,27 @@ public class StreamDemoTest {
             1. Los rectangulos de entrada deben estar situados en su totalidad el primer cuadrante del plano cartesiano
             2. El area de rectangulos de entrada no deben superar el valor de 150
         */
-        Rectangle r1 = new Rectangle(Point.of(10.0, 20.0), 15, 8);
-        Rectangle r2 = new Rectangle(Point.of(-10.0, -20.0), 40, 20);
-        Rectangle r3 = new Rectangle(Point.of(15.0, 10.0), 10, 15);
-        Rectangle r4 = new Rectangle(Point.of(12.0, -25.0), 9, 10);
-        Rectangle r5 = new Rectangle(Point.of(25.0, 5.0), 11, 12);
-        Rectangle r6 = new Rectangle(Point.of(3.0, 4.0), 30, 10);
-        Rectangle r7 = new Rectangle(Point.of(6.0, 10.0), 25, 5);
+        Rectangle r1 = new Rectangle(Point.of(10.0, 20.0), 15, 8); // Si Si Va
+        Rectangle r2 = new Rectangle(Point.of(-10.0, -20.0), 40, 20); // No No
+        Rectangle r3 = new Rectangle(Point.of(15.0, 10.0), 10, 15); // Si Si Va
+        Rectangle r4 = new Rectangle(Point.of(12.0, -25.0), 9, 10); // Si No
+        Rectangle r5 = new Rectangle(Point.of(25.0, 5.0), 11, 12); // Si Si Va
+        Rectangle r6 = new Rectangle(Point.of(3.0, 4.0), 30, 10); // No Si
+        Rectangle r7 = new Rectangle(Point.of(6.0, 10.0), 25, 5); // Si Si Va
 
         List<Rectangle> rectangles = Arrays.asList(r1, r2, r3, r4, r5, r6, r7);
         // ********************** TODO: Add list manipulation here (using streams)
-        List<Rectangle> result = Collections.emptyList();
+        List<Rectangle> result =rectangles.stream()
+                .filter(e -> e.area() <= 150)
+                .filter(e -> e.getBottomLeft().getX() >= 0 && e.getBottomLeft().getY() >= 0 )
+                .map(Rectangle::mirror)
+                .map(e -> e.scale(.50))
+                .sorted((a,b) -> Double.compare(b.area(), a.area()))
+                .collect(Collectors.toList());
+
         // **********************
 
-        assertThat(result.size(), equalTo(5));
+        assertThat(result.size(), equalTo(4));
         assertThat(result.get(0).area(), equalTo(37.5));
         assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-31.0, -15.0)));
     }

@@ -16,7 +16,7 @@ public class StreamDemo {
      * @return Lista filtrada con las figuras que tienen un área menor o igual a la especificada.
      * */
     public static List<? extends Shape> filterShapes(double areaLimit, List<? extends Shape> shapes) {
-        return shapes.stream().filter(e -> e.area() > areaLimit ).collect(Collectors.toList());
+        return shapes.stream().filter(e -> areaLimit >= e.area() ).collect(Collectors.toList());
     }
 
     /**
