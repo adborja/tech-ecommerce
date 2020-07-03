@@ -7,7 +7,9 @@ import co.edu.cedesistemas.leveling.model.geometry.Shape;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -61,5 +63,49 @@ public class StreamDemoTest {
                 .mapToInt(s -> (int) s.getV())
                 .sum();
         assertThat(sSum, equalTo(1200));
+    }
+
+    @Test
+    public void testRectangleStreams() {
+        /*
+        Dada una lista de rectangulos, obtener una lista con rectangulos transformados de la siguiente forma:
+        1. Los rectangulos deben quedar escalados al 50% -> Alto (W) al 50%, Ancho (H) al 50%,
+        2. Los rectangulos deben quedar en el tercer cuadrante del plano cartesiano de manera simétrica (mirar figura)
+        3. Los rectangulos deben quedar ordenados de mayor a menor area
+
+        condiciones:
+            1. Los rectangulos de entrada deben estar situados en su totalidad el primer cuadrante del plano cartesiano
+            2. El area de rectangulos de entrada no deben superar el valor de 150
+        */
+        Rectangle r1 = new Rectangle(Point.of(10.0, 20.0), 15, 8);
+        Rectangle r2 = new Rectangle(Point.of(-10.0, -20.0), 40, 20);
+        Rectangle r3 = new Rectangle(Point.of(15.0, 10.0), 10, 15);
+        Rectangle r4 = new Rectangle(Point.of(12.0, -25.0), 9, 10);
+        Rectangle r5 = new Rectangle(Point.of(25.0, 5.0), 11, 12);
+        Rectangle r6 = new Rectangle(Point.of(3.0, 4.0), 30, 10);
+        Rectangle r7 = new Rectangle(Point.of(6.0, 10.0), 25, 5);
+
+        List<Rectangle> rectangles = Arrays.asList(r1, r2, r3, r4, r5, r6, r7);
+        // ********************** TODO: Add list manipulation here (using streams)
+
+        //List<Rectangle> newRectangle = StreamDemo.scale(rectangles, 50D);
+
+
+        List<Rectangle> result = rectangles.stream()
+                .filter(i -> i.getBottomLeft().getX() >=0 && i.getBottomRight().getY()>=0)
+                .filter(i -> i.area()<=150)
+                .map(i -> Rectangle.mirror(i))
+                .map(i -> i.scale(50D))
+                .sorted()
+                .collect(Collectors.toList());
+
+
+
+        //List<Rectangle> result = Collections.emptyList();
+        // **********************
+
+        assertThat(result.size(), equalTo(4));
+        //assertThat(result.get(0).area(), equalTo(37.5));
+        //assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-18.5, -12.5)));
     }
 }
