@@ -91,8 +91,8 @@ public class StreamDemoTest {
         List<Rectangle> result = rectangles.stream()
         		.filter(r -> r.getBottomLeft().getX() > 0 && r.getBottomLeft().getY() > 0)
         		.filter(r -> r.area() <= 150)
+        		.map(Rectangle::mirror)
         		.map(p -> p.scale(0.5))
-        		.map(p -> Rectangle.mirror(p))
         		.sorted(Comparator.comparing(Rectangle::area).reversed())
         		.collect(Collectors.toList());
         
@@ -100,9 +100,6 @@ public class StreamDemoTest {
 
         assertThat(result.size(), equalTo(4));
         assertThat(result.get(0).area(), equalTo(37.5));
-        assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-18.5, -12.5)));
-        
-        // Se remueve este assert dado que no se cumple teniendo en cuenta las condiciones y el enunciado del ejercicio
-        //assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-31.0, -15.0)));
+        assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-31.0, -15.0)));
     }
 }
