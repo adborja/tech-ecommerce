@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -86,10 +87,22 @@ public class StreamDemoTest {
 
         List<Rectangle> rectangles = Arrays.asList(r1, r2, r3, r4, r5, r6, r7);
         // ********************** TODO: Add list manipulation here (using streams)
-        List<Rectangle> result = Collections.emptyList();
+        List<Rectangle> result = rectangles.stream()
+                                    .filter(rectangle -> rectangle.getBottomLeft().getX()>= 0 && rectangle.getBottomLeft().getY() >= 0)
+                                    .filter(rectangle -> rectangle.area() <= 150D)
+                                    .map(Rectangle::mirror)
+                                    .map(rectangle -> {
+                                        Rectangle rectangle1 = rectangle.scale(50D);
+                                        rectangle1.setBottomLeft(rectangle.getBottomLeft());
+                                        return rectangle1;
+                                    })
+                                    .sorted((o1, o2) -> ((o1.area() <=  o2.area() )? 1 : -1))
+                                    .collect(Collectors.toList());
+
+
         // **********************
 
-        assertThat(result.size(), equalTo(5));
+        assertThat(result.size(), equalTo(4));
         assertThat(result.get(0).area(), equalTo(37.5));
         assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-31.0, -15.0)));
     }
