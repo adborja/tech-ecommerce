@@ -8,11 +8,12 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 public class StreamDemoTest {
     @Test
@@ -86,10 +87,31 @@ public class StreamDemoTest {
 
         List<Rectangle> rectangles = Arrays.asList(r1, r2, r3, r4, r5, r6, r7);
         // ********************** TODO: Add list manipulation here (using streams)
-        List<Rectangle> result = Collections.emptyList();
+        List<Rectangle> rectanglesfilter= (List<Rectangle>) StreamDemo.filterShapes(150, rectangles);
+        List<Rectangle> rectangleIn =  rectanglesfilter.stream().filter(r -> (r.getBottomRight().getX()>=0 && r.getBottomRight().getY()>=0)).collect(Collectors.toList());
+        //.collect(Collectors.toList());
+         //          filter(rectangle-> (rectangle.getBottomRight().getX()<0 && rectangle.getBottomRight().getY()>0)).collect(Collectors.toList());
+
+
+        List<Rectangle> result =  rectangleIn.stream()
+                .map(rectan -> Rectangle.mirror(rectan)).map(rec-> rec.scale(50D))
+                .sorted((re1,re2)-> {
+                    if (re1.area() == re2.area()){
+                        return 0;
+                    }else if(re1.area() > re2.area()){
+                        return -1;
+                    }else{
+                        return 1;
+                    }
+
+                }).collect(Collectors.toList());
+
+
+      //  List<Rectangle> result = Collections.emptyList();
+
         // **********************
 
-        assertThat(result.size(), equalTo(5));
+        assertThat(result.size(), equalTo(4));
         assertThat(result.get(0).area(), equalTo(37.5));
         assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-31.0, -15.0)));
     }
