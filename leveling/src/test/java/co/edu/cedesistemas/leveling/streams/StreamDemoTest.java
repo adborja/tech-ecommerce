@@ -91,7 +91,8 @@ public class StreamDemoTest {
         List<Rectangle> result = rectangles.stream()
                 .filter(rectangle -> rectangle.area() <= 150)
                 .filter(rectangle -> rectangle.getBottomLeft().getX() >= 0 && rectangle.getBottomLeft().getY() > 0)
-                .map(rectangle -> Rectangle.mirror(rectangle.scale(50D)))
+                .map(Rectangle::mirror)
+                .map(rectangle -> rectangle.scale(50D))
                 .sorted((x, y) -> {
                     if (x.area() == y.area()) {
                         return 0;
@@ -106,11 +107,7 @@ public class StreamDemoTest {
 
         assertThat(result.size(), equalTo(4));
         assertThat(result.get(0).area(), equalTo(37.5));
-        /*
-        Luego de realizar el scale y el mirror cambia la posición
         assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-31.0, -15.0)));
-         */
-        assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-18.5, -12.5)));
 
     }
 }
