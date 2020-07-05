@@ -5,10 +5,12 @@ import co.edu.cedesistemas.leveling.model.geometry.Point;
 import co.edu.cedesistemas.leveling.model.geometry.Rectangle;
 import co.edu.cedesistemas.leveling.model.geometry.Shape;
 import org.junit.Test;
+import org.w3c.dom.css.Rect;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -86,10 +88,15 @@ public class StreamDemoTest {
 
         List<Rectangle> rectangles = Arrays.asList(r1, r2, r3, r4, r5, r6, r7);
         // ********************** TODO: Add list manipulation here (using streams)
-        List<Rectangle> result = Collections.emptyList();
+        List<Rectangle> result = rectangles.stream().filter(r -> r.getBottomLeft().getX() >= 0
+                    && r.getBottomLeft().getY() >= 0
+                    && r.getTopRight().getX() >= 0
+                    && r.getTopRight().getY() >= 0
+                    && r.area() <= 150
+                ).map(Rectangle::mirror).map(r -> r.scale(50D)).sorted((a, b) -> (int) (b.area()-a.area()))
+                .collect(Collectors.toList());
         // **********************
-
-        assertThat(result.size(), equalTo(5));
+        assertThat(result.size(), equalTo(4));
         assertThat(result.get(0).area(), equalTo(37.5));
         assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-31.0, -15.0)));
     }

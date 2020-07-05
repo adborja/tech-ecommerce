@@ -73,7 +73,7 @@ public class Rectangle implements Shape, Scalable<Rectangle, Double> {
 
     @Override
     public Rectangle scale(Double percentage) {
-        return null;
+        return new Rectangle(bl, width*percentage/100, height*percentage/100);
     }
 
     public static Rectangle mirror(Rectangle r) {
