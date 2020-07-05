@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,7 +97,12 @@ public class StreamDemoTest {
                 .filter(i -> i.area()<=150)
                 .map(i -> Rectangle.mirror(i))
                 .map(i -> i.scale(50D))
-                .sorted()
+                //.sorted((a,b) -> {
+                 //   if (a.area() > b.area()) {return 1;}
+                 //   else return 0;
+                //})
+                  .sorted((a,b) -> Double.compare(b.area(),a.area()))
+                //.sorted( i -> Comparator.reverseOrder().forEach(i.area()))
                 .collect(Collectors.toList());
 
 
@@ -105,7 +111,7 @@ public class StreamDemoTest {
         // **********************
 
         assertThat(result.size(), equalTo(4));
-        //assertThat(result.get(0).area(), equalTo(37.5));
-        //assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-18.5, -12.5)));
+        assertThat(result.get(0).area(), equalTo(37.5));
+        assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-18.5, -12.5)));
     }
 }
