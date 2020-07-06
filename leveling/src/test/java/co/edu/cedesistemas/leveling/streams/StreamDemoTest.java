@@ -5,6 +5,8 @@ import co.edu.cedesistemas.leveling.model.geometry.Point;
 import co.edu.cedesistemas.leveling.model.geometry.Rectangle;
 import co.edu.cedesistemas.leveling.model.geometry.Shape;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,7 +18,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 
+
 public class StreamDemoTest {
+
     @Test
     public void testFilterShapes() {
         Circle c1 = new Circle(20);
@@ -97,12 +101,7 @@ public class StreamDemoTest {
                 .filter(i -> i.area()<=150)
                 .map(i -> Rectangle.mirror(i))
                 .map(i -> i.scale(50D))
-                //.sorted((a,b) -> {
-                 //   if (a.area() > b.area()) {return 1;}
-                 //   else return 0;
-                //})
-                  .sorted((a,b) -> Double.compare(b.area(),a.area()))
-                //.sorted( i -> Comparator.reverseOrder().forEach(i.area()))
+                .sorted((a,b) -> Double.compare(b.area(),a.area()))
                 .collect(Collectors.toList());
 
 
