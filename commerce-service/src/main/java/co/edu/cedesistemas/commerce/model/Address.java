@@ -1,12 +1,15 @@
 package co.edu.cedesistemas.commerce.model;
 
-import co.edu.cedesistemas.common.model.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @EqualsAndHashCode(of = "id")
-public class Address implements Entity<String> {
+@Document("address")
+public class Address {
+    @Id
     private String id;
     private String name;
     private String description;
@@ -18,9 +21,4 @@ public class Address implements Entity<String> {
     private String street2;
     private String street3;
     private String zip;
-
-    @Override
-    public String getId() {
-        return id;
-    }
 }
