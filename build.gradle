@@ -7,7 +7,6 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.2.7.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'application'
@@ -50,9 +49,6 @@ ext {
 }
 
 dependencies {
-    //implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation "org.springframework:spring-web:${versions.spring}"
-
     compileOnly "org.projectlombok:lombok:${versions.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
