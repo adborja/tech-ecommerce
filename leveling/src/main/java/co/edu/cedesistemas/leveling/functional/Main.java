@@ -25,7 +25,7 @@ public class Main {
          */
 
         // Solucion 2: Usando expresión lambda:
-        SortFunction<Integer> sorter2 = l -> Sorter.bubbleSort(numbers);
+        SortFunction<Integer> sorter2 = l -> Sorter.bubbleSort(l);
         sorter2.sort(numbers);
         System.out.println(numbers);
 
@@ -39,6 +39,10 @@ public class Main {
         // *****************************************************************************
 
         // INSERTE EXPRESION LAMBDA ACA PARA OBTENER EL MISMO RESULTADO
+        ShapeMultiplier<Circle, Double> shapeMultiplier2 = (scalable, value) -> scalable.scale(value);
+        Circle newCircle2 = shapeMultiplier2.multiply(circle, 200D);
+        double area2 = newCircle2.area();
+        System.out.println("new area: " + area2);
         // ....
     }
 }
