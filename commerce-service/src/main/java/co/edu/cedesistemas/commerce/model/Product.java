@@ -1,18 +1,16 @@
 package co.edu.cedesistemas.commerce.model;
 
-import co.edu.cedesistemas.common.model.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @EqualsAndHashCode(of = "id")
-public class Product implements Entity<String> {
+@Document("product")
+public class Product {
+    @Id
     private String id;
     private String name;
     private String description;
-
-    @Override
-    public String getId() {
-        return id;
-    }
 }
