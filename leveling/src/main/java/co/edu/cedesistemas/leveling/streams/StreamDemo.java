@@ -1,11 +1,9 @@
 package co.edu.cedesistemas.leveling.streams;
 
-
 import co.edu.cedesistemas.leveling.model.geometry.Scalable;
 import co.edu.cedesistemas.leveling.model.geometry.Shape;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class StreamDemo {
