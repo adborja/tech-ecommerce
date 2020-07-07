@@ -4,6 +4,7 @@ import co.edu.cedesistemas.leveling.model.geometry.Circle;
 import co.edu.cedesistemas.leveling.model.geometry.Point;
 import co.edu.cedesistemas.leveling.model.geometry.Rectangle;
 import co.edu.cedesistemas.leveling.model.geometry.Shape;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 
+@Ignore
 public class StreamDemoTest {
     @Test
     public void testFilterShapes() {
