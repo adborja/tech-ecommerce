@@ -24,7 +24,19 @@ public class StoreService {
         return repository.save(store);
     }
 
+    public Store getById(final String id) {
+        return null;
+    }
+
     public List<Store> getByType(final Store.Type type) {
-        return repository.findByType(type);
+        return null;
+    }
+
+    public List<Store> getByName(final String name) {
+        return null;
+    }
+
+    public Store updateStore(String id, Store store) {
+        return null;
     }
 }
