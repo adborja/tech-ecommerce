@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.leveling.functional;
 
 import co.edu.cedesistemas.leveling.model.geometry.*;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.function.Function;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+@Ignore
 public class FunctionHandlerTest {
     @Test
     public void testGetArea() {

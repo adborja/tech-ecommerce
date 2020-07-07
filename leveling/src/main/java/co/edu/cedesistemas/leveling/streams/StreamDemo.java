@@ -2,7 +2,6 @@ package co.edu.cedesistemas.leveling.streams;
 
 
 import co.edu.cedesistemas.leveling.functional.ShapeMultiplier;
-import co.edu.cedesistemas.leveling.model.geometry.Circle;
 import co.edu.cedesistemas.leveling.model.geometry.Scalable;
 import co.edu.cedesistemas.leveling.model.geometry.Shape;
 
