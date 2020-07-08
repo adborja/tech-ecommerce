@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @AllArgsConstructor
 @RestController
@@ -21,8 +22,9 @@ public class UserController {
     public ResponseEntity<Status<?>> getUser(@PathVariable String id){
         try{
             User found = service.getUserById(id);
-            if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
-            else return DefaultResponseBuilder.defaultResponse("user not found", HttpStatus.NOT_FOUND);
+            return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+        }catch (NoSuchElementException ex){
+            return DefaultResponseBuilder.defaultResponse("user not found", HttpStatus.NOT_FOUND);
         }catch (Exception ex){
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -50,7 +52,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/users")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<Status<?>> deleteUser(@PathVariable String id){
         try{
             User found = service.deleteUserById(id);
