@@ -53,7 +53,7 @@ public class OrderControllerIT extends BaseIT {
         mvc.perform(get("/orders/" + created.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._source[0].id", is(created.getId())))
-                .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED)))
+                .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED.name())))// Se agrega .name para poder cumplir con el valor esperado
                 .andExpect(jsonPath("$._source[0].user.id", is(created.getUser().getId())))
                 .andExpect(jsonPath("$._source[0].store.id", is(created.getStore().getId())));
     }
@@ -68,8 +68,7 @@ public class OrderControllerIT extends BaseIT {
                 .andExpect(jsonPath("$._hits", is(nItems)))
                 .andExpect(jsonPath("$._source[0].product.id",
                         is(created.getItems().get(0).getProduct().getId())))
-                .andExpect(jsonPath("$._source[0].finalPrice",
-                        is(created.getItems().get(0).getFinalPrice())));
+                .andExpect(jsonPath("$._source[0].finalPrice").value(created.getItems().get(0).getFinalPrice()));//Se cambia el método de comparación para cumplir con el valor esperado
     }
 
     public static Order createOrder(final MockMvc mvc, final ObjectMapper mapper, int nItems) throws Exception {

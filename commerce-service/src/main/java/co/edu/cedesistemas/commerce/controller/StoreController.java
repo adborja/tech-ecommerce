@@ -39,7 +39,7 @@ public class StoreController {
         try {
             Store found = service.getById(id);
             if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
-            else return DefaultResponseBuilder.errorResponse("store not found", null, HttpStatus.NOT_FOUND);
+            else return DefaultResponseBuilder.defaultResponse("store not found", HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -70,7 +70,7 @@ public class StoreController {
         try {
             Store updated = service.updateStore(id, store);
             if (updated != null) return DefaultResponseBuilder.defaultResponse(updated, HttpStatus.OK);
-            else return DefaultResponseBuilder.errorResponse("store not found", null, HttpStatus.NOT_FOUND);
+            else return DefaultResponseBuilder.defaultResponse("store not found", HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -59,7 +59,7 @@ public class ProductControllerIT extends BaseIT {
 
     @Test
     public void testGetByName() throws Exception {
-        String prefix = "product_";
+        String prefix = RandomStringUtils.randomAlphanumeric(10);//Se cambia inicialización del prefijo para que sea nuevo en cada ejecución y no se acumule con anteriores pruebas
 
         createProduct(mvc, objectMapper, prefix + RandomStringUtils.randomAlphabetic(10),
                 RandomStringUtils.randomAlphabetic(20));
