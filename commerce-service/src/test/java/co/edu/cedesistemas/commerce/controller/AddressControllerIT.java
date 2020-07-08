@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CommerceApp.class)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class AddressControllerIT extends BaseIT {
+public class AddressControllerIT extends BaseIT<Address> {
     @Autowired private MockMvc mvc;
     @Autowired private ObjectMapper objectMapper;
 

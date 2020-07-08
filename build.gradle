@@ -1,6 +1,7 @@
 buildscript {
     ext {
         springBootVersion = "2.1.3.RELEASE"
+        gradleDocker = "0.22.1"
     }
 
     repositories {
@@ -9,6 +10,7 @@ buildscript {
 
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "gradle.plugin.com.palantir.gradle.docker:gradle-docker:${gradleDocker}"
     }
 }
 
@@ -46,7 +48,7 @@ repositories {
 
 ext {
     set('springCloudVersion', "Hoxton.SR4")
-    dockerGroup = 'registry-dev.eladio.internal'
+    dockerGroup = 'registry.cedesistemas.internal'
     dockerRegistryPort = '5000'
     versions = [
             "gelf": "1.1.16",

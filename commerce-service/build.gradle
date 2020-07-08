@@ -1,6 +1,7 @@
 apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: "org.springframework.boot"
+apply plugin: 'com.palantir.docker'
 
 group 'co.edu.cedesistemas'
 version '0.0.1-SNAPSHOT'
@@ -32,4 +33,16 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+    name "${dockerGroup}:${dockerRegistryPort}/commerce/${project.name}:dev"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
 }
