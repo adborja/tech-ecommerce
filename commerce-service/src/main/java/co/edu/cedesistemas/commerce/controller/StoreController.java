@@ -1,7 +1,7 @@
 package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Store;
-import co.edu.cedesistemas.commerce.service.StoreService;
+import co.edu.cedesistemas.commerce.service.IStoreService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class StoreController {
-    private final StoreService service;
+    private final IStoreService service;
 
     @PostMapping("/stores")
     public ResponseEntity<Status<?>> createStore(@RequestBody Store store) {
