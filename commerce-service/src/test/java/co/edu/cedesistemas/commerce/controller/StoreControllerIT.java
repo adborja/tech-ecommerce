@@ -90,6 +90,10 @@ public class StoreControllerIT extends BaseIT<Store> {
                 .andExpect(jsonPath("$._source[0].links[0].rel", is("self")))
                 .andExpect(jsonPath("$._source[0].links[0].href",
                         containsString("/api/v1/stores/")))
+                .andExpect(jsonPath("$._source[0].links[1].rel",
+                        is("by-type")))
+                .andExpect(jsonPath("$._source[0].links[1].href",
+                        containsString("/stores/by-type?type=")))
                 .andReturn();
 
         MockHttpServletResponse response = result.getResponse();

@@ -35,6 +35,7 @@ public class StoreController {
         try {
             Store created = service.createStore(store);
             addSelfLink(created);
+            addLinks(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -90,7 +91,30 @@ public class StoreController {
     }
 
     private static void addSelfLink(@NotNull final Store store) {
-        Link selfLink = linkTo(methodOn(StoreController.class).getStoreById(store.getId())).withSelfRel();
+        Link selfLink = linkTo(methodOn(StoreController.class)
+                .getStoreById(store.getId()))
+                .withSelfRel().withType("GET");
         store.add(selfLink);
+    }
+
+    private static void addLinks(@NotNull final Store store) {
+        Link byTypeLink = linkTo(methodOn(StoreController.class)
+                .getStoresByType(store.getType()))
+                .withRel("by-type")
+                .withType("GET");
+        store.add(byTypeLink);
+
+        Link byNameLink = linkTo(methodOn(StoreController.class)
+                .getStoresByName(store.getName()))
+                .withRel("by-name")
+                .withType("GET");
+        store.add(byNameLink);
+
+        Link update = linkTo(methodOn(StoreController.class)
+                .updateStore(store.getId(), store))
+                .withRel("update")
+                .withMedia("application/json")
+                .withType("PATCH");
+        store.add(update);
     }
 }
