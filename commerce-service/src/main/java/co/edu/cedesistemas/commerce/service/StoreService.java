@@ -2,51 +2,52 @@ package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.repository.StoreRepository;
+import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
+@Profile("!" + SpringProfile.SANDBOX)
 @Service
 @AllArgsConstructor
-public class StoreService {
+public class StoreService implements IStoreService {
     private final StoreRepository repository;
 
+    @Override
     public Store createStore(final Store store) {
         store.setId(UUID.randomUUID().toString());
         store.setCreatedAt(LocalDateTime.now());
         return repository.save(store);
     }
 
+    @Override
     public Store getById(final String id) {
-    	Optional<Store> store = repository.findById(id);
-    	return store.isPresent() ? store.get() : null;
+        return repository.findById(id).orElse(null);
     }
 
-    public List<Store> getByType(final Store.Type type) throws Exception {
-    	
-    	List<Store> types = repository.findByType(type);
-    	
-    	if (types.isEmpty())
-    		throw new Exception("No se encontraron tiendas para el tipo seleccionado.");
-    	
-        return types;
+    @Override
+    public List<Store> getByType(final Store.Type type) {
+        return repository.findByType(type);
     }
 
-    public List<Store> getByName(final String name) throws Exception {
-    	List<Store> names = repository.findByNameLike(name);
-    	
-    	if (names.isEmpty())
-    		throw new Exception("No se encontraron tiendas con el nombre definido.");
-    	
-        return names;
+    @Override
+    public List<Store> getByName(final String name) {
+        return repository.findByNameLike(name);
     }
 
+    @Override
     public Store updateStore(String id, Store store) {
-    	return repository.findById(id).isEmpty() ? null : 
-    		repository.save(store);
+        Store found = getById(id);
+        if (found == null) {
+            return null;
+        }
+        BeanUtils.copyProperties(store, found, Utils.getNullPropertyNames(store));
+        return repository.save(found);
     }
 }
