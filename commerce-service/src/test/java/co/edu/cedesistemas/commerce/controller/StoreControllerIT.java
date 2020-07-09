@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -32,10 +33,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = CommerceApp.class)
+@SpringBootTest(classes = CommerceApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class StoreControllerIT extends BaseIT {
+public class StoreControllerIT extends BaseIT<Store> {
     @Autowired private MockMvc mvc;
     @Autowired private ObjectMapper objectMapper;
 
@@ -84,10 +85,17 @@ public class StoreControllerIT extends BaseIT {
             throws Exception {
         Store store = TestUtils.buildStore(name, phone,
                 address, type);
-        MvcResult result = mvc.perform(post("/stores")
+        MvcResult result = mvc.perform(post("/api/v1/stores").contextPath("/api/v1")
                 .contentType("application/json")
                 .content(mapper.writeValueAsString(store)))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$._source[0].links[0].rel", is("self")))
+                .andExpect(jsonPath("$._source[0].links[0].href",
+                        containsString("/api/v1/stores/")))
+                .andExpect(jsonPath("$._source[0].links[1].rel",
+                        is("by-type")))
+                .andExpect(jsonPath("$._source[0].links[1].href",
+                        containsString("/stores/by-type?type=")))
                 .andReturn();
 
         MockHttpServletResponse response = result.getResponse();
@@ -95,7 +103,7 @@ public class StoreControllerIT extends BaseIT {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<Store> stores = mapper.convertValue(_source, new TypeReference<List<Store>>(){});
+        List<Store> stores = mapper.convertValue(_source, new TypeReference<>(){});
 
         assertThat(_source, notNullValue());
         assertThat(stores, notNullValue());
