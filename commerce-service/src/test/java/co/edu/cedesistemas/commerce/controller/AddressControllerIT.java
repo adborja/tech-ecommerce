@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CommerceApp.class)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class AddressControllerIT extends BaseIT {
+public class AddressControllerIT extends BaseIT<Address> {
     @Autowired private MockMvc mvc;
     @Autowired private ObjectMapper objectMapper;
 
@@ -62,7 +62,7 @@ public class AddressControllerIT extends BaseIT {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<Address> addresses = mapper.convertValue(_source, new TypeReference<List<Address>>(){});
+        List<Address> addresses = mapper.convertValue(_source, new TypeReference<>(){});
 
         assertThat(_source, notNullValue());
         assertThat(addresses, notNullValue());
