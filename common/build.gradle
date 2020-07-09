@@ -14,6 +14,11 @@ dependencies {
     implementation "org.springframework:spring-context:${versions.spring}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
 
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}"
+    implementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}") {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
     compileOnly "org.projectlombok:lombok:${versions.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
     testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
