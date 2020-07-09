@@ -32,6 +32,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasValue;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -73,7 +74,7 @@ public class OrderControllerIT extends BaseIT<Order> {
         mvc.perform(get("/orders/" + created.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._source[0].id", is(created.getId())))
-                .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED)))
+                .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED.name())))
                 .andExpect(jsonPath("$._source[0].user.id", is(created.getUser().getId())))
                 .andExpect(jsonPath("$._source[0].store.id", is(created.getStore().getId())));
     }
@@ -89,7 +90,7 @@ public class OrderControllerIT extends BaseIT<Order> {
                 .andExpect(jsonPath("$._source[0].product.id",
                         is(created.getItems().get(0).getProduct().getId())))
                 .andExpect(jsonPath("$._source[0].finalPrice",
-                        is(created.getItems().get(0).getFinalPrice())));
+                        hasValue(created.getItems().get(0).getFinalPrice())));
     }
 
     public static Order createOrder(final MockMvc mvc, final ObjectMapper mapper, int nItems) throws Exception {
