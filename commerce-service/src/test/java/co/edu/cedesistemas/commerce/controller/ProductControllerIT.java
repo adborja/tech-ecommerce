@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CommerceApp.class)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class ProductControllerIT extends BaseIT {
+public class ProductControllerIT extends BaseIT<Product> {
     @Autowired private MockMvc mvc;
     @Autowired private ObjectMapper objectMapper;
 
