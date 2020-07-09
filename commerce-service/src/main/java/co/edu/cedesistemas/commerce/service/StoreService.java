@@ -21,18 +21,29 @@ public class StoreService {
     }
 
     public Store getById(final String id) {
-        return null;
+        return repository.findById(id)
+                .orElse(null);
     }
 
     public List<Store> getByType(final Store.Type type) {
-        return null;
+        return repository.findByType(type);
     }
 
     public List<Store> getByName(final String name) {
-        return null;
+        return repository.findByNameLike(name);
     }
 
     public Store updateStore(String id, Store store) {
-        return null;
+        return repository.findById(id)
+                .map(actualStore -> updateStore(actualStore, store))
+                .map(repository::save)
+                .orElse(null);
+    }
+
+    private Store updateStore(Store actualStore, Store newStore){
+        actualStore.setPhone(newStore.getPhone());
+        actualStore.setAddress(newStore.getAddress());
+
+        return actualStore;
     }
 }

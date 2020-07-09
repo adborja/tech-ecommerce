@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -44,6 +46,30 @@ public class ProductController {
     public ResponseEntity<Status<?>> getProductByName(@RequestParam String name){
         try {
             return DefaultResponseBuilder.defaultResponse(productService.getProductByName(name), HttpStatus.OK);
+        }catch (Exception ex){
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping("/{productId}")
+    public ResponseEntity<Status<?>> updateProduct(@Valid @RequestBody Product product, @PathVariable String productId){
+        try{
+            Product productUpdated = productService.updateProduct(product, productId);
+            if(productUpdated != null){
+                return DefaultResponseBuilder.defaultResponse(productUpdated, HttpStatus.OK);
+            }else{
+                return DefaultResponseBuilder.errorResponse("Product not found", null, HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception ex){
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Status<?>> deleteProduct(@PathVariable String productId){
+        try{
+            productService.deleteProduct(productId);
+            return DefaultResponseBuilder.defaultResponse(Optional.empty(), HttpStatus.OK);
         }catch (Exception ex){
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }

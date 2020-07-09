@@ -35,7 +35,7 @@ public class StoreController {
     }
 
     @GetMapping("/stores/{id}")
-    public ResponseEntity<Status<?>> getStoreById(@PathVariable String id) {
+        public ResponseEntity<Status<?>> getStoreById(@PathVariable String id) {
         try {
             Store found = service.getById(id);
             if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
