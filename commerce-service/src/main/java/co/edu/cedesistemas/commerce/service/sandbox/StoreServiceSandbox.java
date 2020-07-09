@@ -78,7 +78,10 @@ public class StoreServiceSandbox implements IStoreService {
     }
 
     @Override
-    public Store updateStore(String id, Store store) {
+    public Store updateStore(String id, Store store) throws Exception {
+        if (store.getId() != null) {
+            throw new Exception("id cannot be updated");
+        }
         Store found = getById(id);
         BeanUtils.copyProperties(store, found, Utils.getNullPropertyNames(store));
         return found;
