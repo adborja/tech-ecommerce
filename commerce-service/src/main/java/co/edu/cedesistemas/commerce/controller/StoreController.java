@@ -20,7 +20,6 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@Slf4j
 public class StoreController {
     private final StoreService service;
 

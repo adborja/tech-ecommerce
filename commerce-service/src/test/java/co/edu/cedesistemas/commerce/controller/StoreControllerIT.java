@@ -74,6 +74,8 @@ public class StoreControllerIT extends BaseIT {
                 .andExpect(jsonPath("$._source[0].name", is(storeName)))
                 .andExpect(jsonPath("$._source[0].phone", is(newPhone)))
                 .andExpect(jsonPath("$._source[0].address", is(newAddress)));
+
+
     }
 
     public static Store createStore(final MockMvc mvc, final ObjectMapper mapper,

@@ -29,4 +29,40 @@ public class Order {
         SHIPPED,
         DELIVERED
     }
+
+    public String getId() {return id;}
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public User getUser() {return user;}
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Store getStore() {return store;}
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setCreatedAt(LocalDateTime createAtParam) { createdAt=createAtParam;}
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
+    }
+
+    public void setShippingAddress(Address shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
 }
