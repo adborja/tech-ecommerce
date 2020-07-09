@@ -22,12 +22,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,8 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class StoreControllerIT extends BaseIT {
-    @Autowired private MockMvc mvc;
-    @Autowired private ObjectMapper objectMapper;
+    @Autowired
+    private MockMvc mvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     public void testCreateStore() throws Exception {
@@ -64,7 +62,7 @@ public class StoreControllerIT extends BaseIT {
         String newPhone = RandomStringUtils.randomNumeric(8);
         String newAddress = RandomStringUtils.randomNumeric(15);
 
-        String updateData = "{\"phone\": \""+ newPhone + "\", \"address\": \"" + newAddress + "\"}";
+        String updateData = "{\"phone\": \"" + newPhone + "\", \"address\": \"" + newAddress + "\"}";
 
         mvc.perform(patch("/stores/" + created.getId())
                 .contentType("application/json")
@@ -93,7 +91,8 @@ public class StoreControllerIT extends BaseIT {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<Store> stores = mapper.convertValue(_source, new TypeReference<List<Store>>(){});
+        List<Store> stores = mapper.convertValue(_source, new TypeReference<List<Store>>() {
+        });
 
         assertThat(_source, notNullValue());
         assertThat(stores, notNullValue());

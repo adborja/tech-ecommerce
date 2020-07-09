@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,18 +22,31 @@ public class StoreService {
     }
 
     public Store getById(final String id) {
+        Optional<Store> foundStore = this.repository.findById(id);
+
+        if (foundStore.isPresent()) {
+            return foundStore.get();
+        }
         return null;
     }
 
     public List<Store> getByType(final Store.Type type) {
-        return null;
+        return this.repository.findByType(type);
     }
 
     public List<Store> getByName(final String name) {
-        return null;
+        return this.repository.findByName(name);
     }
 
     public Store updateStore(String id, Store store) {
+        Optional<Store> foundStore = this.repository.findById(id);
+
+        if (foundStore.isPresent()) {
+            Store storeToUpdate = foundStore.get();
+            storeToUpdate.setPhone(store.getPhone());
+            storeToUpdate.setAddress(store.getAddress());
+            return this.repository.save(storeToUpdate);
+        }
         return null;
     }
 }
