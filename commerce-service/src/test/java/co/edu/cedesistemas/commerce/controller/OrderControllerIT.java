@@ -53,7 +53,7 @@ public class OrderControllerIT extends BaseIT {
         mvc.perform(get("/orders/" + created.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._source[0].id", is(created.getId())))
-                .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED)))
+                .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED.name())))
                 .andExpect(jsonPath("$._source[0].user.id", is(created.getUser().getId())))
                 .andExpect(jsonPath("$._source[0].store.id", is(created.getStore().getId())));
     }
