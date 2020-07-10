@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasValue;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -39,9 +45,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CommerceApp.class)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class OrderControllerIT extends BaseIT {
+public class OrderControllerIT extends BaseIT<Order> {
     @Autowired private MockMvc mvc;
     @Autowired private ObjectMapper objectMapper;
+
+    @BeforeEach
+    @Override
+    public void setup() {
+        super.setup();
+        dropCollection("user");
+        dropCollection("store");
+        dropCollection("address");
+    }
+
+    @AfterEach
+    @Override
+    public void tearDown() {
+        super.tearDown();
+        dropCollection("user");
+        dropCollection("store");
+        dropCollection("address");
+    }
 
     @Test
     public void testCreateOrder() throws Exception {
@@ -110,7 +134,7 @@ public class OrderControllerIT extends BaseIT {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<Order> orders = mapper.convertValue(_source, new TypeReference<List<Order>>(){});
+        List<Order> orders = mapper.convertValue(_source, new TypeReference<>(){});
 
         assertThat(_source, notNullValue());
         assertThat(orders, notNullValue());

@@ -2,9 +2,11 @@ package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.repository.StoreRepository;
+import co.edu.cedesistemas.common.SpringProfile;
 import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,11 +14,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Profile("!" + SpringProfile.SANDBOX)
 @Service
 @AllArgsConstructor
-public class StoreService {
+public class StoreService implements IStoreService {
     private final StoreRepository repository;
 
+    @Override
     public Store createStore(final Store store) {
 
         store.setId(UUID.randomUUID().toString());
@@ -29,14 +33,17 @@ public class StoreService {
         return repository.findById(id);
     }
 
+    @Override
     public List<Store> getByType(final Store.Type type) {
-        return null;
+        return repository.findByType(type);
     }
 
+    @Override
     public List<Store> getByName(final String name) {
-        return null;
+        return repository.findByNameLike(name);
     }
 
+    @Override
     public Store updateStore(String id, Store store) {
 
         Store storeToSave = repository.findById(id).get();
