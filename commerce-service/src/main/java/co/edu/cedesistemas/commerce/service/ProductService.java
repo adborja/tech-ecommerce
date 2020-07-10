@@ -4,9 +4,9 @@ import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.repository.ProductRepository;
 import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,18 +25,11 @@ public class ProductService {
     }
 
     public Optional<Product> updateProduct(String id, Product product) {
-        Optional<Product> foundProduct = this.productRepository.findById(id);
+        Product foundProduct = this.productRepository.findById(id).orElse(null);
 
-        if (foundProduct.isPresent()) {
-            Arrays.stream(Utils.getNullPropertyNames(product)).forEach(property -> {
-                if (!property.contains(foundProduct.get().getClass().getName())) {
-                    foundProduct.get().setDescription(product.getDescription());
-                } else if (!property.contains(foundProduct.get().getName().getClass().getName())) {
-                    foundProduct.get().setId(product.getName());
-                }
-            });
-            return Optional.of(this.productRepository.save(foundProduct.get()));
-
+        if (foundProduct != null) {
+            BeanUtils.copyProperties(product, foundProduct, Utils.getNullPropertyNames(product));
+            return Optional.of(this.productRepository.save(foundProduct));
         }
         return Optional.empty();
     }
