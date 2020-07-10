@@ -24,7 +24,7 @@ public final class TestUtils {
         order.setId(UUID.randomUUID().toString());
         order.setCreatedAt(LocalDateTime.now());
         order.setShippingAddress(shippingAddress);
-        order.setStatus(Order.Status.DELIVERED);
+        order.setStatus(Order.Status.CREATED);
         order.setStore(store);
         order.setUser(user);
         return order;
