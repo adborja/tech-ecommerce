@@ -20,6 +20,7 @@ public class AddressController {
     private final AddressService service;
 
     @PostMapping("/addresses")
+    public ResponseEntity<Status<?>> createAddress(@RequestBody Address address) {
         try {
             Address created = service.createAddress(address);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
