@@ -1,7 +1,7 @@
 package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Product;
-import co.edu.cedesistemas.commerce.service.ProductService;
+import co.edu.cedesistemas.commerce.service.IProductService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -10,14 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
 @AllArgsConstructor
 public class ProductController {
-    private final ProductService productService;
+    private final IProductService productService;
 
     @PostMapping
     public ResponseEntity<Status<?>> createProduct(@RequestBody Product product){
@@ -52,7 +51,7 @@ public class ProductController {
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity<Status<?>> updateProduct(@Valid @RequestBody Product product, @PathVariable String productId){
+    public ResponseEntity<Status<?>> updateProduct(@Valid @RequestBody Product product, @Valid @PathVariable String productId){
         try{
             Product productUpdated = productService.updateProduct(product, productId);
             if(productUpdated != null){

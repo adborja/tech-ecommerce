@@ -1,7 +1,7 @@
 package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Address;
-import co.edu.cedesistemas.commerce.service.AddressService;
+import co.edu.cedesistemas.commerce.service.IAddressService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/addresses")
 public class AddressController {
-    private final AddressService addressService;
+    private final IAddressService addressService;
 
     @PostMapping
     public ResponseEntity<Status<?>> createAddress(@RequestBody Address address){

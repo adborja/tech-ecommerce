@@ -7,23 +7,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService implements IUserService{
     private final UserRepository userRepository;
 
+    @Override
     public User create(User user){
         return userRepository.save(user);
     }
 
+    @Override
     public User getUserById(String id){
         return userRepository.findById(id)
                 .orElse(null);
     }
 
+    @Override
     public User getUserByEmail(String email){
         return userRepository.findUserByEmail(email)
                 .orElse(null);
     }
 
+    @Override
     public User updateUser(User userToUpdate, String id){
         return userRepository.findById(id)
                 .map(actualUser -> updateUser(userToUpdate, actualUser))
@@ -38,6 +42,7 @@ public class UserService {
         return actualUser;
     }
 
+    @Override
     public void deleteUser(String userId){
         userRepository.findById(userId)
                 .ifPresent(userRepository::delete);
