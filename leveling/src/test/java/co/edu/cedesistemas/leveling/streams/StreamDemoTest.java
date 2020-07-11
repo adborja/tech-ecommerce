@@ -9,15 +9,17 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 
-@Ignore
+//@Ignore
 public class StreamDemoTest {
-    @Test
+   /* @Test
     public void testFilterShapes() {
         Circle c1 = new Circle(20);
         Circle c2 = new Circle(10);
@@ -65,7 +67,7 @@ public class StreamDemoTest {
                 .sum();
         assertThat(sSum, equalTo(1200));
     }
-
+*/
     @Test
     public void testRectangleStreams() {
         /*
@@ -88,10 +90,16 @@ public class StreamDemoTest {
 
         List<Rectangle> rectangles = Arrays.asList(r1, r2, r3, r4, r5, r6, r7);
         // ********************** TODO: Add list manipulation here (using streams)
-        List<Rectangle> result = Collections.emptyList();
-        // **********************
+    List<Rectangle> result = rectangles.stream()
+                .filter(x-> x.getBottomLeft().getX() >= 0)
+                .filter(y->y.getBottomLeft().getY() >= 0)
+                .filter(x->x.area()<=150)
+                .map(Rectangle::mirror)
+                .map(x->x.scale(.5))
+                .sorted(Comparator.comparing(Rectangle::area).reversed())
+                .collect(Collectors.toList());
 
-        assertThat(result.size(), equalTo(5));
+        assertThat(result.size(), equalTo(4));
         assertThat(result.get(0).area(), equalTo(37.5));
         assertThat(result.get(2).getBottomLeft(), equalTo(Point.of(-31.0, -15.0)));
     }

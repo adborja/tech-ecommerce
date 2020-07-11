@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface StoreRepository extends MongoRepository<Store, String> {
     List<Store> findByNameLike(String name);
+    List<Store> findByName(String name);
     List<Store> findByType(Store.Type type);
+    void remove(String s);
 }

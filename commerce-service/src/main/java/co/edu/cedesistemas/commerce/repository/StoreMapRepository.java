@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Repository
-public class StoreMapRepository implements StoreRepository {
+public abstract class StoreMapRepository implements StoreRepository {
     private final Map<String, Store> dataMap;
 
     @Override
@@ -44,7 +44,9 @@ public class StoreMapRepository implements StoreRepository {
     }
 
     @Override
-    public Iterable<Store> findAll() {
-        return dataMap.values();
+    public List<Store> findAll() {
+        return dataMap.values().stream().collect(Collectors.toList());
     }
+
+
 }
