@@ -1,7 +1,7 @@
 package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Address;
-import co.edu.cedesistemas.commerce.service.AddressService;
+import co.edu.cedesistemas.commerce.service.IAddressService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class AddressesController {
 
-    private AddressService addressService;
+    private final IAddressService addressService;
 
     @PostMapping(value = "/addresses", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Status<?>> createAddress(@RequestBody Address address) {

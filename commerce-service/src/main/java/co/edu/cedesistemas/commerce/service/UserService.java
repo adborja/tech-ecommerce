@@ -10,22 +10,26 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService implements IUserService {
 
     private UserRepository userRepository;
 
+    @Override
     public User createUser(User user) {
         return this.userRepository.save(user);
     }
 
+    @Override
     public Optional<User> findById(String id) {
         return this.userRepository.findById(id);
     }
 
+    @Override
     public List<User> findUsersByEmail(String email) {
         return this.userRepository.findByEmail(email);
     }
 
+    @Override
     public Optional<User> deleteUserById(String id) {
         Optional<User> foundUser = this.userRepository.findById(id);
         if (foundUser.isPresent()) {
@@ -34,6 +38,7 @@ public class UserService {
         return foundUser;
     }
 
+    @Override
     public Optional<User> updateUser(String id, User user) {
         Optional<User> userToUpdate = this.userRepository.findById(id);
 

@@ -12,18 +12,21 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class ProductService {
+public class ProductService implements IProductService {
 
     private ProductRepository productRepository;
 
+    @Override
     public Product createProduct(Product product) {
         return this.productRepository.save(product);
     }
 
+    @Override
     public List<Product> getProductByNamePrefix(String name) {
         return this.productRepository.findByNameLike(name);
     }
 
+    @Override
     public Optional<Product> updateProduct(String id, Product product) {
         Product foundProduct = this.productRepository.findById(id).orElse(null);
 
@@ -34,6 +37,7 @@ public class ProductService {
         return Optional.empty();
     }
 
+    @Override
     public boolean deleteProduct(String id) {
 
         Optional<Product> foundProduct = this.productRepository.findById(id);
@@ -45,6 +49,7 @@ public class ProductService {
         return false;
     }
 
+    @Override
     public Optional<Product> findById(String id) {
         return this.productRepository.findById(id);
     }

@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Product;
+import co.edu.cedesistemas.commerce.service.IProductService;
 import co.edu.cedesistemas.commerce.service.ProductService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
@@ -24,7 +25,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class ProductController {
 
-    private ProductService productService;
+    private final IProductService productService;
 
     @PostMapping(value = "/products", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Status<?>> createProduct(@RequestBody Product product) {

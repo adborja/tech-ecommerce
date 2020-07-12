@@ -9,14 +9,16 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class AddressService {
+public class AddressService implements IAddressService {
 
     private AddressRepository addressRepository;
 
+    @Override
     public Address createAddress(Address address) {
         return this.addressRepository.save(address);
     }
 
+    @Override
     public Optional<Address> findById(String id) {
         return this.addressRepository.findById(id);
     }
