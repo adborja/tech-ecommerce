@@ -1,6 +1,6 @@
 package co.edu.cedesistemas.commerce.config;
 
-import co.edu.cedesistemas.commerce.model.converter.StoreWriteConverter;
+import co.edu.cedesistemas.commerce.model.converter.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +18,10 @@ public class MongoConfiguration {
         log.info("adding mongo custom converters ...");
         List<Converter<?, ?>> converters = new ArrayList<>();
         converters.add(new StoreWriteConverter());
+        converters.add(new AddressConverter());
+        converters.add(new OrderConverter());
+        converters.add(new ProductConverter());
+        converters.add(new UserConverter());
         return new MongoCustomConversions(converters);
     }
 }
