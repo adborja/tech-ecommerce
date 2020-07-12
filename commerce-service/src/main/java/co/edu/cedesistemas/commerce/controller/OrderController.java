@@ -35,7 +35,7 @@ public class OrderController {
             Optional<Order> order = this.orderService.findById(id);
 
             if (order.isPresent()) {
-                return DefaultResponseBuilder.defaultResponse(order, HttpStatus.OK);
+                return DefaultResponseBuilder.defaultResponse(order.get(), HttpStatus.OK);
             }
             return DefaultResponseBuilder.errorResponse("Order not found", null, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {

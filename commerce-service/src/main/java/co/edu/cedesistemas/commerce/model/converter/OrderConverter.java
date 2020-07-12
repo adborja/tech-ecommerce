@@ -11,10 +11,10 @@ public class OrderConverter implements Converter<Order, Document> {
     public Document convert(Order order) {
         Document document = new Document();
         document.put("_id", order.getId());
-        document.put("user", order.getUser());
-        document.put("store", order.getStore());
-        document.put("shippingAddress", order.getShippingAddress());
-        document.put("status", order.getStatus());
+        document.put("userId", order.getUserId());
+        document.put("storeId", order.getStoreId());
+        document.put("shippingAddressId", order.getShippingAddressId());
+        document.put("status", order.getStatus().name());
         document.put("createdAt", order.getCreatedAt());
         document.put("items", order.getItems());
         document.remove("links");
