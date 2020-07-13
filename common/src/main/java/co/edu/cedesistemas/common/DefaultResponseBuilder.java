@@ -13,7 +13,7 @@ public class DefaultResponseBuilder {
     public static ResponseEntity<Status<?>> errorResponse(final String message, final Throwable t,
                                                           HttpStatus httpStatus) {
         Status<?> status = Status.builder()
-                .code(1)
+                .code(httpStatus.value())
                 .message(message)
                 .details(t != null ? Stream.of(t.getStackTrace())
                         .map(StackTraceElement::toString).collect(Collectors.toList()) : null)

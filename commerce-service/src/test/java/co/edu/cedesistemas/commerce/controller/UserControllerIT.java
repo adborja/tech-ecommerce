@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CommerceApp.class)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class UserControllerIT extends BaseIT {
+public class UserControllerIT extends BaseIT<User> {
     @Autowired private MockMvc mvc;
     @Autowired private ObjectMapper objectMapper;
 
@@ -126,7 +126,7 @@ public class UserControllerIT extends BaseIT {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<User> users = mapper.convertValue(_source, new TypeReference<List<User>>(){});
+        List<User> users = mapper.convertValue(_source, new TypeReference<>(){});
 
         assertThat(_source, notNullValue());
         assertThat(users, notNullValue());
