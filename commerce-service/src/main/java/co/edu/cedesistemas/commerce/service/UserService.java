@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService implements IUserService{
 
     private final UserRepository repository;
 
@@ -21,8 +21,8 @@ public class UserService {
         return repository.save(user);
     }
 
-    public Optional<User> getById(String id) {
-        return repository.findById(id);
+    public User getById(String id) {
+        return repository.findById(id).orElse(null);
     }
 
     public List<User> getByMail(String mail){ return repository.findByEmail(mail);}

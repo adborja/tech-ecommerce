@@ -28,9 +28,9 @@ public class StoreService implements IStoreService {
         return repository.save(store);
     }
 
-    public Optional<Store> getById(final String id) {
+    public Store getById(final String id) {
 
-        return repository.findById(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override

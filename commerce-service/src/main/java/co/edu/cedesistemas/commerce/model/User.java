@@ -1,14 +1,17 @@
 package co.edu.cedesistemas.commerce.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.RepresentationModel;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 @EqualsAndHashCode(of = "id")
 @Document("user")
-public class User {
+public class User extends RepresentationModel<User> {
     @Id
     private String id;
     private String name;
