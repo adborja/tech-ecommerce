@@ -10,7 +10,7 @@ public interface IProductService {
 
     List<Product> getProductByNamePrefix(String name);
 
-    Optional<Product> updateProduct(String id, Product product);
+    Optional<Product> updateProduct(String id, Product product) throws Exception;
 
     boolean deleteProduct(String id);
 

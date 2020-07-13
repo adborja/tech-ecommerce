@@ -27,6 +27,7 @@ public class AddressesController {
     public ResponseEntity<Status<?>> createAddress(@RequestBody Address address) {
         try {
             Address created = this.addressService.createAddress(address);
+            addSelfLink(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);

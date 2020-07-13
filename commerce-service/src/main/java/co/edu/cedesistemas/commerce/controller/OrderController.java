@@ -2,7 +2,6 @@ package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.service.IOrderService;
-import co.edu.cedesistemas.commerce.service.OrderService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;

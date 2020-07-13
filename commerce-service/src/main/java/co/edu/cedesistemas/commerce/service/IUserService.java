@@ -14,5 +14,5 @@ public interface IUserService {
 
     Optional<User> deleteUserById(String id);
 
-    Optional<User> updateUser(String id, User user);
+    Optional<User> updateUser(String id, User user) throws Exception;
 }
