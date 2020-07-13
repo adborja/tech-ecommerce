@@ -67,7 +67,7 @@ public final class TestUtils {
 
     public static OrderItem buildOrderItem(final Product product, final Integer quantity, Float finalPrice) {
         final OrderItem orderItem = new OrderItem();
-        orderItem.setProduct(product);
+        orderItem.setProductId(product.getId());
         orderItem.setFinalPrice(finalPrice);
         orderItem.setQuantity(quantity);
         return orderItem;
