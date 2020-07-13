@@ -2,7 +2,9 @@ package co.edu.cedesistemas.leveling.functional;
 
 import co.edu.cedesistemas.leveling.generics.Sorter;
 import co.edu.cedesistemas.leveling.model.geometry.Circle;
+import javafx.beans.property.SimpleObjectProperty;
 
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +25,7 @@ public class Main {
 
         // Solucion 2: Usando expresión lambda:
         SortFunction<Integer> sorter2 = l -> Sorter.bubbleSort(numbers);
+        //SortFunction<Integer> sorter2 = l -> Collections.sort(numbers);
         sorter2.sort(numbers);
         System.out.println(numbers);
 
@@ -36,6 +39,10 @@ public class Main {
         // *****************************************************************************
 
         // INSERTE EXPRESION LAMBDA ACA PARA OBTENER EL MISMO RESULTADO
-        // ....
+
+        ShapeMultiplier<Circle, Double> area2 = (a, b) -> a.scale(b);
+        newCircle = shapeMultiplier.multiply(circle, 200D);
+        area = newCircle.area();
+        System.out.println("New area lamdba: " + area);
     }
 }
