@@ -2,8 +2,10 @@ package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.repository.AddressRepository;
+import co.edu.cedesistemas.common.SpringProfile;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.XSlf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 
@@ -11,16 +13,17 @@ import java.util.Optional;
 
 
 @XSlf4j
-@Service
 //@AllArgsConstructor
-
-public class AddressService {
+@Profile("!" + SpringProfile.SANDBOX)
+@AllArgsConstructor
+@Service
+public class AddressService implements IAddressService {
 
     private final AddressRepository repository;
 
-    public AddressService (AddressRepository repository){
-        this.repository = repository;
-    }
+    //public AddressService (AddressRepository repository){
+      //  this.repository = repository;
+    //}
 
     public Address createAddress(final Address address) {
           return repository.save(address);

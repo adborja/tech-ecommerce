@@ -1,8 +1,10 @@
 package co.edu.cedesistemas.commerce.service;
 import co.edu.cedesistemas.commerce.model.User;
 import co.edu.cedesistemas.commerce.repository.UserRepository;
+import co.edu.cedesistemas.common.SpringProfile;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.XSlf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,12 +14,14 @@ import java.util.UUID;
 @XSlf4j
 @Service
 //@AllArgsConstructor
-public class UserService {
+@Profile("!" + SpringProfile.SANDBOX)
+@AllArgsConstructor
+public class UserService implements IUserService {
     private final UserRepository repository;
 
-    public UserService (UserRepository repository){
-        this.repository = repository;
-    }
+//    public UserService (UserRepository repository){
+  //      this.repository = repository;
+    //}
 
     public User createUser(final User user) {
         user.setId(UUID.randomUUID().toString());

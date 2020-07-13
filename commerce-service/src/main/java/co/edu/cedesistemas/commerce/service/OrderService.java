@@ -3,6 +3,8 @@ package co.edu.cedesistemas.commerce.service;
 import java.util.List;
 import java.util.Optional;
 
+import co.edu.cedesistemas.common.SpringProfile;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import co.edu.cedesistemas.commerce.model.Order;
@@ -10,9 +12,11 @@ import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 
-@Service
+
+@Profile("!" + SpringProfile.SANDBOX)
 @AllArgsConstructor
-public class OrderService {
+@Service
+public class OrderService implements IOrderService {
 
     private final OrderRepository repository;
 

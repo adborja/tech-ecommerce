@@ -1,10 +1,11 @@
 package co.edu.cedesistemas.commerce.controller;
 
-
+import co.edu.cedesistemas.commerce.service.IUserService;
 import co.edu.cedesistemas.commerce.model.User;
 import co.edu.cedesistemas.commerce.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@AllArgsConstructor
+@AllArgsConstructor
 public class UserController {
-    private final UserService userServi;
+    private final IUserService userServi;
 
-    UserController(UserService user) {
-        this.userServi = user;
-    }
 
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {

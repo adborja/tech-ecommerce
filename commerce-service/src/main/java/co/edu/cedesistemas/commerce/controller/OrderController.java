@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.service.OrderService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
+import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrderController {
 
-    private final OrderService service;
+    private final IOrderService service;
 
     @PostMapping("/orders/")
     public ResponseEntity<Status<?>> createOrder(@RequestBody Order order){

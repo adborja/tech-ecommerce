@@ -75,7 +75,4 @@ public class Store extends RepresentationModel<Store> {
         return type;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
