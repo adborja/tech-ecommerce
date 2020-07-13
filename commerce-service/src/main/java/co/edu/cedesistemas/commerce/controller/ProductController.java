@@ -5,12 +5,18 @@ import co.edu.cedesistemas.commerce.service.IProductService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/products")
@@ -21,7 +27,10 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Status<?>> createProduct(@RequestBody Product product){
         try{
-            return DefaultResponseBuilder.defaultResponse(productService.createProduct(product), HttpStatus.CREATED);
+            Product productCreated = productService.createProduct(product);
+            addSelfLink(productCreated);
+            addLinks(productCreated);
+            return DefaultResponseBuilder.defaultResponse(productCreated, HttpStatus.CREATED);
         }catch (Exception ex){
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -32,6 +41,7 @@ public class ProductController {
         try {
             Product product = productService.getProductById(productId);
             if(product != null){
+                addSelfLink(product);
                 return DefaultResponseBuilder.defaultResponse(product, HttpStatus.OK);
             }else {
                 return DefaultResponseBuilder.errorResponse("product not found", null, HttpStatus.NOT_FOUND);
@@ -44,7 +54,9 @@ public class ProductController {
     @GetMapping("/by-name")
     public ResponseEntity<Status<?>> getProductByName(@RequestParam String name){
         try {
-            return DefaultResponseBuilder.defaultResponse(productService.getProductByName(name), HttpStatus.OK);
+            List<Product> productsFound = productService.getProductByName(name);
+            productsFound.forEach(ProductController::addSelfLink);
+            return DefaultResponseBuilder.defaultResponse(productsFound, HttpStatus.OK);
         }catch (Exception ex){
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -55,6 +67,7 @@ public class ProductController {
         try{
             Product productUpdated = productService.updateProduct(product, productId);
             if(productUpdated != null){
+                addSelfLink(productUpdated);
                 return DefaultResponseBuilder.defaultResponse(productUpdated, HttpStatus.OK);
             }else{
                 return DefaultResponseBuilder.errorResponse("Product not found", null, HttpStatus.NOT_FOUND);
@@ -73,4 +86,35 @@ public class ProductController {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    private static void addSelfLink(@NotNull final Product product) {
+        Link selfLink = linkTo(methodOn(ProductController.class)
+                .getProductById(product.getId()))
+                .withSelfRel().withType("GET");
+        product.add(selfLink);
+    }
+
+    private static void addLinks(@NotNull final Product product){
+        Link deleteLink = linkTo(methodOn(ProductController.class)
+                .deleteProduct(product.getId()))
+                .withRel("delete")
+                .withType("DELETE");
+        product.add(deleteLink);
+
+        Link updateLink = linkTo(methodOn(ProductController.class)
+                .updateProduct(product, product.getId()))
+                .withRel("update")
+                .withMedia("application/json")
+                .withType("PATCH");
+        product.add(updateLink);
+
+        Link byNameLink = linkTo(methodOn(ProductController.class)
+                .getProductByName(product.getName()))
+                .withRel("get")
+                .withMedia("application/json")
+                .withType("GET");
+        product.add(byNameLink);
+    }
+
+
 }

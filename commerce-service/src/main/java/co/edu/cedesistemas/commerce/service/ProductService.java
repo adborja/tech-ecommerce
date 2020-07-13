@@ -2,11 +2,14 @@ package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.repository.ProductRepository;
+import co.edu.cedesistemas.common.SpringProfile;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Profile("!" + SpringProfile.SANDBOX)
 @Service
 @AllArgsConstructor
 public class ProductService implements IProductService{
@@ -38,7 +41,6 @@ public class ProductService implements IProductService{
 
     private Product updateProductObject(Product actualProduct, Product productToUpdate){
         actualProduct.setDescription(productToUpdate.getDescription());
-
         return actualProduct;
     }
 
