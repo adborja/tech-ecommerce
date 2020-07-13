@@ -1,0 +1,18 @@
+spring:
+  data:
+    neo4j:
+      uri: bolt://neo4j.eladio.internal:7687
+
+server:
+  port: 8082
+  servlet:
+    context-path: /api/v1/
+
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: DESC
