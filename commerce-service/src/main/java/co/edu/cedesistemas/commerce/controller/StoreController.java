@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -37,8 +38,8 @@ public class StoreController {
     @GetMapping("/stores/{id}")
     public ResponseEntity<Status<?>> getStoreById(@PathVariable String id) {
         try {
-            Store found = service.getById(id);
-            if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            Optional<Store> found = service.getById(id);
+            if (found.isPresent()) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
             else return DefaultResponseBuilder.errorResponse("store not found", null, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,16 +21,18 @@ public class StoreService {
         return repository.save(store);
     }
 
-    public Store getById(final String id) {
-        return null;
+    public Optional<Store> getById(final String id) {
+        return repository.findById(id);
     }
 
     public List<Store> getByType(final Store.Type type) {
-        return null;
+
+        return repository.findByType(type);
     }
 
     public List<Store> getByName(final String name) {
-        return null;
+
+        return repository.findByNameLike(name);
     }
 
     public Store updateStore(String id, Store store) {

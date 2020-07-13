@@ -1,3 +1,4 @@
+/*
 package co.edu.cedesistemas.commerce.config;
 
 import org.springframework.context.annotation.Bean;
@@ -34,3 +35,4 @@ public class SwaggerConfig {
         return apiInfo;
     }
 }
+*/
