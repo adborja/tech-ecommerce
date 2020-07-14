@@ -3,10 +3,17 @@ package co.edu.cedesistemas.commerce.social.service;
 import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.model.User;
+import co.edu.cedesistemas.commerce.social.model.relation.FriendRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
+import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,14 +54,71 @@ public class UserService {
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).orElse(null);
+        Store store = storeService.getById(storeId);
+        if (user != null && store != null) {
+            user.storeRates(StoreRateRelation.builder()
+                    .rate(value)
+                    .rateTime(LocalDateTime.now())
+                    .store(store)
+                    .user(user)
+                    .build());
+            repository.save(user);
+        } else {
+            throw new Exception("user or store not found");
+        }
+
     }
 
     public void likeStore(final String userId, final String storeId) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).orElse(null);
+        Store store = storeService.getById(storeId);
+        if (user != null && store != null) {
+            user.storeLikes(StoreLikeRelation.builder()
+                    .storeLikeDate(LocalDateTime.now())
+                    .store(store)
+                    .user(user)
+                    .build());
+            repository.save(user);
+        } else {
+            throw new Exception("user or store not found");
+        }
+    }
+
+    public void likeProduct(final String userId, final String productId) throws Exception {
+        User user = repository.findById(userId).orElse(null);
+        Product product = productService.getById(productId);
+        if (user != null && product != null) {
+            user.likes(ProductLikeRelation.builder()
+                    .likeTime(LocalDateTime.now())
+                    .user(user)
+                    .product(product)
+                    .build());
+            repository.save(user);
+        } else {
+            throw new Exception("user or product not found");
+        }
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).orElse(null);
+        User friend = repository.findById(friendId).orElse(null);
+        if (user != null && friend != null) {
+            user.addFriend(FriendRelation.builder()
+                    .friendshipTime(LocalDateTime.now())
+                    .user(user)
+                    .friend(friend)
+                    .build());
+            repository.save(user);
+        } else {
+            throw new Exception("user or friend not found");
+        }
+    }
+
+    public List<StoreRepository.StoreOccurrence> findRecommendationByStore(final String userId, final String zone,
+                                                                           final String productType,
+                                                                           final Integer limit) throws Exception {
+
+        return storeService.recommendStoresByZoneAndProductType(userId,zone,productType,limit);
     }
 }

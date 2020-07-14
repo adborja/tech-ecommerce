@@ -39,4 +39,8 @@ public class ProductService {
         }
         return product;
     }
+
+    Set<Product> findAllById(Set<String> productIds){
+        return repository.findAllById(productIds);
+    };
 }
