@@ -3,10 +3,15 @@ package co.edu.cedesistemas.commerce.social.service;
 import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.model.User;
+import co.edu.cedesistemas.commerce.social.model.relation.FriendRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,14 +52,35 @@ public class UserService {
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
-        // TODO: Implement method here
+        User foundUser = this.getById(userId);
+        Store foundStore = this.storeService.getStoreById(storeId);
+        foundUser.storeRates(StoreRateRelation.builder().rate(value).store(foundStore)
+                .user(foundUser).build());
+        this.repository.save(foundUser);
     }
 
     public void likeStore(final String userId, final String storeId) throws Exception {
-        // TODO: Implement method here
+        User foundUser = this.getById(userId);
+        Store foundStore = this.storeService.getStoreById(storeId);
+        foundUser.storeLikes(StoreLikeRelation.builder().user(foundUser).store(foundStore)
+                .storeLikeDate(LocalDateTime.now()).build());
+        this.repository.save(foundUser);
+    }
+
+    public void likeProduct(final String userId, final String productId) throws Exception {
+        User foundUser = this.getById(userId);
+        Product foundProduct = this.productService.getById(productId);
+        foundUser.likes(ProductLikeRelation.builder().product(
+                foundProduct).likeTime(LocalDateTime.now()).user(foundUser).build());
+        this.repository.save(foundUser);
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        // TODO: Implement method here
+        User foundUser = this.getById(userId);
+        User foundFriend = this.getById(friendId);
+        foundUser.addFriend(FriendRelation.builder()
+                .friend(foundFriend).friendshipTime(LocalDateTime.now())
+                .user(foundUser).build());
+        this.repository.save(foundUser);
     }
 }
