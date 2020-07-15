@@ -1,15 +1,12 @@
 spring:
   application:
-    name: commerce-service
+    name: social-service
   data:
-    mongodb:
-      authentication-database: admin
-      database: tech-ecommerce
-      port: 27017
-      host: mongodb.cedesistemas.local
+    neo4j:
+      uri: bolt://neo4j.cedesistemas.local:7687
 
 server:
-  port: ${PORT:8081}
+  port: ${PORT:8082}
   servlet:
     context-path: /api/v1/
 
@@ -31,7 +28,8 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    description: e-commerce application
+    description: e-commerce social application
+    port: ${server.port}
     version: 1.0.0
 
 eureka:
