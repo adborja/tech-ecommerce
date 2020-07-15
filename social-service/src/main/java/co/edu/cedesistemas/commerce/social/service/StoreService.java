@@ -48,6 +48,8 @@ public class StoreService {
             store.addProductType(productType);
         });
 
+
+
         return repository.save(store);
     }
 
@@ -99,4 +101,5 @@ public class StoreService {
     public Store getById(String storeId){
         return repository.findById(storeId).orElse(null);
     }
+
 }
