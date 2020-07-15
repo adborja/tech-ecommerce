@@ -1,9 +1,11 @@
 package co.edu.cedesistemas.commerce.social.service;
 
 import co.edu.cedesistemas.commerce.social.model.Location;
+import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.ProductType;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
+import co.edu.cedesistemas.commerce.social.repository.ProductRepository;
 import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -18,6 +21,7 @@ public class StoreService {
     private final StoreRepository repository;
     private final LocationRepository locationRepository;
     private final ProductTypeRepository productTypeRepository;
+    private final ProductRepository productRepository;
 
     public Store createStore(Store store) {
         String country = store.getLocation().getCountry().toLowerCase().replace(" ", "_");
@@ -55,11 +59,28 @@ public class StoreService {
     }
 
     public void addProduct(final String storeId, final String productId) throws Exception {
-        // TODO: Implement method here
+        Store store = repository.findById(storeId).orElse(null);
+        Product product = productRepository.getById(productId).orElse(new Product());
+        if (store != null) {
+            if (product == null) {
+                product.setId(productId);
+                product = productRepository.save(product);
+            }
+            store.has(product);
+        }
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
-        // TODO: Implement method here
+        Store store = repository.findById(storeId).orElse(null);
+        Set<Product> productSet = productIds
+                .stream()
+                .map(p -> productRepository.getById(p).get())
+                .collect(Collectors.toSet());
+        if (store != null) {
+            if (!productSet.isEmpty()) {
+                store.has(productSet);
+            }
+        }
     }
 
 

@@ -6,10 +6,15 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
 public interface ProductRepository extends Neo4jRepository<Product, String> {
     @Query("MATCH (p:Product)<-[:LIKES]-(user:User {id:$userId}) RETURN p")
     Set<Product> findByUserLiked(@Param("userId") String userId);
+
+    Optional<Product> getById(@Param("productId") String productId);
+
+
 }

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -26,6 +27,8 @@ public interface StoreRepository extends Neo4jRepository<Store, String> {
                                                      @Param("zone") String zone, @Param("limit") Integer limit);
 
     List<ProductOccurrence> findTopNProducts(@Param("storeId") String storeId, @Param("limit") Integer limit);
+
+    Optional<Store> findById(@Param("storeId") String storeId);
 
 
     @QueryResult
