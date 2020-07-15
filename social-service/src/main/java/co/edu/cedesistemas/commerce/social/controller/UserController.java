@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
 @AllArgsConstructor
 public class UserController {
     private final UserService service;
