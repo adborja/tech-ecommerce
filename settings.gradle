@@ -4,4 +4,6 @@ include ':commerce-service'
 include ':common'
 include ':leveling'
 include 'social-service'
+include 'discovery-service'
+include 'gateway-service'
 
