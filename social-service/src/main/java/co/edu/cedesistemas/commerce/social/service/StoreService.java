@@ -106,4 +106,8 @@ public class StoreService {
                                                                        final Integer limit) {
         return storeRepository.findRecommendationByStores(userId, zone, limit);
     }
+
+    public Store getById(String id) {
+        return storeRepository.findById(id).orElse(null);
+    }
 }
