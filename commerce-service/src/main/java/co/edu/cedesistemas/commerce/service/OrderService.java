@@ -3,17 +3,19 @@ package co.edu.cedesistemas.commerce.service;
 import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.repository.OrderRepository;
+import co.edu.cedesistemas.common.SpringProfile;
 import lombok.AllArgsConstructor;
-import org.springframework.data.mongodb.core.aggregation.BooleanOperators;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@Profile("!" + SpringProfile.SANDBOX)
 @AllArgsConstructor
 @Service
-public class OrderService {
+public class OrderService implements IOrderService{
     private OrderRepository repository;
 
     public Order createOrder(Order order) {
@@ -28,7 +30,7 @@ public class OrderService {
     }
 
     public Order getOrderById(String id) {
-        Order order = repository.findById(id).get();
+        Order order = repository.findById(id).orElse(null);
         return order;
     }
 }

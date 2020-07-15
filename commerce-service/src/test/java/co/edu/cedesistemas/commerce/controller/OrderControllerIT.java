@@ -31,10 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasValue;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -90,7 +87,7 @@ public class OrderControllerIT extends BaseIT<Order> {
                 .andExpect(jsonPath("$._source[0].product.id",
                         is(created.getItems().get(0).getProduct().getId())))
                 .andExpect(jsonPath("$._source[0].finalPrice",
-                        hasValue(created.getItems().get(0).getFinalPrice())));
+                        closeTo(created.getItems().get(0).getFinalPrice(),0.01)));
     }
 
     public static Order createOrder(final MockMvc mvc, final ObjectMapper mapper, int nItems) throws Exception {

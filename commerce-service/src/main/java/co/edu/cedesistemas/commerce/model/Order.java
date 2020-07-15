@@ -1,7 +1,6 @@
 package co.edu.cedesistemas.commerce.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +10,9 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(of = "id")
 @Document("order")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
     @Id
     private String id;

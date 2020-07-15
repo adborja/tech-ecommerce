@@ -2,6 +2,7 @@ package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.model.Product;
+import co.edu.cedesistemas.commerce.service.IProductService;
 import co.edu.cedesistemas.commerce.service.ProductService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
@@ -16,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductController {
 
-    ProductService service;
+    IProductService service;
 
     @PostMapping("/products")
     public ResponseEntity<Status<?>> createProduct(@RequestBody Product product){
