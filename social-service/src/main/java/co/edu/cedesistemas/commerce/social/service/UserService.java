@@ -103,20 +103,20 @@ public class UserService {
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        Optional<User> user = userRepository.findById(userId);
-        if(!user.isEmpty()){
+        User user = getById(userId);
+        if(user == null){
             throw new Exception("User not found");
         }
-        Optional<User> userFriend = userRepository.findById(friendId);
-        if(!userFriend.isEmpty()){
+        User userFriend = getById(friendId);
+        if(userFriend == null){
             throw new Exception("Friend not found");
         }
 
-        user.get().addFriend(FriendRelation.builder()
-                .user(user.get())
-                .friend(userFriend.get())
+        user.addFriend(FriendRelation.builder()
+                .user(user)
+                .friend(userFriend)
                 .friendshipTime(LocalDateTime.now())
                 .build());
-        userRepository.save(user.get());
+        userRepository.save(user);
     }
 }
