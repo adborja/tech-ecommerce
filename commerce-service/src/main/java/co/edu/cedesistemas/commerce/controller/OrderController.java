@@ -2,7 +2,7 @@ package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.model.OrderItem;
-import co.edu.cedesistemas.commerce.service.OrderService;
+import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class OrderController {
-    private final OrderService service;
+    private final IOrderService service;
 
     @PostMapping("/orders")
     public ResponseEntity<Status<?>> createOrder(@RequestBody Order order){
