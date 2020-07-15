@@ -1,7 +1,7 @@
 spring:
   data:
     neo4j:
-      uri: bolt://neo4j.eladio.internal:7687
+      uri: bolt://localhost:7687
 
 server:
   port: 8082

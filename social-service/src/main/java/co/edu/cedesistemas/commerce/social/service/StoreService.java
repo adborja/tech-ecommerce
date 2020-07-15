@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.social.service;
 
 import co.edu.cedesistemas.commerce.social.model.Location;
+import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.ProductType;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
@@ -54,8 +55,19 @@ public class StoreService {
         return repository.findByUserLiked(userId);
     }
 
+    public Store getById(final String id) {
+        return repository.findById(id).orElse(null);
+    }
+
+
     public void addProduct(final String storeId, final String productId) throws Exception {
-        // TODO: Implement method here
+        Store store = repository.findById(storeId).orElse(null);
+        Product product = new Product();
+        product.setId(productId);
+        if (store != null) {
+            store.has(product);
+            repository.save(store);
+        }
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
@@ -64,8 +76,8 @@ public class StoreService {
 
 
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        List<StoreRepository.ProductOccurrence> productOccurrenceList = repository.findTopNProducts(storeId,limit);
+        return productOccurrenceList;
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZoneAndProductType(final String userId,
@@ -87,4 +99,5 @@ public class StoreService {
         // TODO: Implement method here
         return null;
     }
+
 }
