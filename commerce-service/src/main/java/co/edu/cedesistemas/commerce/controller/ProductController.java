@@ -6,11 +6,16 @@ import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @AllArgsConstructor
@@ -19,9 +24,11 @@ public class ProductController {
     private final IProductService service;
 
     @PostMapping("/products")
-    public ResponseEntity<Status<?>> createUser(@RequestBody Product product) {
+    public ResponseEntity<Status<?>> createProduct(@RequestBody Product product) {
         try {
             Product created = service.createProduct(product);
+            addSelfLink(created);
+            addLinks(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -29,7 +36,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
+    public ResponseEntity<Status<?>> getProductById(@PathVariable String id) {
         try {
             Product found = service.getById(id);
             if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
@@ -40,7 +47,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/by-name")
-    public ResponseEntity<Status<?>> getUserByEmail(@RequestParam String name) {
+    public ResponseEntity<Status<?>> getProductByName(@RequestParam String name) {
         try {
             List<Product> found = service.getByName(name);
             return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
@@ -50,7 +57,7 @@ public class ProductController {
     }
 
     @PatchMapping("/products/{id}")
-    public ResponseEntity<Status<?>> updateUser(@PathVariable String id, @RequestBody Product product) {
+    public ResponseEntity<Status<?>> updateProduct(@PathVariable String id, @RequestBody Product product) {
         try {
             if ((product != null && (product.getId() == null))) {
                 Product updated = service.updateProduct(id, product);
@@ -67,7 +74,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<Status<?>> getStoresByType(@PathVariable String id) {
+    public ResponseEntity<Status<?>> deleteProduct(@PathVariable String id) {
         try {
             service.deleteProduct(id);
             return DefaultResponseBuilder.defaultResponse("delete product id: " + id, HttpStatus.OK);
@@ -76,5 +83,32 @@ public class ProductController {
         }
     }
 
+    private static void addSelfLink(@NotNull final Product product) {
+        Link selfLink = linkTo(methodOn(ProductController.class)
+                .getProductById(product.getId()))
+                .withSelfRel().withType("GET");
+        product.add(selfLink);
+    }
+
+    private static void addLinks(@NotNull final Product product) {
+        Link deleteLink = linkTo(methodOn(ProductController.class)
+                .deleteProduct(product.getId()))
+                .withRel("delete")
+                .withType("DELETE");
+        product.add(deleteLink);
+
+        Link byNameLink = linkTo(methodOn(ProductController.class)
+                .getProductByName(product.getName()))
+                .withRel("by-name")
+                .withType("GET");
+        product.add(byNameLink);
+
+        Link update = linkTo(methodOn(ProductController.class)
+                .updateProduct(product.getId(), product))
+                .withRel("update")
+                .withMedia("application/json")
+                .withType("PATCH");
+        product.add(update);
+    }
 
 }
