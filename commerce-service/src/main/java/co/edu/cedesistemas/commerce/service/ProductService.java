@@ -12,8 +12,8 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class ProductService {
-    private ProductRepository repository;
+public class ProductService implements IProductService{
+    private final ProductRepository repository;
 
     public Product createProduct(final Product product){
         product.setId(UUID.randomUUID().toString());

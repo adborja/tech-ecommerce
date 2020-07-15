@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class OrderService {
+public class OrderService implements IOrderService{
     private final OrderRepository repository;
 
     public Order createOrder(final Order order){

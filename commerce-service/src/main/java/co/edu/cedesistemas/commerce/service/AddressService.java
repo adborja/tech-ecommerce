@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class AddressService {
+public class AddressService implements IAddressService{
     private final AddressRepository repository;
 
     public Address createAddress(final Address address){
