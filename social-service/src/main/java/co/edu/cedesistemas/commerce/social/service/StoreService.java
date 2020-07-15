@@ -47,6 +47,8 @@ public class StoreService {
             store.addProductType(productType);
         });
 
+
+
         return repository.save(store);
     }
 
@@ -86,5 +88,9 @@ public class StoreService {
                                                                        final Integer limit) {
         // TODO: Implement method here
         return null;
+    }
+
+    public Store getById(String id) {
+        return repository.findById(id).orElse(null);
     }
 }
