@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.cedesistemas.commerce.model.Product;
-import co.edu.cedesistemas.commerce.service.ProductService;
+import co.edu.cedesistemas.commerce.service.IProductService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ProductController {
 
-	private final ProductService service;
+	private final IProductService service;
 
 	@PostMapping("/products")
 	public ResponseEntity<Status<?>> createProduct(@RequestBody Product product) {

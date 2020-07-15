@@ -12,20 +12,20 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class OrderService {
+public class OrderService implements IOrderService{
 	
 	private final OrderRepository repository; 
-
+	@Override
 	public List<OrderItem> getItemsByOrder(final String orderId){
 		Optional<Order> order = repository.findById(orderId);
 		
 		return order.isPresent() ? order.get().getItems() : null;
 	}
-	
+	@Override
 	public Order createOrder(final Order order) {
 		return repository.save(order);
 	}
-
+	@Override
 	public Order getOrder(final String id) {
 		Optional<Order> order = repository.findById(id);
 		return order.isPresent() ? order.get() : null;

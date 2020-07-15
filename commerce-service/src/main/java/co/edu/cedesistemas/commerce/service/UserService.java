@@ -12,10 +12,10 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService implements IUserService{
 	
 	private final UserRepository repository;
-	
+	@Override
 	public List<User> getByEmail(final String email) throws Exception{
 		List<User> users = repository.findByEmail(email);
 		
@@ -24,21 +24,21 @@ public class UserService {
 		
 		return users;
 	}
-	
+	@Override
 	public User createUser(final User user) {
 		return repository.save(user);
 	}
-	
+	@Override
 	public User getById(final String id) {
 		Optional<User> user = repository.findById(id);
 		return user.isPresent() ? user.get() : null;
 	}
-	
+	@Override
 	public User updateUser(final String id, final User user) {
 		return repository.findById(id).isEmpty() ? null : 
     		repository.save(user);
 	}
-	
+	@Override
 	public void deleteUser(final String id) {
 		repository.deleteById(id);
 	}

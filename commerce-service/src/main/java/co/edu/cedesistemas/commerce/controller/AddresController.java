@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.cedesistemas.commerce.model.Address;
-import co.edu.cedesistemas.commerce.service.AddressService;
+import co.edu.cedesistemas.commerce.service.IAddressService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AddresController {
 	
-	private final AddressService service;
+	private final IAddressService service;
 	
 	@GetMapping("/addresses/{id}")
 	public ResponseEntity<Status<?>> getAddressById(@PathVariable String id){
