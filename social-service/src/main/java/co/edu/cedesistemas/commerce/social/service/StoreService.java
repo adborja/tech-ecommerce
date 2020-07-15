@@ -50,6 +50,8 @@ public class StoreService {
             store.addProductType(productType);
         });
 
+
+
         return repository.save(store);
     }
 
@@ -97,5 +99,9 @@ public class StoreService {
     public List<StoreRepository.StoreOccurrence> recommendStoresByZone(final String userId, final String zone,
                                                                        final Integer limit) {
         return this.repository.findRecommendationByStores(userId, zone, limit);
+    }
+
+    public Store getById(String id) {
+        return repository.findById(id).orElse(null);
     }
 }

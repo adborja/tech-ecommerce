@@ -10,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
+@RestController
 @AllArgsConstructor
 public class PurchaseController {
     private final PurchaseService service;
