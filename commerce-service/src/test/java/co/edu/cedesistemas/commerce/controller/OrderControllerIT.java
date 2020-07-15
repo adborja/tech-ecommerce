@@ -31,7 +31,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+<<<<<<< HEAD
 import static org.hamcrest.Matchers.*;
+=======
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+>>>>>>> f6af876c869418cba81c5511582c176e9a476d28
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -72,8 +79,8 @@ public class OrderControllerIT extends BaseIT<Order> {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._source[0].id", is(created.getId())))
                 .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED.name())))
-                .andExpect(jsonPath("$._source[0].user.id", is(created.getUser().getId())))
-                .andExpect(jsonPath("$._source[0].store.id", is(created.getStore().getId())));
+                .andExpect(jsonPath("$._source[0].userId", is(created.getUserId())))
+                .andExpect(jsonPath("$._source[0].storeId", is(created.getStoreId())));
     }
 
     @Test
@@ -84,8 +91,8 @@ public class OrderControllerIT extends BaseIT<Order> {
         mvc.perform(get("/orders/" + created.getId() + "/items"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._hits", is(nItems)))
-                .andExpect(jsonPath("$._source[0].product.id",
-                        is(created.getItems().get(0).getProduct().getId())))
+                .andExpect(jsonPath("$._source[0].productId",
+                        is(created.getItems().get(0).getProductId())))
                 .andExpect(jsonPath("$._source[0].finalPrice",
                         closeTo(created.getItems().get(0).getFinalPrice(),0.01)));
     }
@@ -109,11 +116,9 @@ public class OrderControllerIT extends BaseIT<Order> {
             String productName = RandomStringUtils.randomAlphabetic(10);
             String productDesc = RandomStringUtils.randomAlphabetic(20);
             Product product = ProductControllerIT.createProduct(mvc, mapper, productName, productDesc);
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(product);
-            orderItem.setQuantity(RandomUtils.nextInt(1, 3));
-            orderItem.setFinalPrice(RandomUtils.nextFloat(5000, 10000));
-            items.add(orderItem);
+            OrderItem item = TestUtils.buildOrderItem(product, RandomUtils.nextInt(1, 3),
+                    RandomUtils.nextFloat(5000, 10000));
+            items.add(item);
         }
 
         Order order = TestUtils.buildOrder(store, user, address);
