@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.User;
 import co.edu.cedesistemas.commerce.social.model.relation.PurchaseRelation;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

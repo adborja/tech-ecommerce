@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.social.service;
 
 import co.edu.cedesistemas.commerce.social.model.Location;
+import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.ProductType;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
@@ -9,15 +10,17 @@ import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class StoreService {
-    private final StoreRepository repository;
+    private final StoreRepository storeRepository;
     private final LocationRepository locationRepository;
     private final ProductTypeRepository productTypeRepository;
+    private final ProductService productService;
 
     public Store createStore(Store store) {
         String country = store.getLocation().getCountry().toLowerCase().replace(" ", "_");
@@ -47,44 +50,60 @@ public class StoreService {
             store.addProductType(productType);
         });
 
-        return repository.save(store);
+        return storeRepository.save(store);
+    }
+
+    public Store getStoreById(String storeId){
+        return storeRepository.findById(storeId).orElse(null);
     }
 
     public Set<Store> getByUserLiked(final String userId) {
-        return repository.findByUserLiked(userId);
+        return storeRepository.findByUserLiked(userId);
     }
 
     public void addProduct(final String storeId, final String productId) throws Exception {
-        // TODO: Implement method here
+        storeRepository.findById(storeId)
+                .map(storeFound -> {
+                    storeFound.has(productService.getProduct(productId));
+                    return storeFound;
+                }).ifPresent(storeRepository::save);
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
-        // TODO: Implement method here
+        storeRepository.findById(storeId)
+                .map(storeFound -> {
+                    storeFound.has(setProductsFound(productIds));
+                    return storeFound;
+                }).ifPresent(storeRepository::save);
+
+    }
+
+    private Set<Product> setProductsFound(Set<String> productsIds){
+        Set<Product> products = new HashSet<>();
+        productsIds.stream().forEach(productId -> products.add(productService.getProduct(productId)));
+
+        return products;
     }
 
 
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return storeRepository.findTopNProducts(storeId, limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZoneAndProductType(final String userId,
                                                                                      final String zone,
                                                                                      final String productType,
                                                                                      final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return storeRepository.findRecommendationByProducts(userId, zone, productType, limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoreByProducts(final String userId, final String zone,
                                                                           final String productType, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return storeRepository.findRecommendationByStores(userId, zone, productType, limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZone(final String userId, final String zone,
                                                                        final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return storeRepository.findRecommendationByStores(userId, zone, limit);
     }
 }

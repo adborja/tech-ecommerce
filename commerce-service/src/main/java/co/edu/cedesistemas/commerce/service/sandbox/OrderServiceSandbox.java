@@ -58,7 +58,7 @@ public class OrderServiceSandbox implements IOrderService {
                     .description(RandomStringUtils.randomAlphabetic(20))
                     .build();
             OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(product);
+            orderItem.setProductId(product.getId());
             orderItem.setQuantity(RandomUtils.nextInt(1, 3));
             orderItem.setFinalPrice(RandomUtils.nextFloat(5000, 10000));
             items.add(orderItem);
@@ -68,9 +68,9 @@ public class OrderServiceSandbox implements IOrderService {
                 .id(UUID.randomUUID().toString())
                 .items(items)
                 .status(Order.Status.CREATED)
-                .store(store)
-                .shippingAddress(address)
-                .user(user)
+                .storeId(store.getId())
+                .shippingAddressId(address.getId())
+                .userId(user.getId())
                 .build();
     }
 }
