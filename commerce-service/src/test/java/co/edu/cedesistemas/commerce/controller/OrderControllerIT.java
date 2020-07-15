@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -41,9 +44,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CommerceApp.class)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class OrderControllerIT extends BaseIT {
+public class OrderControllerIT extends BaseIT<Order> {
     @Autowired private MockMvc mvc;
     @Autowired private ObjectMapper objectMapper;
+
+    @BeforeEach
+    @Override
+    public void setup() {
+        super.setup();
+        dropCollection("user");
+        dropCollection("store");
+        dropCollection("address");
+    }
+
+    @AfterEach
+    @Override
+    public void tearDown() {
+        super.tearDown();
+        dropCollection("user");
+        dropCollection("store");
+        dropCollection("address");
+    }
 
     @Test
     public void testCreateOrder() throws Exception {
@@ -53,9 +74,9 @@ public class OrderControllerIT extends BaseIT {
         mvc.perform(get("/orders/" + created.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._source[0].id", is(created.getId())))
-                .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED)))
-                .andExpect(jsonPath("$._source[0].user.id", is(created.getUser().getId())))
-                .andExpect(jsonPath("$._source[0].store.id", is(created.getStore().getId())));
+                .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED.name())))
+                .andExpect(jsonPath("$._source[0].userId", is(created.getUserId())))
+                .andExpect(jsonPath("$._source[0].storeId", is(created.getStoreId())));
     }
 
     @Test
@@ -66,10 +87,10 @@ public class OrderControllerIT extends BaseIT {
         mvc.perform(get("/orders/" + created.getId() + "/items"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._hits", is(nItems)))
-                .andExpect(jsonPath("$._source[0].product.id",
-                        is(created.getItems().get(0).getProduct().getId())))
+                .andExpect(jsonPath("$._source[0].productId",
+                        is(created.getItems().get(0).getProductId())))
                 .andExpect(jsonPath("$._source[0].finalPrice",
-                        is(created.getItems().get(0).getFinalPrice())));
+                        closeTo(created.getItems().get(0).getFinalPrice(), 0.01)));
     }
 
     public static Order createOrder(final MockMvc mvc, final ObjectMapper mapper, int nItems) throws Exception {
@@ -91,11 +112,9 @@ public class OrderControllerIT extends BaseIT {
             String productName = RandomStringUtils.randomAlphabetic(10);
             String productDesc = RandomStringUtils.randomAlphabetic(20);
             Product product = ProductControllerIT.createProduct(mvc, mapper, productName, productDesc);
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(product);
-            orderItem.setQuantity(RandomUtils.nextInt(1, 3));
-            orderItem.setFinalPrice(RandomUtils.nextFloat(5000, 10000));
-            items.add(orderItem);
+            OrderItem item = TestUtils.buildOrderItem(product, RandomUtils.nextInt(1, 3),
+                    RandomUtils.nextFloat(5000, 10000));
+            items.add(item);
         }
 
         Order order = TestUtils.buildOrder(store, user, address);
@@ -112,7 +131,7 @@ public class OrderControllerIT extends BaseIT {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<Order> orders = mapper.convertValue(_source, new TypeReference<List<Order>>(){});
+        List<Order> orders = mapper.convertValue(_source, new TypeReference<>(){});
 
         assertThat(_source, notNullValue());
         assertThat(orders, notNullValue());
