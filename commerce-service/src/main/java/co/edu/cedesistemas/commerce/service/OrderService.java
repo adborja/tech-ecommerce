@@ -3,12 +3,15 @@ package co.edu.cedesistemas.commerce.service;
 import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.repository.OrderRepository;
+import co.edu.cedesistemas.common.SpringProfile;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Profile("!"+SpringProfile.SANDBOX)
 @Service
 @AllArgsConstructor
 public class OrderService implements IOrderService{
