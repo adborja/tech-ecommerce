@@ -1,7 +1,7 @@
 package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Product;
-import co.edu.cedesistemas.commerce.service.ProductService;
+import co.edu.cedesistemas.commerce.service.IProductService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -16,10 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class ProductController {
-    private final ProductService service;
+    private final IProductService service;
 
     @PostMapping("/products")
-    public ResponseEntity<Status<?>> createUser(@RequestBody Product product) {
+    public ResponseEntity<Status<?>> createProduct(@RequestBody Product product) {
         try {
             Product created = service.createProduct(product);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
@@ -29,9 +29,9 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
+    public ResponseEntity<Status<?>> getProductById(@PathVariable String id) {
         try {
-            Product found = service.getById(id);
+            Product found = service.getProductById(id);
             if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
             else return DefaultResponseBuilder.defaultResponse("product not found", HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
@@ -40,9 +40,9 @@ public class ProductController {
     }
 
     @GetMapping("/products/by-name")
-    public ResponseEntity<Status<?>> getUserByEmail(@RequestParam String name) {
+    public ResponseEntity<Status<?>> getProductByName(@RequestParam String name) {
         try {
-            List<Product> found = service.getByName(name);
+            List<Product> found = service.getProductByName(name);
             return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -50,7 +50,7 @@ public class ProductController {
     }
 
     @PatchMapping("/products/{id}")
-    public ResponseEntity<Status<?>> updateUser(@PathVariable String id, @RequestBody Product product) {
+    public ResponseEntity<Status<?>> updateProduct(@PathVariable String id, @RequestBody Product product) {
         try {
             if ((product != null && (product.getId() == null))) {
                 Product updated = service.updateProduct(id, product);
@@ -67,7 +67,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<Status<?>> getStoresByType(@PathVariable String id) {
+    public ResponseEntity<Status<?>> deleteProductById(@PathVariable String id) {
         try {
             service.deleteProduct(id);
             return DefaultResponseBuilder.defaultResponse("delete product id: " + id, HttpStatus.OK);

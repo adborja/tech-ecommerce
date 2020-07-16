@@ -1,7 +1,7 @@
 package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.User;
-import co.edu.cedesistemas.commerce.service.UserService;
+import co.edu.cedesistemas.commerce.service.IUserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class UserController {
-    private final UserService service;
+    private final IUserService service;
 
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
@@ -52,7 +52,7 @@ public class UserController {
     @PatchMapping("/users/{id}")
     public ResponseEntity<Status<?>> updateUser(@PathVariable String id, @RequestBody User user) {
         try {
-            User updated = service.updateStore(id, user);
+            User updated = service.updateUser(id, user);
             if (updated != null) return DefaultResponseBuilder.defaultResponse(updated, HttpStatus.OK);
             else return DefaultResponseBuilder.defaultResponse("user not found", HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
@@ -61,7 +61,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<Status<?>> getStoresByType(@PathVariable String id) {
+    public ResponseEntity<Status<?>> deleteUserById(@PathVariable String id) {
         try {
             service.deleteUser(id);
             return DefaultResponseBuilder.defaultResponse("delete user id: "+id,HttpStatus.OK);
