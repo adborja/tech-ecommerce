@@ -1,7 +1,7 @@
-package co.edu.cedesistemas.commerce.controller;
+package co.edu.cedesistemas.commerce.registration.controller;
 
-import co.edu.cedesistemas.commerce.model.User;
-import co.edu.cedesistemas.commerce.service.IUserService;
+import co.edu.cedesistemas.commerce.registration.model.User;
+import co.edu.cedesistemas.commerce.registration.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -21,14 +20,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 @Slf4j
 public class UserController {
-    private final IUserService service;
+    private final UserService service;
 
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
         try {
             User created = service.createUser(user);
             addSelfLink(created);
-            addLinks(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -46,32 +44,12 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/by-email")
-    public ResponseEntity<Status<?>> getUserByEmail(@RequestParam String email) {
+    @PutMapping("/users/{id}/activate")
+    public ResponseEntity<Status<?>> activateUser(@PathVariable String id) {
         try {
-            List<User> found = service.getByEmail(email);
-            return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
-        } catch (Exception ex) {
-            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PatchMapping("/users/{id}")
-    public ResponseEntity<Status<?>> updateUser(@PathVariable String id, @RequestBody User user) {
-        try {
-            User updated = service.updateUser(id, user);
+            User updated = service.activeUser(id);
             if (updated != null) return DefaultResponseBuilder.defaultResponse(updated, HttpStatus.OK);
             else return DefaultResponseBuilder.defaultResponse("user not found", HttpStatus.NOT_FOUND);
-        } catch (Exception ex) {
-            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<Status<?>> deleteUser(@PathVariable String id) {
-        try {
-            service.deleteUser(id);
-            return DefaultResponseBuilder.defaultResponse("delete user id: "+id,HttpStatus.OK);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -83,28 +61,4 @@ public class UserController {
                 .withSelfRel().withType("GET");
         user.add(selfLink);
     }
-
-    private static void addLinks(@NotNull final User user) {
-        Link byEmailLink = linkTo(methodOn(UserController.class)
-                .getUserByEmail(user.getEmail()))
-                .withRel("by-email")
-                .withType("GET");
-        user.add(byEmailLink);
-
-        Link update = linkTo(methodOn(UserController.class)
-                .updateUser(user.getId(), user))
-                .withRel("update")
-                .withMedia("application/json")
-                .withType("PATCH");
-        user.add(update);
-
-        Link deleteLink = linkTo(methodOn(UserController.class)
-                .deleteUser(user.getId()))
-                .withRel("delete")
-                .withType("DELETE");
-        user.add(deleteLink);
-    }
-
-
-
 }

@@ -1,6 +1,5 @@
 package co.edu.cedesistemas.commerce.service.sandbox;
 
-import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.model.User;
 import co.edu.cedesistemas.commerce.service.IUserService;
 import co.edu.cedesistemas.common.SpringProfile;
@@ -57,7 +56,7 @@ public class UserServiceSandbox implements IUserService {
     }
 
     @Override
-    public User updateStore(String id, User user) {
+    public User updateUser(String id, User user) {
         User found = getById(id);
         BeanUtils.copyProperties(user, found, Utils.getNullPropertyNames(user));
         return found;

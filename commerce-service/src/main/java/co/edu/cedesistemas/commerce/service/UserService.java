@@ -39,7 +39,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User updateStore(String id, User user) {
+    public User updateUser(String id, User user) {
         User userToUpdate = repository.findById(id).get();
         BeanUtils.copyProperties(user, userToUpdate, Utils.getNullPropertyNames(user));
         return repository.save(userToUpdate);

@@ -13,5 +13,5 @@ public interface IUserService {
 
     List<User> getByEmail(String email);
 
-    User updateStore(String id, User user);
+    User updateUser(String id, User user);
 }
