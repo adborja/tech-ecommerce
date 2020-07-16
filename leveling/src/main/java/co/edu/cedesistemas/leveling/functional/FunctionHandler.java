@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class FunctionHandler {
     public static <T, R> R applyFunction(Function<T, R> f, T t) {
@@ -15,9 +16,7 @@ public class FunctionHandler {
     }
 
     public static <T extends Scalable<T, U>, U extends Number> T getMultiplied(ShapeMultiplier<T, U> f, T shape, U value) {
-
-        return f.multiply(shape,value);
-
+        return f.multiply(shape, value);
     }
 
     public static <T> void consume(Consumer<List<T>> consumer, List<T> list) {
@@ -25,14 +24,10 @@ public class FunctionHandler {
     }
 
     public static Function<List<? extends Shape>, Map<? extends Shape, Double>> getAreaMapper() {
-        return new Function<List<? extends Shape>, Map<? extends Shape, Double>>(){
-            @Override
-            public Map<? extends Shape, Double> apply(List<? extends Shape> shapes) {
-                HashMap<Shape,Double> stuff = new HashMap<Shape,Double>();
-                for(Shape shape:shapes){
-                    stuff.put(shape,shape.area());
-                }
-                return stuff;
+
+        return new Function<List<? extends Shape>, Map<? extends Shape, Double>>() {
+            public Map<? extends Shape, Double> apply(List<? extends Shape> list) {
+                return list.stream().collect(Collectors.toMap(shape -> shape, Shape::area));
             }
         };
     }

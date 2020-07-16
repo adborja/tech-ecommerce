@@ -18,6 +18,7 @@ public class StoreService {
     private final StoreRepository repository;
     private final LocationRepository locationRepository;
     private final ProductTypeRepository productTypeRepository;
+    private final ProductService productService;
 
     public Store createStore(Store store) {
         String country = store.getLocation().getCountry().toLowerCase().replace(" ", "_");
@@ -57,40 +58,48 @@ public class StoreService {
     }
 
     public void addProduct(final String storeId, final String productId) throws Exception {
-        // TODO: Implement method here
+        Store store = repository.findById(storeId).orElse(null);
+        if (store == null) {
+            throw new Exception("store not found");
+        }
+        store.has(productService.getProduct(productId));
+        repository.save(store);
+
+
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
-        // TODO: Implement method here
+        Store store = repository.findById(storeId).orElseGet(null);
+        store.has(productService.findAllById(productIds));
+        repository.save(store);
     }
 
 
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+
+        return repository.findTopNProducts(storeId,limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZoneAndProductType(final String userId,
                                                                                      final String zone,
                                                                                      final String productType,
                                                                                      final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findRecommendationByStores(userId,zone,productType,limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoreByProducts(final String userId, final String zone,
                                                                           final String productType, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+
+        return repository.findRecommendationByProducts(userId,zone,productType,limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZone(final String userId, final String zone,
                                                                        final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findRecommendationByStores(userId,zone,limit);
     }
 
-    public Store getById(String id) {
-        return repository.findById(id).orElse(null);
+    public Store getById(String storeId){
+        return repository.findById(storeId).orElse(null);
     }
+
 }

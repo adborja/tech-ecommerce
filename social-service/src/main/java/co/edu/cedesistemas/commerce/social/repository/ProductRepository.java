@@ -12,4 +12,6 @@ import java.util.Set;
 public interface ProductRepository extends Neo4jRepository<Product, String> {
     @Query("MATCH (p:Product)<-[:LIKES]-(user:User {id:$userId}) RETURN p")
     Set<Product> findByUserLiked(@Param("userId") String userId);
+
+    Set<Product> findAllById(Iterable<String> ids);
 }
