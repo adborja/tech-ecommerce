@@ -40,12 +40,12 @@ public class OrderServiceSandbox implements IOrderService{
 		
 		OrderItem o1 = new OrderItem();
 		o1.setFinalPrice(123.53F);
-		o1.setProduct(p1);
+		o1.setProductId(p1.getId());
 		o1.setQuantity(2);
 		
 		OrderItem o2 = new OrderItem();
 		o2.setFinalPrice(150.53F);
-		o2.setProduct(p2);
+		o2.setProductId(p2.getId());
 		o2.setQuantity(1);
 		
 		return Arrays.asList(o1,o2);
@@ -60,7 +60,7 @@ public class OrderServiceSandbox implements IOrderService{
 		o.setItems(getItemsByOrder(id));
 		o.setId(UUID.randomUUID().toString());
 		o.setStatus(Status.CREATED);
-		o.setShippingAddress(a);
+		o.setShippingAddressId(a.getId());
 		
 		return o;
 	}
