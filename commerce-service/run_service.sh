@@ -6,7 +6,7 @@ docker run --restart=unless-stopped \
         --name commerce.cedesistemas.local \
         --net cedesistemas_network \
         --memory=512m \
-        -e "SPRING_PROFILES_ACTIVE=dev" \
+        -e "SPRING_PROFILES_ACTIVE=sandbox" \
         -e "TZ=America/Bogota" \
         -p 8081:8081 \
         -d registry.cedesistemas.internal:5000/commerce/commerce-service:dev
