@@ -9,7 +9,6 @@ spring:
     sampler:
       probability: 1
 
-
 server:
   port: 8080
 
