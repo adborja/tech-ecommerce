@@ -3,7 +3,7 @@ package co.edu.cedesistemas.commerce.config;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-import co.edu.cedesistemas.commerce.model.converter.StoreWriteConverter;
+import co.edu.cedesistemas.commerce.model.converter.*;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -26,6 +26,11 @@ public class MongoConfiguration {
         log.info("adding mongo custom converters ...");
         List<Converter<?, ?>> converters = new ArrayList<>();
         converters.add(new StoreWriteConverter());
+        converters.add(new AddressWriteConverter());
+        converters.add(new OrderWriteConverter());
+        converters.add(new ProductWriteConverter());
+        converters.add(new UserWriteConverter());
+
         return new MongoCustomConversions(converters);
     }
 

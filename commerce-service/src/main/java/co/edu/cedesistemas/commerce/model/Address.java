@@ -3,14 +3,16 @@ package co.edu.cedesistemas.commerce.model;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.RepresentationModel;
 
 @Data
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = true)
+@ToString
 @Document("address")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Address {
+public class Address extends RepresentationModel<Address> {
     @Id
     private String id;
     private String name;
