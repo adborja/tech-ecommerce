@@ -121,6 +121,7 @@ public class StoreController {
     }
 
     private ResponseEntity<Status<?>> getByIdFallback(final String id) {
+        log.error("getting store by id fallback {}", id);
         Status<?> status = Status.builder()
                 ._hits(1)
                 .message("service unavailable. please try again")
