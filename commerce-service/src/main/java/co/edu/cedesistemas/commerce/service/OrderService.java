@@ -32,6 +32,6 @@ public class OrderService implements IOrderService{
         if(order == null){
             return null;
         }
-        return getById(id).getItems();
+        return order.getItems();
     }
 }
