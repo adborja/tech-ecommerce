@@ -23,10 +23,10 @@ public final class TestUtils {
         final Order order = new Order();
         order.setId(UUID.randomUUID().toString());
         order.setCreatedAt(LocalDateTime.now());
-        order.setShippingAddress(shippingAddress);
+        order.setShippingAddressId(shippingAddress.getId());
         order.setStatus(Order.Status.DELIVERED);
-        order.setStore(store);
-        order.setUser(user);
+        order.setStoreId(store.getId());
+        order.setUserId(user.getId());
         return order;
     }
 
@@ -67,7 +67,7 @@ public final class TestUtils {
 
     public static OrderItem buildOrderItem(final Product product, final Integer quantity, Float finalPrice) {
         final OrderItem orderItem = new OrderItem();
-        orderItem.setProduct(product);
+        orderItem.setProductId(product.getId());
         orderItem.setFinalPrice(finalPrice);
         orderItem.setQuantity(quantity);
         return orderItem;
