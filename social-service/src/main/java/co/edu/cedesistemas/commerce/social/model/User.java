@@ -1,26 +1,24 @@
 package co.edu.cedesistemas.commerce.social.model;
 
-import co.edu.cedesistemas.commerce.social.model.relation.FriendRelation;
-import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
-import co.edu.cedesistemas.commerce.social.model.relation.PurchaseRelation;
-import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
-import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.Transient;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = true)
 @NodeEntity
-public class User {
+public class User extends RepresentationModel<User> {
     @Id
     private String id;
 
