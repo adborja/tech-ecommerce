@@ -37,8 +37,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class UserControllerIT extends BaseIT<User> {
-    @Autowired private MockMvc mvc;
-    @Autowired private ObjectMapper objectMapper;
+    @Autowired
+    private MockMvc mvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     public void testCreateUser() throws Exception {
@@ -90,7 +92,8 @@ public class UserControllerIT extends BaseIT<User> {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<User> users = mapper.convertValue(_source, new TypeReference<>(){});
+        List<User> users = mapper.convertValue(_source, new TypeReference<>() {
+        });
 
         assertThat(_source, notNullValue());
         assertThat(users, notNullValue());
