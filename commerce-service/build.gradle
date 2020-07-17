@@ -1,6 +1,7 @@
 apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: "org.springframework.boot"
+apply plugin: 'com.palantir.docker'
 
 group 'co.edu.cedesistemas'
 version '0.0.1-SNAPSHOT'
@@ -9,14 +10,23 @@ dependencies {
     implementation project(":common")
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
     implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-hateoas"
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
+    implementation "org.springframework.cloud:spring-cloud-starter-zipkin"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix-dashboard"
 
-    implementation "io.springfox:springfox-swagger2:${versions.swagger}"
-    implementation "io.springfox:springfox-swagger-ui:${versions.swagger}"
+    implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
 
     implementation "com.google.code.gson:gson:${versions.gson}"
 
-    compileOnly "org.projectlombok:lombok:${versions.lombok}"
-    annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+    implementation "org.graylog2:gelfj:${versions.gelf}"
+    implementation "biz.paluch.logging:logstash-gelf:${versions.logstash_gelf}"
+
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -32,4 +42,16 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+    name "${dockerGroup}:${dockerRegistryPort}/commerce/${project.name}:dev"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
 }
