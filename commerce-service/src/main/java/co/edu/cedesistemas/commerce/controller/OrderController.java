@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @AllArgsConstructor
 @Slf4j
@@ -33,7 +36,10 @@ public class OrderController {
     public ResponseEntity<Status<?>> getOrderById(@PathVariable String id) {
         try {
             Order found = service.getById(id);
-            if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            if (found != null){
+                found.add(linkTo(methodOn(OrderController.class).getOrderById(id)).withSelfRel());
+                return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            }
             else return DefaultResponseBuilder.defaultResponse("order not found", HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -45,7 +51,10 @@ public class OrderController {
         try {
 
             List<OrderItem> found = service.getOrderItems(id);
-            if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            if (found != null) {
+                found.forEach(order -> order.add(linkTo(methodOn(OrderController.class).getOrderItems(order.getProduct().getId())).withSelfRel()));
+                return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            }
             else return DefaultResponseBuilder.errorResponse("store not found", null, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);

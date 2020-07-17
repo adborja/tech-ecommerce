@@ -6,9 +6,14 @@ import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Links;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @AllArgsConstructor
@@ -32,7 +37,10 @@ public class AddressController {
     public ResponseEntity<Status<?>> getById(@PathVariable String id) {
         try {
             Address found = service.getById(id);
-            if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            if (found != null) {
+                found.add(linkTo(methodOn(AddressController.class).getById(id)).withSelfRel());
+                return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            }
             else return DefaultResponseBuilder.defaultResponse("address not found", HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
