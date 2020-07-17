@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: registration-service
+  data:
+    mongodb:
+      authentication-database: admin
+      database: tech-ecommerce
+      port: 27017
+      host: localhost
+
+server:
+  port: ${PORT:8081}
+  servlet:
+    context-path: /api/v1/
+
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: DESC
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: e-commerce registration service
+    version: 1.0.0
