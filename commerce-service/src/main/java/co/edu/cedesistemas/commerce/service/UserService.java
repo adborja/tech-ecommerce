@@ -50,6 +50,6 @@ public class UserService implements IUserService{
     }
 
     public User getUserById(String id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id).get();
     }
 }

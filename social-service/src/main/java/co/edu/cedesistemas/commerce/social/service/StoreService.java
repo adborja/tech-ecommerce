@@ -1,9 +1,11 @@
 package co.edu.cedesistemas.commerce.social.service;
 
 import co.edu.cedesistemas.commerce.social.model.Location;
+import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.ProductType;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
+import co.edu.cedesistemas.commerce.social.repository.ProductRepository;
 import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -18,6 +21,7 @@ public class StoreService {
     private final StoreRepository repository;
     private final LocationRepository locationRepository;
     private final ProductTypeRepository productTypeRepository;
+    private final ProductRepository productRepository;
 
     public Store createStore(Store store) {
         String country = store.getLocation().getCountry().toLowerCase().replace(" ", "_");
@@ -57,37 +61,41 @@ public class StoreService {
     }
 
     public void addProduct(final String storeId, final String productId) throws Exception {
-        // TODO: Implement method here
+        Store store = repository.findById(storeId).get();
+        store.has(productRepository.findById(productId).get());
+        repository.save(store);
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
-        // TODO: Implement method here
+        Store store = repository.findById(storeId).get();
+        store.has(productIds.stream()
+                .map(productId -> productRepository.findById(productId).orElse(null))
+                .filter(product -> product != null)
+                .collect(Collectors.toSet())
+        );
+        repository.save(store);
     }
 
 
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findTopNProducts(storeId,limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZoneAndProductType(final String userId,
                                                                                      final String zone,
                                                                                      final String productType,
                                                                                      final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findRecommendationByStores(userId,zone,productType,limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoreByProducts(final String userId, final String zone,
                                                                           final String productType, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findRecommendationByProducts(userId,zone,productType,limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZone(final String userId, final String zone,
                                                                        final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findRecommendationByStores(userId,zone,limit);
     }
 
     public Store getById(String id) {

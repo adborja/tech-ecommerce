@@ -33,11 +33,11 @@ public class OrderServiceSandbox implements IOrderService {
                 .name("p2").build();
         OrderItem item1 = OrderItem.builder()
                 .finalPrice(1213.1F)
-                .product(p1)
+                .productId(p1.getId())
                 .quantity(2).build();
         OrderItem item2 = OrderItem.builder()
                 .finalPrice(5002.1F)
-                .product(p2)
+                .productId(p2.getId())
                 .quantity(3).build();
         items.add(item1);
         items.add(item2);
@@ -53,27 +53,30 @@ public class OrderServiceSandbox implements IOrderService {
         store.setPhone("+5744444444");
         store.setName("test store");
         store.setAddress("123 Fake Street.");
+
+        Address address = Address.builder()
+                .city("Ciudad Falsa")
+                .id(id)
+                .name("Nombre Falso")
+                .description("Description Falso")
+                .countryISOCode("ISO Falso")
+                .phoneNumber("2345678765")
+                .regionISOCode("ISO Region Falso")
+                .street1("Cra Falsa").build();
+
+        User user = User.builder()
+                .id(UUID.randomUUID().toString())
+                .email("correofalso@falso.com")
+                .lastName("Falsa")
+                .name("Persona")
+                .build();
         return Order.builder()
                 .id(id)
                 .items(null)
-                .shippingAddress(
-                        Address.builder()
-                        .city("Ciudad Falsa")
-                        .id(id)
-                        .name("Nombre Falso")
-                        .description("Description Falso")
-                        .countryISOCode("ISO Falso")
-                        .phoneNumber("2345678765")
-                        .regionISOCode("ISO Region Falso")
-                        .street1("Cra Falsa").build())
+                .shippingAddressId(address.getId())
                 .status(Order.Status.CANCELLED)
-                .user(User.builder()
-                        .id(UUID.randomUUID().toString())
-                        .email("correofalso@falso.com")
-                        .lastName("Falsa")
-                        .name("Persona")
-                        .build())
-                .store(store)
+                .userId(user.getId())
+                .storeId(store.getId())
                 .createdAt(LocalDateTime.now()).build();
     }
 }

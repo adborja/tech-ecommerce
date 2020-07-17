@@ -88,7 +88,7 @@ public class StreamDemoTest {
         Rectangle r7 = new Rectangle(Point.of(6.0, 10.0), 25, 5); // Si Si Va
 
         List<Rectangle> rectangles = Arrays.asList(r1, r2, r3, r4, r5, r6, r7);
-        // ********************** TODO: Add list manipulation here (using streams)
+        // **********************  Added list manipulation here (using streams)
         List<Rectangle> result =rectangles.stream()
                 .filter(e -> e.area() <= 150)
                 .filter(e -> e.getBottomLeft().getX() >= 0 && e.getBottomLeft().getY() >= 0 )

@@ -14,7 +14,7 @@ public class OrderWriteConverter implements Converter<Order, Document> {
         dbo.put("userId",order.getUserId());
         dbo.put("storeId",order.getStoreId());
         dbo.put("shippingAddressId",order.getShippingAddressId());
-        dbo.put("status",order.getStatus());
+        dbo.put("status",order.getStatus().toString());
         dbo.put("createdAt",order.getCreatedAt());
         dbo.put("items",order.getItems());
         dbo.remove("links");

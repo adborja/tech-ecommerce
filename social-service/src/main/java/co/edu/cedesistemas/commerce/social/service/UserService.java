@@ -3,11 +3,21 @@ package co.edu.cedesistemas.commerce.social.service;
 import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.model.User;
+import co.edu.cedesistemas.commerce.social.model.relation.FriendRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
+import co.edu.cedesistemas.commerce.social.repository.ProductRepository;
+import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +33,12 @@ public class UserService {
         return repository.save(user);
     }
 
+    public List<StoreRepository.StoreOccurrence> recomendations (String id,
+                                                                 String zone,
+                                                                 String productType,
+                                                                 Integer limit){
+        return storeService.recommendStoresByZoneAndProductType(id,zone,productType,limit);
+    }
     public User update(User user) {
         return repository.save(user);
     }
@@ -47,14 +63,46 @@ public class UserService {
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).get();
+        Store store = storeService.getById(storeId);
+        user.storeRates(StoreRateRelation.builder()
+                .store(store)
+                .rate(value)
+                .user(user).build());
+        repository.save(user);
     }
 
-    public void likeStore(final String userId, final String storeId) throws Exception {
-        // TODO: Implement method here
+    public User likeStore(final String userId, final String storeId) throws Exception {
+        User user = repository.findById(userId).get();
+        Store store = storeService.getById(storeId);
+        user.storeLikes(StoreLikeRelation.builder()
+                .store(store)
+                .storeLikeDate(LocalDateTime.now())
+                .user(user).build());
+        repository.save(user);
+        return user;
+    }
+
+    public User likeProduct(final String userId, final String productId) throws Exception {
+        User user = repository.findById(userId).get();
+        Product product = productService.getById(productId);
+        ProductLikeRelation relation = ProductLikeRelation.builder()
+                .id(new Random().nextLong())
+                .likeTime(LocalDateTime.now())
+                .user(user)
+                .product(product).build();
+        user.likes(relation);
+        repository.save(user);
+        return user;
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).get();
+        User userFriend = repository.findById(userId).get();
+        user.addFriend(FriendRelation.builder()
+                .friend(userFriend)
+                .friendshipTime(LocalDateTime.now())
+                .build());
+        repository.save(user);
     }
 }
