@@ -16,7 +16,8 @@ import javax.validation.constraints.NotNull;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@Repository
+
+@RestController
 @RequestMapping("/users")
 @AllArgsConstructor
 public class UserController {

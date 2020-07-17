@@ -58,8 +58,11 @@ public class StoreController {
     @GetMapping("/stores/{storeId}/products/top")
     public ResponseEntity<Status<?>> getTopNProducts(@PathVariable String storeId,
                                           @RequestParam(required = false, defaultValue = "5") Integer limit) {
-        // TODO: Implement method here
-        return null;
+        try{
+            return DefaultResponseBuilder.defaultResponse(service.getTopNProducts(storeId, limit), HttpStatus.OK);
+        }catch (Exception ex){
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     private static void addSelfLink(@NotNull final Store store) {

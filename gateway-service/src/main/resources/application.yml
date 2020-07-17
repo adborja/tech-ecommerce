@@ -34,7 +34,10 @@ zuul:
     social:
       path: /social/**
       serviceId: social-service
-      #url: http://localhost:8082/
+      url: http://localhost:8082/
+    registration:
+      path: /registration/**
+      url: http://localhost:8083/
 
 
 ribbon:

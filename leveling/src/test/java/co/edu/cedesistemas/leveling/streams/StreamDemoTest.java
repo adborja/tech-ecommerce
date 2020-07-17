@@ -90,7 +90,6 @@ public class StreamDemoTest {
 
         List<Rectangle> rectangles = Arrays.asList(r1, r2, r3, r4, r5, r6, r7);
         System.out.println(rectangles);
-        // ********************** TODO: Add list manipulation here (using streams)
         //List<Rectangle> result = Collections.emptyList();
         List<Rectangle> result = rectangles.stream()
                 .filter(pos -> pos.getBottomLeft().getX() >= 0 && pos.getBottomRight().getY() >=0)
