@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @ToString
 @Document
 public class Store extends RepresentationModel<Store> {
-
     @Id
     private String id;
     private String name;
