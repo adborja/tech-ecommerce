@@ -9,7 +9,7 @@ spring:
       host: localhost
 
 server:
-  port: ${PORT:8081}
+  port: ${PORT:8083}
   servlet:
     context-path: /api/v1/
 

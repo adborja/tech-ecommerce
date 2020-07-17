@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = GatewayApp.class)
+//@SpringBootTest(classes = GatewayApp.class)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class GatewayIT {
