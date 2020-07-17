@@ -47,6 +47,8 @@ public class StoreControllerIT extends BaseIT {
 
         Store created = createStore(mvc, objectMapper, storeName, storePhone, storeAddress, Store.Type.PETS);
 
+        System.out.println(created.getId());
+
         mvc.perform(get("/stores/" + created.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._source[0].id", is(created.getId())))

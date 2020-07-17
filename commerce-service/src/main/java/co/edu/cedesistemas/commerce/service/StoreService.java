@@ -2,7 +2,9 @@ package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.repository.StoreRepository;
+import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,18 +23,21 @@ public class StoreService {
     }
 
     public Store getById(final String id) {
-        return null;
+        return repository.findById(id).orElse(null);
     }
 
     public List<Store> getByType(final Store.Type type) {
-        return null;
+        return repository.findByType(type);
     }
 
     public List<Store> getByName(final String name) {
-        return null;
+        return repository.findByNameLike(name);
     }
 
     public Store updateStore(String id, Store store) {
-        return null;
+        Store currentStore = repository.findById(id).orElse(null);
+
+        BeanUtils.copyProperties(store, currentStore, Utils.getNullPropertyNames(store));
+        return repository.save(currentStore);
     }
 }
