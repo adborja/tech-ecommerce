@@ -1,4 +1,23 @@
+spring:
+  application:
+    name: registration-service
+
+
 server:
   port: ${PORT:8082}
   servlet:
     context-path: /api/v1/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: e-commerce registration service
+    port: ${server.port}
+    version: 1.0.0
