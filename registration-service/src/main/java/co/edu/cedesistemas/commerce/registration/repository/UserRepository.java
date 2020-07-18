@@ -1,6 +1,6 @@
-package co.edu.cedesistemas.commerce.repository;
+package co.edu.cedesistemas.commerce.registration.repository;
 
-import co.edu.cedesistemas.commerce.model.User;
+import co.edu.cedesistemas.commerce.registration.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

@@ -81,8 +81,6 @@ public class UserControllerIT extends BaseIT<User> {
                 .content(mapper.writeValueAsString(user)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$._source[0].links[0].rel", is("self")))
-                .andExpect(jsonPath("$._source[0].links[0].href",
-                        containsString("/users/")))
                 .andReturn();
 
         MockHttpServletResponse response = result.getResponse();

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +47,7 @@ public class GatewayIT {
         user.put("lastName", RandomString.make(10));
         user.put("email", RandomString.make(5) + "@company.com");
         user.put("password", RandomString.make(8));
+        user.put("birthday",LocalDate.of(1990, 1, 1).toString());
 
         RestAssured.given().contentType("application/json")
                 .body(user)
