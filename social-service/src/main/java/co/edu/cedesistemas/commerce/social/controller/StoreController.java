@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.social.controller;
 
 import co.edu.cedesistemas.commerce.social.model.Store;
+import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import co.edu.cedesistemas.commerce.social.service.StoreService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
@@ -22,6 +23,8 @@ import javax.validation.constraints.NotNull;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @Slf4j
@@ -37,8 +40,12 @@ public class StoreController {
 
     @PutMapping("/stores/{id}/products/{productId}")
     public ResponseEntity<Status<?>> addStoreProduct(@PathVariable String id, @PathVariable String productId) {
-        // TODO: Implement method here
-        return null;
+        try {
+        	service.addProduct(id, productId);
+        }catch (Exception e) {
+        	return DefaultResponseBuilder.errorResponse(e.getMessage(), e,HttpStatus.INTERNAL_SERVER_ERROR);	
+		}
+        return DefaultResponseBuilder.defaultResponse("product added to store", HttpStatus.OK);
     }
 
     @GetMapping("/stores/{id}")
@@ -53,8 +60,14 @@ public class StoreController {
     @GetMapping("/stores/{storeId}/products/top")
     public ResponseEntity<Status<?>> getTopNProducts(@PathVariable String storeId,
                                           @RequestParam(required = false, defaultValue = "5") Integer limit) {
-        // TODO: Implement method here
-        return null;
+    	try {
+			List<StoreRepository.ProductOccurrence> topProducts = service.getTopNProducts(storeId, limit);
+			if(topProducts.isEmpty())
+				return DefaultResponseBuilder.errorResponse("no products found", null, HttpStatus.NOT_FOUND);
+			return DefaultResponseBuilder.defaultResponse(topProducts, HttpStatus.OK);
+		} catch (Exception e) {
+			return DefaultResponseBuilder.errorResponse(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
     }
 
     private static void addSelfLink(@NotNull final Store store) {
