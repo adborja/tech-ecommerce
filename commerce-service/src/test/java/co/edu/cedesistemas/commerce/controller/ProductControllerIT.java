@@ -142,7 +142,7 @@ public class ProductControllerIT extends BaseIT<Product> {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<Product> products = mapper.convertValue(_source, new TypeReference<>(){});
+        List<Product> products = mapper.convertValue(_source, new TypeReference<List<Product>>(){});
 
         assertThat(_source, notNullValue());
         assertThat(products, notNullValue());

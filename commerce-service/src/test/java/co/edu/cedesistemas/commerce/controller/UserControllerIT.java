@@ -126,7 +126,7 @@ public class UserControllerIT extends BaseIT<User> {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<User> users = mapper.convertValue(_source, new TypeReference<>(){});
+        List<User> users = mapper.convertValue(_source, new TypeReference<List<User>>(){});
 
         assertThat(_source, notNullValue());
         assertThat(users, notNullValue());

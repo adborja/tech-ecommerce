@@ -101,7 +101,7 @@ public class StoreControllerIT extends BaseIT<Store> {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<Store> stores = mapper.convertValue(_source, new TypeReference<>(){});
+        List<Store> stores = mapper.convertValue(_source, new TypeReference<List<Store>>(){});
 
         assertThat(_source, notNullValue());
         assertThat(stores, notNullValue());

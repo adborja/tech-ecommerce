@@ -49,12 +49,12 @@ public class OrderServiceSandbox implements IOrderService {
         //create items
         OrderItem item1 = new OrderItem();
         item1.setFinalPrice(new Float(234.7));
-        item1.setProduct(product);
+        item1.setProductId(UUID.randomUUID().toString());
         item1.setQuantity(2);
 
         OrderItem item2 = new OrderItem();
         item1.setFinalPrice(new Float(34.45));
-        item1.setProduct(product2);
+        item1.setProductId(UUID.randomUUID().toString());
         item1.setQuantity(3);
 
         List<OrderItem> orderItems = new ArrayList();
