@@ -30,7 +30,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class StoreController {
-    private final StoreService service;
+    private final IStoreService service;
 
     @PostMapping("/stores")
     public ResponseEntity<Status<?>> createStore(@RequestBody Store store) {

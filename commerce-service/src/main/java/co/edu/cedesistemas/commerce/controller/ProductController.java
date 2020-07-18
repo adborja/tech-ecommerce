@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.service.AddressService;
+import co.edu.cedesistemas.commerce.service.IProductService;
 import co.edu.cedesistemas.commerce.service.ProductService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class ProductController {
-    private final ProductService service;
+    private final IProductService service;
 
     @PostMapping("/products")
     public ResponseEntity<Status<?>> createProduct(@RequestBody Product product) {

@@ -4,9 +4,11 @@ import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.repository.AddressRepository;
 import co.edu.cedesistemas.commerce.repository.StoreRepository;
+import co.edu.cedesistemas.common.SpringProfile;
 import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,7 +17,8 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class AddressService {
+@Profile("!"+SpringProfile.SANDBOX)
+public class AddressService implements IAddressService {
     private final AddressRepository repository;
 
     public Address createAddress(final Address address) {
@@ -27,14 +30,4 @@ public class AddressService {
         return repository.findById(id).orElse(null);
     }
 
-    public List<Store> getByName(final String name) {
-        return repository.findByNameLike(name);
-    }
-
-    public Address updateStore(String id, Address address) {
-        Address currentAddress = repository.findById(id).orElse(null);
-
-        BeanUtils.copyProperties(address, currentAddress, Utils.getNullPropertyNames(address));
-        return repository.save(currentAddress);
-    }
 }

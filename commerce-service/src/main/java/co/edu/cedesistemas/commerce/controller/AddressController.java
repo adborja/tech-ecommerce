@@ -3,6 +3,7 @@ package co.edu.cedesistemas.commerce.controller;
 import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.service.AddressService;
+import co.edu.cedesistemas.commerce.service.IAddressService;
 import co.edu.cedesistemas.commerce.service.StoreService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
@@ -18,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class AddressController {
-    private final AddressService service;
+    private final IAddressService service;
 
     @PostMapping("/addresses")
     public ResponseEntity<Status<?>> createAddress(@RequestBody Address address) {

@@ -2,9 +2,11 @@ package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.repository.StoreRepository;
+import co.edu.cedesistemas.common.SpringProfile;
 import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,7 +15,8 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class StoreService {
+@Profile("!"+ SpringProfile.SANDBOX)
+public class StoreService implements IStoreService {
     private final StoreRepository repository;
 
     public Store createStore(final Store store) {

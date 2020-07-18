@@ -2,6 +2,7 @@ package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.model.User;
+import co.edu.cedesistemas.commerce.service.IUserService;
 import co.edu.cedesistemas.commerce.service.ProductService;
 import co.edu.cedesistemas.commerce.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
@@ -18,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class UserController {
-    private final UserService service;
+    private final IUserService service;
 
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {

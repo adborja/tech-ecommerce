@@ -1,10 +1,8 @@
-package co.edu.cedesistemas.commerce.service;
+package co.edu.cedesistemas.commerce.service.sandbox;
 
-import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.model.Product;
-import co.edu.cedesistemas.commerce.model.Store;
-import co.edu.cedesistemas.commerce.repository.AddressRepository;
 import co.edu.cedesistemas.commerce.repository.ProductRepository;
+import co.edu.cedesistemas.commerce.service.IProductService;
 import co.edu.cedesistemas.common.SpringProfile;
 import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
@@ -17,30 +15,36 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-@Profile("!"+ SpringProfile.SANDBOX)
-public class ProductService implements IProductService {
+@Profile(SpringProfile.SANDBOX)
+public class ProductServiceSandbox implements IProductService {
     private final ProductRepository repository;
 
     public Product createProduct(final Product product) {
         product.setId(UUID.randomUUID().toString());
-        return repository.save(product);
+        return product;
     }
 
     public Product getById(final String id) {
-        return repository.findById(id).orElse(null);
+        Product productSandbox = new Product();
+        productSandbox.setId(UUID.randomUUID().toString());
+        productSandbox.setName("Product name");
+        productSandbox.setDescription("Product Description");
+        return productSandbox;
     }
 
     public List<Product> getByName(final String name) {
-        return repository.findByNameLike(name);
+        Product productSandbox = getById(UUID.randomUUID().toString());
+        productSandbox.setName(name);
+        return List.of(productSandbox);
     }
 
     public void deleteProductById (final String id){
-        repository.deleteById(id);
+        // do nothing
     }
 
     public Product updateProduct (final String id, final Product product){
-        Product updatedProduct = repository.findById(id).orElse(null);
-        BeanUtils.copyProperties(product,updatedProduct, Utils.getNullPropertyNames(product));
-        return repository.save(updatedProduct);
+        Product productSandbox = getById(id);
+        BeanUtils.copyProperties(product,productSandbox, Utils.getNullPropertyNames(product));
+        return productSandbox;
     }
 }
