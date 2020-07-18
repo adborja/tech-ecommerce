@@ -21,7 +21,7 @@ public class AddressController {
     private final AddressService service;
 
     @PostMapping("/addresses")
-    public ResponseEntity<Status<?>> createStore(@RequestBody Address address) {
+    public ResponseEntity<Status<?>> createAddress(@RequestBody Address address) {
         try {
             Address created = service.createAddress(address);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
@@ -35,7 +35,7 @@ public class AddressController {
         try {
             Address found = service.getById(id);
             if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
-            else return DefaultResponseBuilder.errorResponse("store not found", null, HttpStatus.NOT_FOUND);
+            else return DefaultResponseBuilder.errorResponse("address not found", null, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -1,10 +1,9 @@
 package co.edu.cedesistemas.commerce.controller;
 
-import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.model.Product;
-import co.edu.cedesistemas.commerce.model.Store;
-import co.edu.cedesistemas.commerce.service.AddressService;
+import co.edu.cedesistemas.commerce.model.User;
 import co.edu.cedesistemas.commerce.service.ProductService;
+import co.edu.cedesistemas.commerce.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -18,23 +17,23 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @Slf4j
-public class ProductController {
-    private final ProductService service;
+public class UserController {
+    private final UserService service;
 
-    @PostMapping("/products")
-    public ResponseEntity<Status<?>> createProduct(@RequestBody Product product) {
+    @PostMapping("/users")
+    public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
         try {
-            Product created = service.createProduct(product);
+            User created = service.createUser(user);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/products/{id}")
-    public ResponseEntity<Status<?>> getProductById(@PathVariable String id) {
+    @GetMapping("/users/{id}")
+    public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         try {
-            Product found = service.getById(id);
+            User found = service.getById(id);
             if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
             else return DefaultResponseBuilder.errorResponse("product not found", null, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
@@ -42,37 +41,37 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/products/by-name")
-    public ResponseEntity<Status<?>> getProductsByName(@RequestParam String name) {
+    @GetMapping("/users/by-email")
+    public ResponseEntity<Status<?>> getUserByName(@RequestParam String email) {
         try {
-            List<Product> found = service.getByName(name);
+            List<User> found = service.getByEmail(email);
             return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping("/products/{id}")
-    public ResponseEntity<Status<?>> deleteProductById(@PathVariable String id) {
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Status<?>> deleteUserById(@PathVariable String id) {
         try {
-            service.deleteProductById(id);
-            return DefaultResponseBuilder.defaultResponse("Product Deleted",HttpStatus.OK);
+            service.deleteUserById(id);
+            return DefaultResponseBuilder.defaultResponse("User Deleted",HttpStatus.OK);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PatchMapping("/products/{id}")
-    public ResponseEntity<Status<?>> updateProduct(@PathVariable String id, @RequestBody Product product) {
+    @PatchMapping("/users/{id}")
+    public ResponseEntity<Status<?>> updateUser(@PathVariable String id, @RequestBody User user) {
         try {
-            if (!id.equalsIgnoreCase(product.getId()) && product.getId() != null){
+            if (!id.equalsIgnoreCase(user.getId()) && user.getId() != null){
                 return DefaultResponseBuilder.errorResponse("Bad Request",null,HttpStatus.BAD_REQUEST);
             }else {
-                Product updatedProduct = service.updateProduct(id, product);
-                if (updatedProduct != null)
-                    return DefaultResponseBuilder.defaultResponse(updatedProduct, HttpStatus.OK);
+                User updatedUser = service.updateUser(id, user);
+                if (updatedUser != null)
+                    return DefaultResponseBuilder.defaultResponse(updatedUser, HttpStatus.OK);
                 else
-                    return DefaultResponseBuilder.errorResponse("product not found", null, HttpStatus.NOT_FOUND);
+                    return DefaultResponseBuilder.errorResponse("user not found", null, HttpStatus.NOT_FOUND);
             }
 
         } catch (Exception ex) {
