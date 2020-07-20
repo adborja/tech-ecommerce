@@ -13,5 +13,5 @@ public interface IStoreService {
 
     List<Store> getByName(String name);
 
-    Store updateStore(String id, Store store);
+    Store updateStore(String id, Store store) throws Exception;
 }
