@@ -16,7 +16,7 @@ public class OrderService {
     private final OrderRepository repository;
 
     public Order createOrder(final Order order) {
-
+        order.setStatus(Order.Status.CREATED);
         return repository.save(order);
     }
 
