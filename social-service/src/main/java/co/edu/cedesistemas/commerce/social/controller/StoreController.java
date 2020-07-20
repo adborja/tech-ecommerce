@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.social.controller;
 
 import co.edu.cedesistemas.commerce.social.model.Store;
+import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import co.edu.cedesistemas.commerce.social.service.StoreService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 
+import java.util.List;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -32,13 +35,11 @@ public class StoreController {
     public ResponseEntity<Status<?>> createStore(@RequestBody Store store) {
         try {
             Store created = service.createStore(store);
+            addSelfLink(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        //Store created = service.createStore(store);
-        //addSelfLink(created);
-        //return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
     }
 
     @PutMapping("/stores/{id}/products/{productId}")
@@ -63,8 +64,14 @@ public class StoreController {
     @GetMapping("/stores/{storeId}/products/top")
     public ResponseEntity<Status<?>> getTopNProducts(@PathVariable String storeId,
                                           @RequestParam(required = false, defaultValue = "5") Integer limit) {
-        // TODO: Implement method here
-        return null;
+        List<StoreRepository.ProductOccurrence> topN = service.getTopNProducts(storeId, limit);
+        try{
+            if(!topN.isEmpty()) return DefaultResponseBuilder.defaultResponse(topN, HttpStatus.OK);
+            else return DefaultResponseBuilder.defaultResponse("No products found", HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return DefaultResponseBuilder.errorResponse("store not found", null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     private static void addSelfLink(@NotNull final Store store) {

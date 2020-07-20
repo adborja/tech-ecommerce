@@ -1,9 +1,9 @@
-package co.edu.cedesistemas.commerce.config;
+package co.edu.cedesistemas.commerce.registration.config;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-import co.edu.cedesistemas.commerce.model.converter.*;
+import co.edu.cedesistemas.commerce.registration.model.converter.UserWriteConverter;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -25,11 +25,7 @@ public class MongoConfiguration {
     public MongoCustomConversions customConversions() {
         log.info("adding mongo custom converters ...");
         List<Converter<?, ?>> converters = new ArrayList<>();
-        converters.add(new StoreWriteConverter());
-        converters.add(new AddressWriteConverter());
-        converters.add(new OrderWriteConverter());
         converters.add(new UserWriteConverter());
-        converters.add(new ProductWriteConverter());
         return new MongoCustomConversions(converters);
     }
 

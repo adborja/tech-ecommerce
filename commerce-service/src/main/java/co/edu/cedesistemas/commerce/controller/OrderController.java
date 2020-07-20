@@ -2,10 +2,12 @@ package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.model.OrderItem;
+import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.service.OrderService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @AllArgsConstructor
 public class OrderController {
@@ -24,6 +30,8 @@ public class OrderController {
     public ResponseEntity<Status<?>> getOrderById(@PathVariable String id) {
         try {
             Order found = service.getById(id);
+            addSelfLink(found);
+            addLinks(found);
             if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
             else return DefaultResponseBuilder.errorResponse("store not found", null, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
@@ -52,4 +60,18 @@ public class OrderController {
         }
     }
 
+    private static void addSelfLink(@NotNull final Order order) {
+        Link selfLink = linkTo(methodOn(OrderController.class)
+                .getOrderById(order.getId()))
+                .withSelfRel().withType("GET");
+        order.add(selfLink);
+    }
+
+    private static void addLinks(@NotNull final Order order) {
+        Link byTypeLink = linkTo(methodOn(OrderController.class)
+                .getOrderItemsById(order.getId()))
+                .withRel("items")
+                .withType("GET");
+        order.add(byTypeLink);
+    }
 }

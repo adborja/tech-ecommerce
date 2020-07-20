@@ -1,7 +1,7 @@
 package co.edu.cedesistemas.commerce.service.sandbox;
 
 import co.edu.cedesistemas.commerce.model.Store;
-import co.edu.cedesistemas.commerce.service.IStoreService;
+import co.edu.cedesistemas.commerce.service.interfaces.IStoreService;
 import co.edu.cedesistemas.common.SpringProfile;
 import co.edu.cedesistemas.common.util.Utils;
 import org.springframework.beans.BeanUtils;

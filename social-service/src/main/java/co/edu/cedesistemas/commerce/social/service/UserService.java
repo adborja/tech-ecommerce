@@ -3,10 +3,14 @@ package co.edu.cedesistemas.commerce.social.service;
 import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.model.User;
+import co.edu.cedesistemas.commerce.social.model.relation.*;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,15 +50,79 @@ public class UserService {
         return user;
     }
 
-    public void rateStore(final String userId, final String storeId, float value) throws Exception {
-        // TODO: Implement method here
+    public StoreRateRelation rateStore(final String userId, final String storeId, float value) throws Exception {
+        User user = getById(userId);
+        if (user == null) {
+            throw new Exception("user not found");
+        }
+        Store store = storeService.getById(storeId);
+        if (store == null) {
+            throw new Exception("product not found");
+        }
+        StoreRateRelation storeRate = StoreRateRelation.builder()
+                .rate(value)
+                .rateTime(LocalDateTime.now())
+                .user(user)
+                .store(store)
+                .build();
+        user.storeRates(storeRate);
+        repository.save(user);
+        return storeRate;
     }
 
-    public void likeStore(final String userId, final String storeId) throws Exception {
-        // TODO: Implement method here
+    public StoreLikeRelation likeStore(final String userId, final String storeId) throws Exception {
+        User user = getById(userId);
+        if (user == null) {
+            throw new Exception("user not found");
+        }
+        Store store = storeService.getById(storeId);
+        if (store == null) {
+            throw new Exception("product not found");
+        }
+        StoreLikeRelation likeRelation = StoreLikeRelation.builder()
+                .storeLikeDate(LocalDateTime.now())
+                .store(store)
+                .user(user).build();
+        user.storeLikes(likeRelation);
+        repository.save(user);
+        return likeRelation;
     }
 
-    public void addFriend(final String userId, final String friendId) throws Exception {
-        // TODO: Implement method here
+    public FriendRelation addFriend(final String userId, final String friendId) throws Exception {
+        User user = getById(userId);
+        if (user == null) {
+            throw new Exception("user not found");
+        }
+        User friend = getById(friendId);
+        if (friend == null) {
+            throw new Exception("Friend not found");
+        }
+        FriendRelation friendRelation = FriendRelation.builder()
+                .friendshipTime(LocalDateTime.now())
+                .user(user)
+                .friend(friend)
+                .build();
+        user.addFriend(friendRelation);
+        repository.save(user);
+        return friendRelation;
+    }
+
+    public ProductLikeRelation likeProduct(final String userId, final String productId) throws Exception {
+        User user = getById(userId);
+        if (user == null) {
+            throw new Exception("user not found");
+        }
+        Product product = productService.getById(productId);
+        if (product == null) {
+            throw new Exception("product not found");
+        }
+        ProductLikeRelation likeProduct = ProductLikeRelation.builder()
+                .likeTime(LocalDateTime.now())
+                .user(user)
+                .product(product)
+                .build();
+        user.likes(likeProduct);
+        repository.save(user);
+        return likeProduct;
     }
 }

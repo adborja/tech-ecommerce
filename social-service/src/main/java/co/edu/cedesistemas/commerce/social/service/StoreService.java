@@ -50,9 +50,6 @@ public class StoreService {
             }
             store.addProductType(productType);
         });
-
-
-
         return repository.save(store);
     }
 
@@ -87,28 +84,24 @@ public class StoreService {
 
 
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findTopNProducts(storeId, limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZoneAndProductType(final String userId,
                                                                                      final String zone,
                                                                                      final String productType,
                                                                                      final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findRecommendationByProducts(userId,zone,productType,limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoreByProducts(final String userId, final String zone,
                                                                           final String productType, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findRecommendationByStores(userId, zone, productType, limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZone(final String userId, final String zone,
                                                                        final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findRecommendationByStores(userId, zone, limit);
     }
 
     public Store getById(String id) {

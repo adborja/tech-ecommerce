@@ -40,9 +40,7 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(User user){
         User created = service.createUser(user);
-        created.add(linkTo(methodOn(UserController.class)
-                .getUserById(user.getId()))
-                .withSelfRel().withType("GET"));
+        addSelfLink(created);
         if(created.getId() == null) return DefaultResponseBuilder.errorResponse("User not found", null, HttpStatus.NOT_FOUND);
         else return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
     }

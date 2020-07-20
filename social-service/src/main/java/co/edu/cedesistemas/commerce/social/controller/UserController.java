@@ -1,9 +1,12 @@
 package co.edu.cedesistemas.commerce.social.controller;
 
 import co.edu.cedesistemas.commerce.social.model.User;
+import co.edu.cedesistemas.commerce.social.service.StoreService;
 import co.edu.cedesistemas.commerce.social.service.UserService;
+import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,48 +20,71 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class UserController {
     private final UserService service;
+    private final StoreService storeService;
 
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
-        // TODO: Implement method here
-        return null;
+        try {
+            return DefaultResponseBuilder.defaultResponse(service.createUser(user.getId()), HttpStatus.CREATED);
+        }catch (Exception e){
+            return DefaultResponseBuilder.errorResponse(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/users/{id}/products/{productId}/like")
     public ResponseEntity<Status<?>> like(@PathVariable String id, @PathVariable String productId) {
-        // TODO: Implement method here
-        return null;
+        try {
+            return DefaultResponseBuilder.defaultResponse(service.likeProduct(id, productId), HttpStatus.CREATED);
+        }catch (Exception e){
+            return DefaultResponseBuilder.errorResponse(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/users/{id}/stores/{storeId}/like")
     public ResponseEntity<Status<?>> storeLike(@PathVariable String id, @PathVariable String storeId) {
-        // TODO: Implement method here
-        return null;
+        try {
+            return DefaultResponseBuilder.defaultResponse(service.likeStore(id, storeId), HttpStatus.CREATED);
+        }catch (Exception e){
+            return DefaultResponseBuilder.errorResponse(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/users/{id}/stores/{storeId}/rate")
     public ResponseEntity<Status<?>> storeRate(@PathVariable String id, @PathVariable String storeId,
                                                @RequestParam float rate) {
-        // TODO: Implement method here
-        return null;
+        try {
+            return DefaultResponseBuilder.defaultResponse(service.rateStore(id, storeId, rate), HttpStatus.CREATED);
+        }catch (Exception e){
+            return DefaultResponseBuilder.errorResponse(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/users/{id}/friends/{friendId}")
     public ResponseEntity<Status<?>> addFriend(@PathVariable String id, @PathVariable String friendId) {
-        // TODO: Implement method here
-        return null;
+        try {
+            return DefaultResponseBuilder.defaultResponse(service.addFriend(id, friendId), HttpStatus.CREATED);
+        }catch (Exception e){
+            return DefaultResponseBuilder.errorResponse(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
-        // TODO: Implement method here
-        return null;
+        try {
+            return DefaultResponseBuilder.defaultResponse(service.getById(id), HttpStatus.CREATED);
+        }catch (Exception e){
+            return DefaultResponseBuilder.errorResponse(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/users/{id}/stores/recommend")
     public ResponseEntity<Status<?>> recommendStores(@PathVariable String id, @RequestParam String zone,
                                                      @RequestParam String productType, @RequestParam Integer limit) {
-        // TODO: Implement method here
-        return null;
+        try {
+            return DefaultResponseBuilder.defaultResponse(storeService.
+                            recommendStoresByZoneAndProductType(id, zone, productType, limit), HttpStatus.CREATED);
+        }catch (Exception e){
+            return DefaultResponseBuilder.errorResponse(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

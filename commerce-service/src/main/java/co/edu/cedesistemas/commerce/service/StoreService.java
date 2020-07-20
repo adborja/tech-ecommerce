@@ -2,6 +2,7 @@ package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.repository.StoreRepository;
+import co.edu.cedesistemas.commerce.service.interfaces.IStoreService;
 import co.edu.cedesistemas.common.SpringProfile;
 import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
@@ -44,9 +45,7 @@ public class StoreService implements IStoreService {
     @Override
     public Store updateStore(String id, Store store) {
         Store found = getById(id);
-        if (found == null) {
-            return null;
-        }
+        if (found == null) return null;
         BeanUtils.copyProperties(store, found, Utils.getNullPropertyNames(store));
         return repository.save(found);
     }
