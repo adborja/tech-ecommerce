@@ -4,7 +4,7 @@ import co.edu.cedesistemas.commerce.model.Store;
 
 import java.util.List;
 
-public interface IStoreService {
+public interface IUserService {
 
     Store createStore(Store store);
 
