@@ -3,10 +3,15 @@ package co.edu.cedesistemas.commerce.social.service;
 import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.model.User;
+import co.edu.cedesistemas.commerce.social.model.relation.FriendRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,14 +52,51 @@ public class UserService {
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
-        // TODO: Implement method here
+       User user =findUser(userId);
+       Store store = finStore(storeId);
+
+       if( user!=null && store!=null){
+           user.storeRates(StoreRateRelation.builder().user(user).store(store).rate(value).rateTime(LocalDateTime.now()).build());
+           repository.save(user);
+       }
     }
 
     public void likeStore(final String userId, final String storeId) throws Exception {
-        // TODO: Implement method here
+        User user =findUser(userId);
+        Store store = finStore(storeId);
+        if( user!=null && store!=null){
+            user.storeLikes(StoreLikeRelation.builder().store(store).user(user).build());
+            repository.save(user);
+        }
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        // TODO: Implement method here
+        User friend = repository.findById(friendId).orElse(null);
+        User user =repository.findById(userId).orElse(null);
+        //User user =findUser(userId);
+
+        if(user !=null && friend!=null){
+            user.addFriend(FriendRelation.builder().user(user).friend(friend).friendshipTime(LocalDateTime.now()).build());
+            repository.save(user);
+        }
+    }
+
+    public void like(final String userId, final String productId) throws Exception{
+        User user =findUser(userId);
+        Product prd=productService.getById(productId);
+
+        if(user !=null && prd!=null){
+            user.likes(ProductLikeRelation.builder().product(prd).user(user).likeTime(LocalDateTime.now()).build());
+        }
+        repository.save(user);
+
+    }
+
+    private User findUser(final String userId ){
+        return repository.findById(userId).orElse(null);
+    }
+
+    private Store finStore(final String storeId){
+        return storeService.getById(storeId);
     }
 }

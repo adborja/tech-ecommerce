@@ -1,9 +1,8 @@
 package co.edu.cedesistemas.commerce.social.service;
 
-import co.edu.cedesistemas.commerce.social.model.Location;
-import co.edu.cedesistemas.commerce.social.model.ProductType;
-import co.edu.cedesistemas.commerce.social.model.Store;
+import co.edu.cedesistemas.commerce.social.model.*;
 import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
+import co.edu.cedesistemas.commerce.social.repository.ProductRepository;
 import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
@@ -18,6 +17,8 @@ public class StoreService {
     private final StoreRepository repository;
     private final LocationRepository locationRepository;
     private final ProductTypeRepository productTypeRepository;
+    private final ProductRepository productRepository;
+
 
     public Store createStore(Store store) {
         String country = store.getLocation().getCountry().toLowerCase().replace(" ", "_");
@@ -46,9 +47,6 @@ public class StoreService {
             }
             store.addProductType(productType);
         });
-
-
-
         return repository.save(store);
     }
 
@@ -58,39 +56,54 @@ public class StoreService {
 
     public void addProduct(final String storeId, final String productId) throws Exception {
         // TODO: Implement method here
+        Store store = repository.findById(storeId).orElse(null);
+        Product prd = new Product();
+        prd.setId(productId);
+        if (store != null) {
+            store.has(prd);
+            repository.save(store);
+        }
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
-        // TODO: Implement method here
+        Store store = getById(storeId);
+        Set<Product> products = productRepository.findAllById(productIds);
+        if (store != null) {
+            store.has(products);
+            repository.save(store);
+        }
     }
 
-
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findTopNProducts(storeId, limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZoneAndProductType(final String userId,
                                                                                      final String zone,
                                                                                      final String productType,
                                                                                      final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        return repository.findRecommendationByProducts(userId, zone, productType, limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoreByProducts(final String userId, final String zone,
                                                                           final String productType, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+
+        return repository.findRecommendationByProducts(userId, zone, productType, limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZone(final String userId, final String zone,
                                                                        final Integer limit) {
-        // TODO: Implement method here
-        return null;
+
+        return repository.findRecommendationByStores(userId, zone, limit);
     }
 
     public Store getById(String id) {
         return repository.findById(id).orElse(null);
     }
+
+    private Store findStore(final String store) {
+        return repository.findById(store).orElse(null);
+    }
+
+
 }
