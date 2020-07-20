@@ -2,8 +2,10 @@ package co.edu.cedesistemas.commerce.social.controller;
 
 import co.edu.cedesistemas.commerce.social.model.User;
 import co.edu.cedesistemas.commerce.social.service.UserService;
+import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,12 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
         // TODO: Implement method here
+        try {
+            User created = service.createUser(user.getId());
+            return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return null;
     }
 

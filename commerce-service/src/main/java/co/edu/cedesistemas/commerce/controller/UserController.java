@@ -21,7 +21,7 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
         try {
-            User created = userServi.createUser(user);
+            User created = userServi.createUser( user);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
