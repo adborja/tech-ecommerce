@@ -41,6 +41,10 @@ zuul:
     social:
       path: /social/**
       serviceId: social-service
+    registration:
+      path: /registration/**
+      serviceId: registration-service
+
 
 ribbon:
   eureka:

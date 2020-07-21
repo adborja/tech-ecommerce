@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: registration-service
+    description: e-commerce registration service
+    version: 1.0.0
+
+  data:
+    mongodb:
+      authentication-database: admin
+      database: tech-ecommerce
+      port: 27017
+      host: mongodb.cedesistemas.local
+server:
+  port: ${PORT:8083}
+  servlet:
+    context-path: /api/v1/
+
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: DESC
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+info:
+  app:
+    name: registration-service
+    description: e-commerce registration service
+    port: ${server.port}
+    version: 1.0.0
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://eureka.cedesistemas.local:8761/eureka/
