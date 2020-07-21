@@ -1,7 +1,6 @@
 package co.edu.cedesistemas.commerce.social.service;
 
 import co.edu.cedesistemas.commerce.social.model.Location;
-import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.ProductType;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -20,7 +18,6 @@ public class StoreService {
     private final StoreRepository repository;
     private final LocationRepository locationRepository;
     private final ProductTypeRepository productTypeRepository;
-    private final ProductService productService;
 
     public Store createStore(Store store) {
         String country = store.getLocation().getCountry().toLowerCase().replace(" ", "_");
@@ -60,43 +57,37 @@ public class StoreService {
     }
 
     public void addProduct(final String storeId, final String productId) throws Exception {
-        Store store = getById(storeId);
-
-        store.has(productService.getProduct(productId));
-        repository.save(store);
+        // TODO: Implement method here
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
-        Store store = getById(storeId);
-
-        Set<Product> products = productIds.stream()
-                .map(productService::getProduct)
-                .collect(Collectors.toSet());
-
-        store.has(products);
-        repository.save(store);
+        // TODO: Implement method here
     }
 
 
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
-        return repository.findTopNProducts(storeId, limit);
+        // TODO: Implement method here
+        return null;
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZoneAndProductType(final String userId,
                                                                                      final String zone,
                                                                                      final String productType,
                                                                                      final Integer limit) {
-        return repository.findRecommendationByProducts(userId, zone, productType, limit);
+        // TODO: Implement method here
+        return null;
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoreByProducts(final String userId, final String zone,
                                                                           final String productType, final Integer limit) {
-        return repository.findRecommendationByStores(userId, zone, productType, limit);
+        // TODO: Implement method here
+        return null;
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZone(final String userId, final String zone,
                                                                        final Integer limit) {
-        return repository.findRecommendationByStores(userId, zone, limit);
+        // TODO: Implement method here
+        return null;
     }
 
     public Store getById(String id) {
