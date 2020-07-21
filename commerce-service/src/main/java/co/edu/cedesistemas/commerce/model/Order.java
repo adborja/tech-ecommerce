@@ -19,7 +19,16 @@ public class Order {
     private String shippingAddressId;
     private Status status;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private List<OrderItem> items;
+    private Float orderValue;
+
+    public void calculateValue() {
+        if (items != null) {
+            double sum = items.stream().mapToDouble(i -> i.getFinalPrice() * i.getQuantity()).sum();
+            orderValue = (float) sum;
+        }
+    }
 
     public enum Status {
         CREATED,

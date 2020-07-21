@@ -1,6 +1,6 @@
 spring:
   application:
-    name: commerce-service
+    name: payment-service
   data:
     mongodb:
       authentication-database: admin
@@ -21,7 +21,7 @@ spring:
     password: guest
 
 server:
-  port: ${PORT:8081}
+  port: ${PORT:8084}
   servlet:
     context-path: /api/v1/
 
@@ -43,7 +43,7 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    description: e-commerce application
+    description: e-commerce payment application
     version: 1.0.0
 
 eureka:
