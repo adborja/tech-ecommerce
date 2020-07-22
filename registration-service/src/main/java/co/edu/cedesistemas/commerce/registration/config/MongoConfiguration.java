@@ -1,9 +1,6 @@
-package co.edu.cedesistemas.commerce.config;
+package co.edu.cedesistemas.commerce.registration.config;
 
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
-import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
-
-import co.edu.cedesistemas.commerce.model.converter.*;
+import co.edu.cedesistemas.commerce.registration.model.converter.UserWriteConverter;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -18,6 +15,9 @@ import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
+
 @Configuration
 @Slf4j
 public class MongoConfiguration {
@@ -25,20 +25,15 @@ public class MongoConfiguration {
     public MongoCustomConversions customConversions() {
         log.info("adding mongo custom converters ...");
         List<Converter<?, ?>> converters = new ArrayList<>();
-        converters.add(new StoreWriteConverter());
-        converters.add(new AddressWriteConverter());
-        converters.add(new OrderWriteConverter());
-        converters.add(new ProductWriteConverter());
         converters.add(new UserWriteConverter());
         return new MongoCustomConversions(converters);
     }
-
-    @Bean
+/*    @Bean
     public MongoClient mongoClient() {
         CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
         CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
         return MongoClients.create(MongoClientSettings.builder()
                 .codecRegistry(codecRegistry)
                 .build());
-    }
+    }*/
 }

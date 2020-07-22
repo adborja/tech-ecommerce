@@ -16,6 +16,7 @@ public final class TestUtils {
         user.setBirthday(LocalDate.of(1990, 1, 1));
         user.setAddress(RandomString.make(15));
         user.setPassword(RandomString.make(8));
+        user.setStatus(User.Status.INACTIVE);
         return user;
     }
 }

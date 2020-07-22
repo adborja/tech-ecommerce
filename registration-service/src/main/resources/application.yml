@@ -1,15 +1,17 @@
 spring:
   application:
-    name: commerce-service
+    name: registration-service
   data:
     mongodb:
       authentication-database: admin
       database: tech-ecommerce
       port: 27017
       host: localhost
+  profiles:
+    active: sanbox
 
 server:
-  port: ${PORT:8081}
+  port: 7080
   servlet:
     context-path: /api/v1/
 
@@ -31,6 +33,10 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    description: e-commerce application
+    description: e-commerce registration service
+    port: ${server.port}
     version: 1.0.0
+
+
+
 

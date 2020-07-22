@@ -23,10 +23,10 @@ public final class TestUtils {
         final Order order = new Order();
         order.setId(UUID.randomUUID().toString());
         order.setCreatedAt(LocalDateTime.now());
-        order.setShippingAddress(shippingAddress);
+        order.setShippingAddressId(UUID.randomUUID().toString());
         order.setStatus(Order.Status.CREATED);
-        order.setStore(store);
-        order.setUser(user);
+        order.setStoreId(UUID.randomUUID().toString());
+        order.setUserId(UUID.randomUUID().toString());
         return order;
     }
 
@@ -36,7 +36,6 @@ public final class TestUtils {
         address.setCity("Medellin");
         address.setCountryISOCode("CO");
         address.setRegionISOCode("ANT");
-        address.setDescription("home");
         address.setName("home");
         address.setPhoneNumber("0344445878");
         address.setStreet1("cra 80 # 33 - 50");
