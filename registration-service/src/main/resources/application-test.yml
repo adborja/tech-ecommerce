@@ -1,0 +1,23 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      database: tech-ecommerce-test
+      port: 27017
+      host: localhost
+
+server:
+  servlet:
+    context-path: /api/v1/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: e-commerce registration service
+    version: 1.0.0

@@ -38,9 +38,14 @@ zuul:
     commerce:
       path: /commerce/**
       serviceId: commerce-service
+    registration:
+      path: /registration/**
+      serviceId: registration-service
     social:
       path: /social/**
       serviceId: social-service
+
+
 
 ribbon:
   eureka:

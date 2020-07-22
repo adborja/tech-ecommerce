@@ -63,7 +63,7 @@ public class UserControllerIT extends BaseIT<User> {
         String userLastName = RandomStringUtils.randomAlphabetic(10);
 
         User created = createUser(mvc, objectMapper, userEmail, userName, userLastName);
-
+created.getId();
         mvc.perform(put("/users/" + created.getId() + "/activate"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._source[0].id", is(created.getId())))
