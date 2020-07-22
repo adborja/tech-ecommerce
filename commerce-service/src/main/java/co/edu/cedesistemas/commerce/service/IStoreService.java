@@ -8,7 +8,7 @@ public interface IStoreService {
 
     Store createStore(Store store);
 
-    Store getById(String id);
+    Store getById(String id) throws Exception;
 
     List<Store> getByType(Store.Type type);
 
