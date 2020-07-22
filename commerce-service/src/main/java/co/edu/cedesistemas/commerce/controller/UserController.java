@@ -2,23 +2,29 @@ package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.model.User;
+import co.edu.cedesistemas.commerce.service.IUserService;
 import co.edu.cedesistemas.commerce.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @AllArgsConstructor
 @Slf4j
 public class UserController {
 
-    private final UserService service;
+    private final IUserService service;
 
 
 
@@ -98,5 +104,31 @@ public class UserController {
             }
     }
 
+    private static void addSelfLink(@NotNull final User user) {
+        Link selfLink = linkTo(methodOn(UserController.class)
+                .getUser(user.getId()))
+                .withSelfRel().withType("GET");
+        user.add(selfLink);
+    }
+
+    private static void addLinks(@NotNull final User user) {
+        Link byNameLink = linkTo(methodOn(UserController.class)
+                .getUserByEmail(user.getEmail()))
+                .withRel("by-email")
+                .withType("GET");
+        user.add(byNameLink);
+        Link update = linkTo(methodOn(UserController.class)
+                .updateUser(user.getId(), user))
+                .withRel("update")
+                .withMedia("application/json")
+                .withType("PATCH");
+        user.add(update);
+        Link delete = linkTo(methodOn(UserController.class)
+                .deleteUser(user.getId()))
+                .withSelfRel().withType("DELETE");
+        user.add(delete);
+
+
+    }
 
 }

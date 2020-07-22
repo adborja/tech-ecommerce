@@ -2,17 +2,23 @@ package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.model.User;
+import co.edu.cedesistemas.commerce.service.IProductService;
 import co.edu.cedesistemas.commerce.service.ProductService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
@@ -21,7 +27,7 @@ import java.util.Optional;
 @RequestMapping("/products")
 public class ProductController {
 
-    private final ProductService service;
+    private final IProductService service;
 
     @PostMapping()
     public ResponseEntity<Status<?>> createProduct(@RequestBody Product product) {
@@ -99,4 +105,31 @@ public class ProductController {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+     private static void addSelfLink(@NotNull final Product product) {
+        Link selfLink = linkTo(methodOn(StoreController.class)
+                .getStoreById(product.getId()))
+                .withSelfRel().withType("GET");
+        product.add(selfLink);
+
+    }
+    private static void addLinks(@NotNull final Product product) {
+        Link byNameLink = linkTo(methodOn(ProductController.class)
+                .getProductByName(product.getName()))
+                .withRel("by-name")
+                .withType("GET");
+        product.add(byNameLink);
+        Link update = linkTo(methodOn(ProductController.class)
+                .updateProduct(product.getId(), product))
+                .withRel("update")
+                .withMedia("application/json")
+                .withType("PATCH");
+        product.add(update);
+        Link delete = linkTo(methodOn(ProductController.class)
+                .deleteProduct(product.getId()))
+                .withSelfRel().withType("DELETE");
+        product.add(delete);
+    }
+
+
 }

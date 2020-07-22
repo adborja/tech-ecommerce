@@ -1,18 +1,22 @@
 package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Store;
+import co.edu.cedesistemas.commerce.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IUserService {
 
-    Store createStore(Store store);
+    User createUser(User user);
 
-    Store getById(String id);
+    User updateUser(User user);
 
-    List<Store> getByType(Store.Type type);
+    void deleteUser(User user);
 
-    List<Store> getByName(String name);
+    Optional<User> getUser(String id);
 
-    Store updateStore(String id, Store store) throws Exception;
+    Optional<User>  getUserbyEmail(String email);
+
+
 }

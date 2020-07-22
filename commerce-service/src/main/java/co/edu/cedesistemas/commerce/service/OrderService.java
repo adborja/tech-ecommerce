@@ -4,7 +4,9 @@ import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.repository.AddressRepository;
 import co.edu.cedesistemas.commerce.repository.OrderRepository;
+import co.edu.cedesistemas.common.SpringProfile;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,6 +14,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Profile("!" + SpringProfile.SANDBOX)
 public class OrderService implements IOrderService {
     private final OrderRepository repository;
 
