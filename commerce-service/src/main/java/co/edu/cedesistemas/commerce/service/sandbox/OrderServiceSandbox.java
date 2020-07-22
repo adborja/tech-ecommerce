@@ -29,6 +29,8 @@ public class OrderServiceSandbox implements IOrderService {
     public Order getById(String id) {
         Order order = new Order();
         order.setId(id);
+        order.setStatus(Order.Status.ACCEPTED);
+        order.setShippingAddressId("Address example to shipping");
         order.setCreatedAt(LocalDateTime.now());
         return order;
     }

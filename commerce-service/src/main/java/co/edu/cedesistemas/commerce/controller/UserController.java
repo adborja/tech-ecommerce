@@ -86,12 +86,6 @@ public class UserController {
                 .getUserById(user.getId()))
                 .withSelfRel().withType("GET");
         user.add(selfLink);
-
-        Link selfDelLink = linkTo(methodOn(UserController.class)
-                .deleteUser(user.getId()))
-                .withSelfRel().withType("DELETE");
-        user.add(selfDelLink);
-
     }
 
     private static void addLinks(@NotNull final User user) {
@@ -101,6 +95,11 @@ public class UserController {
                 .withRel("by-email")
                 .withType("GET");
         user.add(byNameLink);
+
+        Link selfDelLink = linkTo(methodOn(UserController.class)
+                .deleteUser(user.getId()))
+                .withSelfRel().withType("DELETE");
+        user.add(selfDelLink);
 
         Link update = linkTo(methodOn(UserController.class)
                 .updateUser(user.getId(), user))

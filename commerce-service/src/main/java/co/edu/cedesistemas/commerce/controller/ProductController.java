@@ -85,12 +85,6 @@ public class ProductController {
                 .getStoreById(product.getId()))
                 .withSelfRel().withType("GET");
         product.add(selfLink);
-
-        Link selfDelLink = linkTo(methodOn(ProductController.class)
-                .deleteProduct(product.getId()))
-                .withSelfRel().withType("DELETE");
-        product.add(selfDelLink);
-
     }
 
     private static void addLinks(@NotNull final Product product) {
@@ -100,6 +94,11 @@ public class ProductController {
                 .withRel("by-name")
                 .withType("GET");
         product.add(byNameLink);
+
+        Link selfDelLink = linkTo(methodOn(ProductController.class)
+                .deleteProduct(product.getId()))
+                .withSelfRel().withType("DELETE");
+        product.add(selfDelLink);
 
         Link update = linkTo(methodOn(ProductController.class)
                 .updateProduct(product.getId(), product))

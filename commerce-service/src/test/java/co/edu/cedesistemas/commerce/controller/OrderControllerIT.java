@@ -131,7 +131,7 @@ public class OrderControllerIT extends BaseIT<Order> {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<Order> orders = mapper.convertValue(_source, new TypeReference<List<Order>>(){});
+        List<Order> orders = mapper.convertValue(_source, new TypeReference<>(){});
 
         assertThat(_source, notNullValue());
         assertThat(orders, notNullValue());

@@ -50,7 +50,7 @@ public class UserServiceSandbox implements IUserService {
 
     @Override
     public User updateUser(String id, User user) throws Exception{
-        if (user.getId() != null) {
+        if (user.getId()== null) {
             throw new Exception("id cannot be updated");
         }
         User found = getById(id);

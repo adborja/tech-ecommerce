@@ -13,12 +13,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.Link;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,6 +33,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = RegistrationApp.class)
@@ -90,7 +95,7 @@ public class UserControllerIT extends BaseIT<User> {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<User> users = mapper.convertValue(_source, new TypeReference<>(){});
+        List<User> users = mapper.convertValue(_source, new TypeReference<List<User>>(){});
 
         assertThat(_source, notNullValue());
         assertThat(users, notNullValue());
@@ -98,4 +103,6 @@ public class UserControllerIT extends BaseIT<User> {
 
         return users.get(0);
     }
+
+
 }
