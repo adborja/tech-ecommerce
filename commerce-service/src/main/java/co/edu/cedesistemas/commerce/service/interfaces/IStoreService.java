@@ -1,4 +1,4 @@
-package co.edu.cedesistemas.commerce.service.interfaces;
+package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Store;
 
@@ -7,7 +7,7 @@ import java.util.List;
 public interface IStoreService {
     Store createStore(Store store);
 
-    Store getById(String id);
+    Store getById(String id) throws Exception;
 
     List<Store> getByType(Store.Type type);
 

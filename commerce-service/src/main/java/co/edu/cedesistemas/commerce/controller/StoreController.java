@@ -4,9 +4,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import co.edu.cedesistemas.commerce.model.Store;
-import co.edu.cedesistemas.commerce.service.interfaces.IStoreService;
+import co.edu.cedesistemas.commerce.service.IStoreService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
@@ -43,6 +44,7 @@ public class StoreController {
     }
 
     @GetMapping("/stores/{id}")
+    @HystrixCommand(fallbackMethod = "getByIdFallback")
     public ResponseEntity<Status<?>> getStoreById(@PathVariable String id) {
         try {
             Store found = service.getById(id);
@@ -116,5 +118,15 @@ public class StoreController {
                 .withMedia("application/json")
                 .withType("PATCH");
         store.add(update);
+    }
+
+    private ResponseEntity<Status<?>> getByIdFallback(final String id) {
+        log.error("getting store by id fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 }
