@@ -1,10 +1,10 @@
 #!/bin/bash
 docker run --restart=unless-stopped \
-        -v /var/data/neo4j:/data \
-        -v /var/data/neo4j/logs:/var/lib/neo4j/logs \
-        -v /var/data/neo4j/data:/var/lib/neo4j/data \
-        -v /var/data/neo4j/conf:/var/lib/neo4j/conf \
-        -v /var/data/neo4j/plugins:/var/lib/neo4j/plugins \
+        -v /Users/lina/Documents/David/cedesistemas/var/data/neo4j:/data \
+        -v /Users/lina/Documents/David/cedesistemas/var/data/neo4j/logs:/var/lib/neo4j/logs \
+        -v /Users/lina/Documents/David/cedesistemas/var/data/neo4j/data:/var/lib/neo4j/data \
+        -v /Users/lina/Documents/David/cedesistemas/var/data/neo4j/conf:/var/lib/neo4j/conf \
+        -v /Users/lina/Documents/David/cedesistemas/var/data/neo4j/plugins:/var/lib/neo4j/plugins \
         --hostname neo4j.cedesistemas.local \
         --name neo4j.cedesistemas.local \
         --memory=1024m \

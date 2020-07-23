@@ -14,6 +14,12 @@ management:
       exposure:
         include: "*"
 
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://eureka.cedesistemas.local:8761/eureka/
 
 info:
   app:

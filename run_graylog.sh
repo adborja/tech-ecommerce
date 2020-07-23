@@ -1,6 +1,6 @@
 #!/bin/bash
 docker run --restart=unless-stopped \
-        -v /var/data/graylog:/usr/share/graylog/data/journal \
+        -v /Users/lina/Documents/David/cedesistemas/var/data/graylog:/usr/share/graylog/data/journal \
         --hostname graylog.cedesistemas.local \
         --net cedesistemas_network \
         --name graylog.cedesistemas.local \
