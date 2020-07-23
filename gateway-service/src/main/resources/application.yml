@@ -41,6 +41,9 @@ zuul:
     social:
       path: /social/**
       serviceId: social-service
+    payment:
+      path: /payment/**
+      serviceId: payment-service
 
 ribbon:
   eureka:
