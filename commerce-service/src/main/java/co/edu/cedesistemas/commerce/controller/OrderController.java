@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Order;
+import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.model.User;
 import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.commerce.service.OrderService;
@@ -30,6 +31,8 @@ public class OrderController {
     public ResponseEntity<Status<?>> createOrder(@RequestBody Order order) {
         try {
             Order created = service.createOrder(order);
+            addSelfLink(created);
+            addLinks(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -40,7 +43,11 @@ public class OrderController {
     public ResponseEntity<Status<?>> getOrderById(@PathVariable String id) {
         try {
             Order found = service.getById(id);
-            if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            if (found != null){
+                addSelfLink(found);
+                addLinks(found);
+                return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            }
             else return DefaultResponseBuilder.errorResponse("order not found", null, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -51,7 +58,8 @@ public class OrderController {
     public ResponseEntity<Status<?>> getOrderItems(@PathVariable String id) {
         try {
             Order orderFound = service.getById(id);
-            List itemsFound = orderFound.getItems();
+            List<OrderItem> itemsFound = orderFound.getItems();
+            addSelfLink(orderFound);
             return DefaultResponseBuilder.defaultResponse(itemsFound, HttpStatus.OK);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);

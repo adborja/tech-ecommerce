@@ -32,6 +32,8 @@ public class ProductController {
     public ResponseEntity<Status<?>> createProduct(@RequestBody Product product) {
         try {
             Product created = service.createProduct(product);
+            addLinks(created);
+            addSelfLink(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -40,10 +42,16 @@ public class ProductController {
 
     @GetMapping("/products/{id}")
     public ResponseEntity<Status<?>> getProductById(@PathVariable String id) {
+
         try {
             Product found = service.getById(id);
-            if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
-            else return DefaultResponseBuilder.errorResponse("product not found", null, HttpStatus.NOT_FOUND);
+            if (found != null){
+                addSelfLink(found);
+                addLinks(found);
+                return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            }else{
+                return DefaultResponseBuilder.errorResponse("product not found", null, HttpStatus.NOT_FOUND);
+            }
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -53,6 +61,7 @@ public class ProductController {
     public ResponseEntity<Status<?>> getProductsByName(@RequestParam String name) {
         try {
             List<Product> found = service.getByName(name);
+            found.forEach(ProductController::addLinks);
             return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -76,9 +85,10 @@ public class ProductController {
                 return DefaultResponseBuilder.errorResponse("Bad Request",null,HttpStatus.BAD_REQUEST);
             }else {
                 Product updatedProduct = service.updateProduct(id, product);
-                if (updatedProduct != null)
+                if (updatedProduct != null) {
+                    addLinks(updatedProduct);
                     return DefaultResponseBuilder.defaultResponse(updatedProduct, HttpStatus.OK);
-                else
+                }else
                     return DefaultResponseBuilder.errorResponse("product not found", null, HttpStatus.NOT_FOUND);
             }
 

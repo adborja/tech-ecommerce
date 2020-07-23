@@ -16,7 +16,7 @@ spring:
       probability: 1
 
 server:
-  port: ${PORT:8085}
+  port: ${PORT:8089}
   servlet:
     context-path: /api/v1/
 

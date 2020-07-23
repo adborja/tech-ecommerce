@@ -31,6 +31,7 @@ public class AddressController {
     public ResponseEntity<Status<?>> createAddress(@RequestBody Address address) {
         try {
             Address created = service.createAddress(address);
+            addSelfLink(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -41,7 +42,11 @@ public class AddressController {
     public ResponseEntity<Status<?>> getAddressById(@PathVariable String id) {
         try {
             Address found = service.getById(id);
-            if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+
+            if (found != null){
+                addSelfLink(found);
+                return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            }
             else return DefaultResponseBuilder.errorResponse("address not found", null, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);

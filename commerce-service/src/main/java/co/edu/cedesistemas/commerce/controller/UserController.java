@@ -31,6 +31,8 @@ public class UserController {
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
         try {
             User created = service.createUser(user);
+            addSelfLink(created);
+            addLinks(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -41,8 +43,14 @@ public class UserController {
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         try {
             User found = service.getById(id);
-            if (found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
-            else return DefaultResponseBuilder.errorResponse("product not found", null, HttpStatus.NOT_FOUND);
+            if (found != null){
+                addLinks(found);
+                return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+            }else{
+                return DefaultResponseBuilder.errorResponse("product not found", null, HttpStatus.NOT_FOUND);
+            }
+
+
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -52,6 +60,7 @@ public class UserController {
     public ResponseEntity<Status<?>> getUserByEmail(@RequestParam String email) {
         try {
             List<User> found = service.getByEmail(email);
+            found.forEach(UserController::addLinks);
             return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
