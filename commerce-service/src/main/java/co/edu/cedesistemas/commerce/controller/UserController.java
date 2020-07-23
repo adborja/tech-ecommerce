@@ -9,11 +9,17 @@ import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @AllArgsConstructor
@@ -43,7 +49,7 @@ public class UserController {
     }
 
     @GetMapping("/users/by-email")
-    public ResponseEntity<Status<?>> getUserByName(@RequestParam String email) {
+    public ResponseEntity<Status<?>> getUserByEmail(@RequestParam String email) {
         try {
             List<User> found = service.getByEmail(email);
             return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
@@ -78,6 +84,35 @@ public class UserController {
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private static void addSelfLink(@NotNull final User user) {
+        Link selfLink = linkTo(methodOn(UserController.class)
+                .getUserById(user.getId()))
+                .withSelfRel().withType("GET");
+        user.add(selfLink);
+
+    }
+
+    private static void addLinks(@NotNull final User user) {
+
+        Link byNameLink = linkTo(methodOn(UserController.class)
+                .getUserByEmail(user.getEmail()))
+                .withRel("by-email")
+                .withType("GET");
+        user.add(byNameLink);
+
+        Link update = linkTo(methodOn(UserController.class)
+                .updateUser(user.getId(), user))
+                .withRel("update")
+                .withMedia(MediaType.APPLICATION_JSON_VALUE)
+                .withType("PATCH");
+        user.add(update);
+
+        Link selfDelLink = linkTo(methodOn(UserController.class)
+                .deleteUserById(user.getId()))
+                .withSelfRel().withType("DELETE");
+        user.add(selfDelLink);
     }
 
 

@@ -10,11 +10,17 @@ import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @AllArgsConstructor
@@ -79,6 +85,35 @@ public class ProductController {
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private static void addSelfLink(@NotNull final Product product) {
+        Link selfLink = linkTo(methodOn(StoreController.class)
+                .getStoreById(product.getId()))
+                .withSelfRel().withType("GET");
+        product.add(selfLink);
+    }
+
+    private static void addLinks (@NotNull final Product product){
+        Link deleteLink = linkTo(methodOn(ProductController.class)
+                .deleteProductById(product.getId()))
+                .withRel("delete")
+                .withType("DELETE");
+        product.add(deleteLink);
+
+        Link updateLink = linkTo(methodOn(ProductController.class)
+                .updateProduct(product.getId(),product))
+                .withRel("update").withType("PATCH")
+                .withMedia(MediaType.APPLICATION_JSON_VALUE);
+        product.add(updateLink);
+
+        Link byNameLink = linkTo(methodOn(ProductController.class)
+                .getProductsByName(product.getName()))
+                .withRel("by-name")
+                .withType("GET");
+        product.add(byNameLink);
+
+
     }
 
 
