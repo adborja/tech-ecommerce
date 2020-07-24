@@ -53,11 +53,16 @@ public class StoreController {
 
     @GetMapping("/stores/{id}")
     public ResponseEntity<Status<?>> getStoreById(@PathVariable String id) {
+        log.trace("get store id "+ id);
         Store found = service.getById(id);
+        log.trace("store id"+id+"info : "+found);
         if (found != null) {
             addLinks(found);
             return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
-        } else return DefaultResponseBuilder.errorResponse("store not found", null, HttpStatus.NOT_FOUND);
+        } else {
+            log.error("store id"+id+" not found ");
+            return DefaultResponseBuilder.errorResponse("store not found", null, HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/stores/{storeId}/products/top")

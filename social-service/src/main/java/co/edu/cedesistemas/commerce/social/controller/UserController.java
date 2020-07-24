@@ -6,6 +6,7 @@ import co.edu.cedesistemas.commerce.social.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class UserController {
     private final UserService service;
 
@@ -81,9 +83,11 @@ public class UserController {
     @GetMapping("/users/{id}")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         try {
+            log.trace("get user "+id);
             User created = service.getById(id);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.OK);
         } catch (Exception ex) {
+            log.trace(ex.getMessage());
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
