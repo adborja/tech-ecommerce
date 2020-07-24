@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Profile("!" + SpringProfile.SANDBOX)
+@Profile("!" + SpringProfile.SANDBOX)\
 @Service
 @AllArgsConstructor
 @Slf4j
