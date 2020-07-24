@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: social-service
   data:
     neo4j:
       uri: bolt://localhost:7687

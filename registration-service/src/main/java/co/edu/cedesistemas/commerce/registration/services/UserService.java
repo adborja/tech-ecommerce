@@ -3,10 +3,12 @@ package co.edu.cedesistemas.commerce.registration.services;
 import co.edu.cedesistemas.commerce.registration.model.User;
 import co.edu.cedesistemas.commerce.registration.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
 
@@ -20,7 +22,6 @@ public class UserService {
                 .map(user -> {
                     user.setStatus(User.Status.ACTIVE);
                     return userRepository.save(user);
-
                 }).orElse(null);
 
     }

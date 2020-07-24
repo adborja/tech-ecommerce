@@ -8,6 +8,7 @@ import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
 import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -16,6 +17,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class StoreService {
     private final StoreRepository storeRepository;
     private final LocationRepository locationRepository;

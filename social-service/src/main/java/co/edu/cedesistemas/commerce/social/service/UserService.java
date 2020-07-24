@@ -9,6 +9,7 @@ import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
 import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final ProductService productService;
@@ -105,10 +107,12 @@ public class UserService {
     public void addFriend(final String userId, final String friendId) throws Exception {
         User user = getById(userId);
         if(user == null){
+            log.error("User not found: {}", friendId);
             throw new Exception("User not found");
         }
         User userFriend = getById(friendId);
         if(userFriend == null){
+            log.error("User not found: {}", friendId);
             throw new Exception("Friend not found");
         }
 

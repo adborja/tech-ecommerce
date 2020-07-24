@@ -37,14 +37,16 @@ zuul:
   routes:
     commerce:
       path: /commerce/**
-      url: http://localhost:8081/
+      serviceId: commerce-service
+      # url: http://localhost:8081/
     social:
       path: /social/**
       serviceId: social-service
-      url: http://localhost:8082/
+      # url: http://localhost:8082/
     registration:
       path: /registration/**
-      url: http://localhost:8083/
+      serviceId: registration-service
+      # url: http://localhost:8083/
 
 
 ribbon:

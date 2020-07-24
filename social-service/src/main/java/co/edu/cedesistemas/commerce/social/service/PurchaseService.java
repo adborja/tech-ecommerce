@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.social.model.User;
 import co.edu.cedesistemas.commerce.social.model.relation.PurchaseRelation;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class PurchaseService {
     private final UserService userService;
     private final ProductService productService;
