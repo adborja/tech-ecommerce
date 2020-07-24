@@ -29,8 +29,8 @@ public class UserController {
     @PutMapping("/users/{id}/products/{productId}/like")
     public ResponseEntity<Status<?>> like(@PathVariable String id, @PathVariable String productId) {
         try {
-            servicel(id, productId);
-            return DefaultResponseBuilder.defaultResponse("",HttpStatus.OK);
+            service.likeProduct(id, productId);
+            return DefaultResponseBuilder.defaultResponse("product like",HttpStatus.OK);
         } catch (Exception e) {
             DefaultResponseBuilder.errorResponse(e.getMessage(),e,HttpStatus.INTERNAL_SERVER_ERROR);
         }

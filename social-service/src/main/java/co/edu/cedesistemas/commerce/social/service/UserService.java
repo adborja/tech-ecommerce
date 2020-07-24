@@ -124,7 +124,7 @@ public class UserService {
                 .user(user)
                 .build());
 
-        repository.save(user)
+        repository.save(user);
 
     }
 }
