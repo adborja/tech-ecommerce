@@ -33,3 +33,10 @@ info:
     name: ${spring.application.name}
     description: e-commerce registration service
     version: 1.0.0
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://eureka.cedesistemas.local:8761/eureka/
