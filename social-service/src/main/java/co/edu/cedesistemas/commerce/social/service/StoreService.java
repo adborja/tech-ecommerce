@@ -8,19 +8,24 @@ import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
 import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class StoreService {
     private final StoreRepository repository;
     private final LocationRepository locationRepository;
     private final ProductTypeRepository productTypeRepository;
 
     public Store createStore(Store store) {
+    	log.info("creating store {}", store);
         String country = store.getLocation().getCountry().toLowerCase().replace(" ", "_");
         String city = store.getLocation().getCity().toLowerCase().replace(" ", "_");
         String zone = store.getLocation().getZone().toLowerCase().replace(" ", "_");
@@ -58,11 +63,14 @@ public class StoreService {
     }
 
     public Store getById(final String id) {
+    	log.info("getting store by id {}", id);
         return repository.findById(id).orElse(null);
     }
 
 
     public void addProduct(final String storeId, final String productId) throws Exception {
+    	//log.info("adding product to store {}", productId+storeId);
+    	log.info("adding product to store {} {}", productId,storeId);
         Store store = repository.findById(storeId).orElse(null);
         Product product = new Product();
         product.setId(productId);
@@ -73,7 +81,19 @@ public class StoreService {
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
-        // TODO: Implement method here
+    	log.info("adding set product to store {}", storeId);
+        Store store = repository.findById(storeId).orElse(null);       
+        if (store != null) {
+        	Set<Product> setProducts = new HashSet<Product>();
+        	
+        	for (String id : productIds) {
+        		Product product = new Product();
+        		product.setId(id);
+        		setProducts.add(product);
+             }
+        	 store.has(setProducts);        	
+             repository.save(store);
+        }
     }
 
 
@@ -86,20 +106,29 @@ public class StoreService {
                                                                                      final String zone,
                                                                                      final String productType,
                                                                                      final Integer limit) {
-        // TODO: Implement method here
-        return null;
+    	
+    	List<StoreRepository.StoreOccurrence> productOccurrenceList = repository.findRecommendationByStores(userId,
+    																										zone,
+    																										productType,
+    																										limit);
+        return productOccurrenceList;
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoreByProducts(final String userId, final String zone,
                                                                           final String productType, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+    	List<StoreRepository.StoreOccurrence> productOccurrenceList = repository.findRecommendationByStores(userId,
+																											zone,
+																											productType
+,																											limit);
+    	return productOccurrenceList;
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZone(final String userId, final String zone,
                                                                        final Integer limit) {
-        // TODO: Implement method here
-        return null;
+    	List<StoreRepository.StoreOccurrence> productOccurrenceList = repository.findRecommendationByStores(userId,
+																											zone,
+																											limit);
+    	return productOccurrenceList;
     }
 
 }

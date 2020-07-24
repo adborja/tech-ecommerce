@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.registration.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService service;
@@ -25,7 +27,9 @@ public class UserController {
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
         try {
             User created = service.createUser(user);
+            log.info("user created {} ",user);
             addSelfLink(created);
+            addLinks(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -36,6 +40,7 @@ public class UserController {
     public ResponseEntity<Status<?>> changeStatus(@PathVariable String id) {
         try {
             User created = service.activateUser(id);
+            log.info("user activated {} ",created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.OK);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -46,6 +51,7 @@ public class UserController {
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         try {
             User found = service.getById(id);
+            log.info("user found {} ",found);
             if (found != null) {
                 return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
             }else return DefaultResponseBuilder.errorResponse("user not found", null, HttpStatus.NOT_FOUND);
@@ -61,12 +67,12 @@ public class UserController {
         user.add(selfLink);
     }
 
-    /*private static void addLinks(@NotNull final User user) {
-        Link byTypeLink = linkTo(methodOn(UserController.class)
-                .getTopNProducts(user.getId(), 5))
-                .withRel("top-5-products")
-                .withType("GET");
-        user.add(byTypeLink);
-    }*/
+    private static void addLinks(@NotNull final User user) {
+        Link activateLink = linkTo(methodOn(UserController.class)
+                .changeStatus(user.getId()))
+                .withRel("update")
+                .withType("PUT");
+        user.add(activateLink);
+    }
 
 }

@@ -6,7 +6,7 @@ spring:
       authentication-database: admin
       database: tech-ecommerce
       port: 27017
-      host: localhost
+      host: mongodb.cedesistemas.local
   profiles:
     active: sanbox
 
@@ -37,6 +37,10 @@ info:
     port: ${server.port}
     version: 1.0.0
 
-
-
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://eureka.cedesistemas.local:8761/eureka/
 

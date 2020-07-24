@@ -30,7 +30,7 @@ public class OrderServiceSandbox implements IOrderService {
     }
 
     @Override
-    public Order getById(String id) {
+    public Order getById(String id) throws Exception {
 
         Address addressCreated = addressService.getById(UUID.randomUUID().toString());
         Product productCreated = productService.getById(UUID.randomUUID().toString());
