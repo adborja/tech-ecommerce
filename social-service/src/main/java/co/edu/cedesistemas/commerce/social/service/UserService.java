@@ -3,10 +3,15 @@ package co.edu.cedesistemas.commerce.social.service;
 import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.model.User;
+import co.edu.cedesistemas.commerce.social.model.relation.FriendRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,14 +52,79 @@ public class UserService {
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
-        // TODO: Implement method here
+
+        User user = repository.findById(userId).orElse(null);
+        if(user == null) {
+            throw new Exception("Usuario no existe");
+        }
+        Store store = storeService.getById(storeId);
+        if(store == null)
+        {
+            throw new Exception("No existe la tienda");
+        }
+        user.storeRates(StoreRateRelation.builder()
+                .rate(value)
+                .rateTime(LocalDateTime.now())
+                .store(store)
+                .user(user)
+                .build());
+
     }
 
     public void likeStore(final String userId, final String storeId) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).orElse(null);
+        if(user == null) {
+            throw new Exception("Usuario no existe");
+        }
+        Store store = storeService.getById(storeId);
+        if(store == null)
+        {
+            throw new Exception("No existe la tienda");
+        }
+        user.storeLikes(StoreLikeRelation.builder()
+                .store(store)
+                .user(user)
+                .storeLikeDate(LocalDateTime.now())
+                .build());
+
+        repository.save(user);
+
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).orElse(null);
+        User friend = repository.findById(friendId).orElse(null);
+
+        if (user != null && friend != null) {
+            user.addFriend(FriendRelation.builder()
+                    .friend(friend)
+                    .friendshipTime(LocalDateTime.now())
+                    .user(user)
+                    .build());
+        } else {
+            throw new Exception("No existe alguno de los usuarios");
+        }
+    }
+
+    public void likeProduct(final String userId, final String productId) throws Exception {
+
+        User user = repository.findById(userId).orElse(null);
+        if(user == null) {
+            throw new Exception("Usuario no existe");
+        }
+        Product product = productService.getById(productId);
+        if(product == null)
+        {
+            throw new Exception("No existe la tienda");
+        }
+
+        user.likes(ProductLikeRelation.builder()
+                .likeTime(LocalDateTime.now())
+                .product(product)
+                .user(user)
+                .build());
+
+        repository.save(user)
+
     }
 }

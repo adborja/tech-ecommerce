@@ -1,9 +1,11 @@
 package co.edu.cedesistemas.commerce.social.service;
 
 import co.edu.cedesistemas.commerce.social.model.Location;
+import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.ProductType;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
+import co.edu.cedesistemas.commerce.social.repository.ProductRepository;
 import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ public class StoreService {
     private final StoreRepository repository;
     private final LocationRepository locationRepository;
     private final ProductTypeRepository productTypeRepository;
+    private final ProductRepository productRepository;
 
     public Store createStore(Store store) {
         String country = store.getLocation().getCountry().toLowerCase().replace(" ", "_");
@@ -57,7 +60,16 @@ public class StoreService {
     }
 
     public void addProduct(final String storeId, final String productId) throws Exception {
-        // TODO: Implement method here
+        Store store = repository.findById(storeId).orElse(null);
+        if(store == null) {
+            throw new Exception("No existe el almacen");
+        }
+        Product product = productRepository.findById(productId).orElse(null);
+        if(product == null) {
+            throw new Exception("producto no existe");
+        }
+        store.has(product);
+        repository.save(store);
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
@@ -66,8 +78,8 @@ public class StoreService {
 
 
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        List<StoreRepository.ProductOccurrence> productOccurrences = repository.findTopNProducts(storeId,limit);
+        return productOccurrences;
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZoneAndProductType(final String userId,
