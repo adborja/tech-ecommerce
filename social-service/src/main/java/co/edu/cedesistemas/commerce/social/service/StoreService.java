@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.social.service;
 
 import co.edu.cedesistemas.commerce.social.model.Location;
+import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.ProductType;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
@@ -57,7 +58,9 @@ public class StoreService {
     }
 
     public void addProduct(final String storeId, final String productId) throws Exception {
-        // TODO: Implement method here
+        Store storeFind = repository.findById(storeId).get();
+
+
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {

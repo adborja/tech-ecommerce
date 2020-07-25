@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.registration.model.User;
 import co.edu.cedesistemas.commerce.registration.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -24,6 +24,7 @@ public class UserController {
     private final UserService service;
 
     @PostMapping("/users")
+    @HystrixCommand(fallbackMethod = "createUserFallback")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
         try {
             User created = service.createUser(user);
@@ -35,6 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
+    @HystrixCommand(fallbackMethod = "getUserByIdFallback")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         try {
             User found = service.getById(id);
@@ -61,5 +63,25 @@ public class UserController {
                 .getUserById(user.getId()))
                 .withSelfRel().withType("GET");
         user.add(selfLink);
+    }
+
+    private ResponseEntity<Status<?>> getUserByIdFallback(final String id) {
+        log.error("getting User by id fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. Registration getting User by id fallback id "+id+", please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    private ResponseEntity<Status<?>> createUserFallback(final User user) {
+        log.error("creating User fallback {}", user.getName()+" - "+user.getLastName());
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. Registration creating User fallback, "+user.getName()+" - "+user.getLastName()+", please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 }

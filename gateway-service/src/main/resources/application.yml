@@ -30,10 +30,10 @@ zuul:
   routes:
     commerce:
       path: /commerce/**
-      url: http://localhost:8081/
+      url: http://localhost:8081
     registration:
       path: /registration/**
-      url: http://localhost:8083/
+      url: http://localhost:8083
 
 ribbon:
   eureka:

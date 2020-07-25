@@ -4,6 +4,8 @@ import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.service.IAddressService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
@@ -24,6 +26,7 @@ public class AddressController {
     private final IAddressService service;
 
     @PostMapping("/addresses")
+    @HystrixCommand(fallbackMethod = "createAddressFallback")
     public ResponseEntity<Status<?>> createAddress(@RequestBody Address address) {
         try {
             Address created = service.createAddress(address);
@@ -34,6 +37,7 @@ public class AddressController {
     }
 
     @GetMapping("/addresses/{id}")
+    @HystrixCommand(fallbackMethod = "finAddressFallback", commandProperties = {@HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "4")})
     public ResponseEntity<Status<?>> finAddress(@PathVariable String id){
         try {
             Address found = service.getById(id);
@@ -52,5 +56,25 @@ public class AddressController {
                 .findOrderById(address.getId()))
                 .withSelfRel().withType("GET");
         address.add(selfLink);
+    }
+
+    private ResponseEntity<Status<?>> finAddressFallback(final String id) {
+        log.error("getting Address by id fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. getting Address by id fallback id "+id+", please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    private ResponseEntity<Status<?>> createAddressFallback(final Address address) {
+        log.error("creating Address fallback {}", address.getName()+" - "+address.getCity());
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable creating Address fallback {}, "+address.getName()+" - "+address.getCity()+" please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 docker run --restart=unless-stopped \
-        -v /var/data/elasticsearch:/usr/share/elasticsearch/data \
+        -v /Users/Beto/Desktop/CursoSpring/data/elasticsearch:/usr/share/elasticsearch/data \
         --hostname elasticsearch.cedesistemas.local \
         --net cedesistemas_network \
         --name elasticsearch.cedesistemas.local \
