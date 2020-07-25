@@ -3,12 +3,15 @@ package co.edu.cedesistemas.commerce.social.service;
 import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
+@Builder
 @AllArgsConstructor
+
 public class ProductService {
     private ProductRepository repository;
 

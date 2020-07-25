@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.User;
+import co.edu.cedesistemas.commerce.service.IUserService;
 import co.edu.cedesistemas.commerce.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
@@ -15,7 +16,7 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    UserService service;
+    IUserService service;
 
     @GetMapping("/users/{id}")
     public ResponseEntity<Status<?>> getUser(@PathVariable String id){
