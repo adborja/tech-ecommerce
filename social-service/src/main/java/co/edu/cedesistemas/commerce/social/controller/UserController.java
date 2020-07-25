@@ -68,7 +68,7 @@ public class UserController {
     public ResponseEntity<Status<?>> addFriend(@PathVariable String id, @PathVariable String friendId) {
         try {
             service.addFriend(id, friendId);
-            return DefaultResponseBuilder.defaultResponse("",HttpStatus.OK);
+            return DefaultResponseBuilder.defaultResponse(id + "es amigo de " + friendId ,HttpStatus.OK);
         } catch (Exception e) {
             return DefaultResponseBuilder.errorResponse(e.getMessage(),e,HttpStatus.INTERNAL_SERVER_ERROR);
         }

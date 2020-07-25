@@ -60,7 +60,7 @@ public class StoreService {
     }
 
     public void addProduct(final String storeId, final String productId) throws Exception {
-        Store store = repository.findById(storeId).orElse(null);
+        Store store = repository.findStore(storeId).orElse(null);
         if(store == null) {
             throw new Exception("No existe el almacen");
         }
@@ -70,7 +70,7 @@ public class StoreService {
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
-        Store store = repository.findById(storeId).orElse(null);
+        Store store = repository.findStore(storeId).orElse(null);
         if(store == null) {
             throw new Exception("No existe el almacen");
         }
@@ -112,6 +112,6 @@ public class StoreService {
     }
 
     public Store getById(String id) {
-        return repository.findById(id).orElse(null);
+        return repository.findStore(id).orElse(null);
     }
 }

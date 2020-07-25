@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.social.repository;
 
 import co.edu.cedesistemas.commerce.social.model.Store;
+import co.edu.cedesistemas.commerce.social.model.User;
 import lombok.Data;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.annotation.QueryResult;
@@ -9,12 +10,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
 public interface StoreRepository extends Neo4jRepository<Store, String> {
     @Query("MATCH (s:Store)<-[:LIKES]-(user:User {id: $userId}) RETURN s")
     Set<Store> findByUserLiked(@Param("userId") String userId);
+
+    @Query("match(a:Store{id:$storeId}) return a")
+    Optional<Store> findStore(@Param("storeId") String userId);
+
 
     @Query("MATCH (user:User {id: $userId})-[:IS_FRIEND_OF]-(friend)-[:LIKES] ->(product:Product)<-[:HAS]-(store:Store)-[:LOCATED_IN]->(loc:Location {zone: $zone}), (store)-[:SERVES]->(type:ProductType {name: $productType}) RETURN store.id as storeId, count(*) AS occurrence ORDER BY occurrence DESC LIMIT $limit")
     List<StoreOccurrence> findRecommendationByProducts(@Param("userId") String userId, @Param("zone") String zone,

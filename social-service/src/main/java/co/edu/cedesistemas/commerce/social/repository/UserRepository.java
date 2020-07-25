@@ -6,10 +6,14 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
 public interface UserRepository extends Neo4jRepository<User, String> {
     @Query("MATCH (u:User)-[:IS_FRIEND_OF]-(user:User {id:$userId}) RETURN u")
     Set<User> findFriendsByUser(@Param("userId") String userId);
+
+    @Query("match(a:User{id:$userid}) return a")
+    Optional<User> findUser(@Param("userid") String userId);
 }

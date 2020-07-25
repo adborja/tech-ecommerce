@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public User getById(final String id) {
-        User user = repository.findById(id).orElse(null);
+        User user = repository.findUser(id).orElse(null);
         if (user != null) {
             Set<Product> productsLiked = productService.getByUserLiked(user.getId());
             user.set_liked(productsLiked.stream().map(Product::getId).collect(Collectors.toSet()));
@@ -57,7 +57,7 @@ public class UserService {
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
 
-        User user = repository.findById(userId).orElse(null);
+        User user = repository.findUser(userId).orElse(null);
         if(user == null) {
             throw new Exception("Usuario no existe");
         }
@@ -76,7 +76,7 @@ public class UserService {
     }
 
     public void likeStore(final String userId, final String storeId) throws Exception {
-        User user = repository.findById(userId).orElse(null);
+        User user = repository.findUser(userId).orElse(null);
         if(user == null) {
             throw new Exception("Usuario no existe");
         }
@@ -96,8 +96,8 @@ public class UserService {
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        User user = repository.findById(userId).orElse(null);
-        User friend = repository.findById(friendId).orElse(null);
+        User user = repository.findUser(userId).orElse(null);
+        User friend = repository.findUser(friendId).orElse(null);
 
         if (user != null && friend != null) {
             user.addFriend(FriendRelation.builder()
@@ -114,7 +114,7 @@ public class UserService {
 
     public void likeProduct(final String userId, final String productId) throws Exception {
 
-        User user = repository.findById(userId).orElse(null);
+        User user = repository.findUser(userId).orElse(null);
         if(user == null) {
             throw new Exception("Usuario no existe");
         }
