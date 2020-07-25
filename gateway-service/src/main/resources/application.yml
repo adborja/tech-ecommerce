@@ -39,8 +39,8 @@ zuul:
       path: /commerce/**
       serviceId: commerce-service
     registration:
-        path: /registration/**
-        url: http://localhost:8083/
+      path: /registration/**
+      serviceId: registration-service
     social:
       path: /social/**
       serviceId: social-service
