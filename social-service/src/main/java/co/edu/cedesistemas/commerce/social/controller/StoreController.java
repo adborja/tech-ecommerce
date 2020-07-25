@@ -26,21 +26,26 @@ public class StoreController {
 
     @PostMapping("/stores")
     public ResponseEntity<Status<?>> createStore(@RequestBody Store store) {
+        log.info("Creating the store...");
         try {
             Store created = service.createStore(store);
             addSelfLink(created);
+            log.info("The store was created correctly");
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.OK);
         } catch (Exception ex) {
+            log.error("There was an error creating the store");
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/stores/{id}/products/{productId}")
     public ResponseEntity<Status<?>> addStoreProduct(@PathVariable String id, @PathVariable String productId) {
+        log.info("Adding products to the store");
         try {
             this.service.addProduct(id, productId);
             return DefaultResponseBuilder.defaultResponse("Updated", HttpStatus.OK);
         } catch (Exception ex) {
+            log.error("There was an error updating the store");
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

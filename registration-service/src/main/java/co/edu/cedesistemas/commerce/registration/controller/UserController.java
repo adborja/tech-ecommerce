@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.registration.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class UserController {
 
     private UserService userService;
 
     @GetMapping("/users/{id}")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
+        log.info("Get users by id");
         try {
             User userFound = this.userService.findById(id);
             if (userFound != null) {
@@ -28,24 +31,28 @@ public class UserController {
             }
             return DefaultResponseBuilder.errorResponse("Users not found", null, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
+            log.error("An error occurred when getUserById service was invoked ");
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
+        log.info("Creating user...");
         try {
             user.setStatus(User.Status.INACTIVE);
             User created = this.userService.createUser(user);
             addSelfLink(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
+            log.error("An error occurred when createUser service was invoked ");
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/users/{id}/activate")
     public ResponseEntity<Status<?>> updateUser(@PathVariable String id) {
+        log.info("Activating user...");
         try {
             User foundUser = this.userService.findById(id);
             if (foundUser != null) {
