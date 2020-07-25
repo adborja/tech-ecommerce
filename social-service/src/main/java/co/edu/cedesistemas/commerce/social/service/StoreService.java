@@ -5,7 +5,6 @@ import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.ProductType;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
-import co.edu.cedesistemas.commerce.social.repository.ProductRepository;
 import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -20,7 +20,7 @@ public class StoreService {
     private final StoreRepository repository;
     private final LocationRepository locationRepository;
     private final ProductTypeRepository productTypeRepository;
-    private final ProductRepository productRepository;
+    private final ProductService productService;
 
     public Store createStore(Store store) {
         String country = store.getLocation().getCountry().toLowerCase().replace(" ", "_");
@@ -38,6 +38,7 @@ public class StoreService {
             location.setCity(city);
             location.setZone(zone);
         }
+        locationRepository.save(location);
         store.setLocation(location);
 
         Set<String> productTypeNames = store.getProductTypeNames();
@@ -47,11 +48,10 @@ public class StoreService {
                 productType = new ProductType();
                 productType.setName(p.toLowerCase());
             }
+            productTypeRepository.save(productType);
             store.addProductType(productType);
+
         });
-
-
-
         return repository.save(store);
     }
 
@@ -64,16 +64,25 @@ public class StoreService {
         if(store == null) {
             throw new Exception("No existe el almacen");
         }
-        Product product = productRepository.findById(productId).orElse(null);
-        if(product == null) {
-            throw new Exception("producto no existe");
-        }
+        Product product = productService.getProduct(productId);
         store.has(product);
         repository.save(store);
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
-        // TODO: Implement method here
+        Store store = repository.findById(storeId).orElse(null);
+        if(store == null) {
+            throw new Exception("No existe el almacen");
+        }
+        if(productIds.size() > 0) {
+           Set<Product> products = productIds.stream().map(productService::getProduct).collect(Collectors.toSet());
+            store.has(products);
+        }
+        else
+        {
+            throw new Exception("Lista de productos vacia");
+        }
+        repository.save(store);
     }
 
 
@@ -86,20 +95,20 @@ public class StoreService {
                                                                                      final String zone,
                                                                                      final String productType,
                                                                                      final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        List<StoreRepository.StoreOccurrence> storeOccurrences = repository.findRecommendationByStores(userId,zone,productType,limit);
+        return storeOccurrences;
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoreByProducts(final String userId, final String zone,
                                                                           final String productType, final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        List<StoreRepository.StoreOccurrence> storeOccurrences = repository.findRecommendationByProducts(userId,zone,productType,limit);
+        return storeOccurrences;
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZone(final String userId, final String zone,
                                                                        final Integer limit) {
-        // TODO: Implement method here
-        return null;
+        List<StoreRepository.StoreOccurrence> storeOccurrences = repository.findRecommendationByStores(userId,zone,limit);
+        return storeOccurrences;
     }
 
     public Store getById(String id) {

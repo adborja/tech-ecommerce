@@ -1,6 +1,8 @@
 package co.edu.cedesistemas.commerce.social.controller;
 
 import co.edu.cedesistemas.commerce.social.model.User;
+import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
+import co.edu.cedesistemas.commerce.social.service.StoreService;
 import co.edu.cedesistemas.commerce.social.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
@@ -15,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class UserController {
     private final UserService service;
+    private final StoreService storeService;
 
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
@@ -71,14 +76,16 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
-        // TODO: Implement method here
-        return null;
+
+        User user = service.getById(id);
+        return DefaultResponseBuilder.defaultResponse(user,HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}/stores/recommend")
     public ResponseEntity<Status<?>> recommendStores(@PathVariable String id, @RequestParam String zone,
                                                      @RequestParam String productType, @RequestParam Integer limit) {
-        // TODO: Implement method here
-        return null;
+
+        List<StoreRepository.StoreOccurrence> storeOccurrences = service.recommendStores(id, zone, productType, limit);
+        return DefaultResponseBuilder.defaultResponse(storeOccurrences,HttpStatus.OK);
     }
 }

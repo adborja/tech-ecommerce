@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotNull;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -50,6 +51,17 @@ public class StoreController {
         }
     }
 
+    @PutMapping("/stores/{id}/products")
+    public ResponseEntity<Status<?>> addStoreProducts(@PathVariable String id, @RequestBody Set<String> products) {
+
+        try {
+            service.addProducts(id,products);
+            return DefaultResponseBuilder.defaultResponse("", HttpStatus.OK);
+        } catch (Exception e) {
+            return DefaultResponseBuilder.errorResponse(e.getMessage(),e, HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/stores/{id}")
     public ResponseEntity<Status<?>> getStoreById(@PathVariable String id) {
         Store found = service.getById(id);
@@ -65,6 +77,13 @@ public class StoreController {
         List<StoreRepository.ProductOccurrence> products = service.getTopNProducts(storeId, limit);
         return DefaultResponseBuilder.defaultResponse(products, HttpStatus.OK);
 }
+
+    @GetMapping("/stores/{storeId}/products/top")
+    public ResponseEntity<Status<?>> recome(@PathVariable String storeId,
+                                                     @RequestParam(required = false, defaultValue = "5") Integer limit) {
+        List<StoreRepository.ProductOccurrence> products = service.getTopNProducts(storeId, limit);
+        return DefaultResponseBuilder.defaultResponse(products, HttpStatus.OK);
+    }
 
     private static void addSelfLink(@NotNull final Store store) {
         Link selfLink = linkTo(methodOn(StoreController.class)

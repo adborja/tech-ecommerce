@@ -7,11 +7,15 @@ import co.edu.cedesistemas.commerce.social.model.relation.FriendRelation;
 import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
 import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
 import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
+import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -104,6 +108,8 @@ public class UserService {
         } else {
             throw new Exception("No existe alguno de los usuarios");
         }
+
+        repository.save(user);
     }
 
     public void likeProduct(final String userId, final String productId) throws Exception {
@@ -126,5 +132,11 @@ public class UserService {
 
         repository.save(user);
 
+    }
+
+    public List<StoreRepository.StoreOccurrence> recommendStores (String id, String zone,
+                                                                  String productType,  Integer limit)
+    {
+        return storeService.recommendStoresByZoneAndProductType(id,zone,productType,limit);
     }
 }
