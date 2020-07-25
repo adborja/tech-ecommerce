@@ -32,7 +32,7 @@ public class UserController {
             service.likeProduct(id, productId);
             return DefaultResponseBuilder.defaultResponse("product like",HttpStatus.OK);
         } catch (Exception e) {
-            DefaultResponseBuilder.errorResponse(e.getMessage(),e,HttpStatus.INTERNAL_SERVER_ERROR);
+            return DefaultResponseBuilder.errorResponse(e.getMessage(),e,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

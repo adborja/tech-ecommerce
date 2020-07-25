@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.registration.model.User;
 import co.edu.cedesistemas.commerce.registration.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
@@ -36,6 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
+    @HystrixCommand(fallbackMethod = "getByIdFallback")
     public ResponseEntity<Status<?>> getUser(@PathVariable String id) {
         Optional<User> user = service.getUser(id);
         if (user.isPresent()) {
@@ -81,5 +83,14 @@ public class UserController {
         user.add(selfLink);
     }
 
+    private ResponseEntity<Status<?>> getByIdFallback(final String id) {
+        log.error("getting user by id fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
 
 }

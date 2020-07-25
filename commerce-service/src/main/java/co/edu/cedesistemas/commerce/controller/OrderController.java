@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.commerce.service.OrderService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
@@ -44,6 +45,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}/items")
+    @HystrixCommand(fallbackMethod = "getByIdFallback")
     public ResponseEntity<Status<?>> getAddress(@PathVariable String id) {
         try {
             Optional<Order> order = service.getOrder(id);
@@ -61,6 +63,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
+    @HystrixCommand(fallbackMethod = "getByIdFallback")
     public ResponseEntity<Status<?>> getItems(@PathVariable String id) {
         try {
             Optional<Order> order = service.getOrder(id);
@@ -91,6 +94,16 @@ public class OrderController {
                 .withType("GET");
         order.add(byTypeLink);
 
+    }
+
+    private ResponseEntity<Status<?>> getByIdFallback(final String id) {
+        log.error("getting store by id fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
 }

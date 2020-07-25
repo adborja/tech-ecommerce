@@ -15,6 +15,11 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
     implementation "org.springframework.boot:spring-boot-starter-hateoas"
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix-dashboard"
+
+    implementation "org.graylog2:gelfj:${versions.gelf}"
+    implementation "biz.paluch.logging:logstash-gelf:${versions.logstash_gelf}"
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.3.1.RELEASE'
 

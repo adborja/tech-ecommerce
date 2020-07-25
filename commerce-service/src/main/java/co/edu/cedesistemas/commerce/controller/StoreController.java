@@ -59,6 +59,7 @@ public class StoreController {
     }
 
     @GetMapping("/stores/by-name")
+    @HystrixCommand(fallbackMethod = "getByIdFallback")
     public ResponseEntity<Status<?>> getStoresByName(@RequestParam String name) {
         try {
             List<Store> found = service.getByName(name);
@@ -70,6 +71,7 @@ public class StoreController {
     }
 
     @GetMapping("/stores/by-type")
+    @HystrixCommand(fallbackMethod = "getByIdFallback")
     public ResponseEntity<Status<?>> getStoresByType(@RequestParam Store.Type type) {
         try {
             List<Store> found = service.getByType(type);
