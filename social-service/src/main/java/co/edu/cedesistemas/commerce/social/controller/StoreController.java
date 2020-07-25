@@ -38,10 +38,10 @@ public class StoreController {
     @PutMapping("/stores/{id}/products/{productId}")
     public ResponseEntity<Status<?>> addStoreProduct(@PathVariable String id, @PathVariable String productId) {
         try {
-            service.addProduct(id,productId);
-            return DefaultResponseBuilder.defaultResponse("Added relationship",HttpStatus.OK);
-        }catch (Exception ex){
-            return DefaultResponseBuilder.errorResponse("unexpected error",ex,HttpStatus.INTERNAL_SERVER_ERROR);
+            service.addProduct(id, productId);
+            return DefaultResponseBuilder.defaultResponse("Product Added to Store", HttpStatus.OK);
+        } catch (Exception ex) {
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -57,8 +57,11 @@ public class StoreController {
     @GetMapping("/stores/{storeId}/products/top")
     public ResponseEntity<Status<?>> getTopNProducts(@PathVariable String storeId,
                                           @RequestParam(required = false, defaultValue = "5") Integer limit) {
-
-        return DefaultResponseBuilder.defaultResponse(service.getTopNProducts(storeId,limit),HttpStatus.OK);
+        try{
+            return DefaultResponseBuilder.defaultResponse(service.getTopNProducts(storeId, limit), HttpStatus.OK);
+        }catch (Exception ex){
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     private static void addSelfLink(@NotNull final Store store) {

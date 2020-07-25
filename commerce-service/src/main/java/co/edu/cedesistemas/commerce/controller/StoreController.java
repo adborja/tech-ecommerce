@@ -58,6 +58,7 @@ public class StoreController {
     }
 
     @GetMapping("/stores/by-name")
+    @HystrixCommand(fallbackMethod = "getByNameFallback")
     public ResponseEntity<Status<?>> getStoresByName(@RequestParam String name) {
         try {
             List<Store> found = service.getByName(name);
@@ -69,6 +70,7 @@ public class StoreController {
     }
 
     @GetMapping("/stores/by-type")
+    @HystrixCommand(fallbackMethod = "getByTypeFallback")
     public ResponseEntity<Status<?>> getStoresByType(@RequestParam Store.Type type) {
         try {
             List<Store> found = service.getByType(type);
@@ -129,4 +131,25 @@ public class StoreController {
                 .build();
         return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
+
+    private ResponseEntity<Status<?>> getByNameFallback(final String name) {
+        log.error("getting store by name fallback {}", name);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    private ResponseEntity<Status<?>> getByTypeFallback(final String type) {
+        log.error("getting store by type fallback {}", type);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
 }

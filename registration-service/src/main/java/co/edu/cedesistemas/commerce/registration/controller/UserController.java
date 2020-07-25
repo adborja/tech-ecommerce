@@ -4,7 +4,9 @@ import co.edu.cedesistemas.commerce.registration.model.User;
 import co.edu.cedesistemas.commerce.registration.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +19,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class UserController {
 
     UserService service;
 
     @GetMapping("/users/{id}")
+    @HystrixCommand(fallbackMethod = "getFallback")
     public ResponseEntity<Status<?>> getUser(@PathVariable String id){
         try{
             User user = service.getUser(id);
@@ -31,6 +35,16 @@ public class UserController {
         }catch (Exception ex){
             return DefaultResponseBuilder.errorResponse("error",ex,HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private ResponseEntity<Status<?>> getFallback(final String id) {
+        log.error("getting users by id fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @PutMapping("/users/{id}/activate")

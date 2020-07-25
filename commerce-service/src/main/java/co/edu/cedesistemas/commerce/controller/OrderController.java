@@ -7,7 +7,9 @@ import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.commerce.service.OrderService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +23,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @AllArgsConstructor
 @RestController
+@Slf4j
 public class OrderController {
 
     private IOrderService service;
 
     @GetMapping("/orders/{id}")
+    @HystrixCommand(fallbackMethod = "getFallback")
     public ResponseEntity<Status<?>> getOrder(@PathVariable String id){
         try{
             Order found = service.getOrderById(id);
@@ -39,6 +43,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}/items")
+    @HystrixCommand(fallbackMethod = "getFallback")
     public ResponseEntity<Status<?>> getItems(@PathVariable String id){
         try{
             List<OrderItem> found = service.getOrderItemsById(id);
@@ -58,6 +63,16 @@ public class OrderController {
         }catch (Exception ex){
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private ResponseEntity<Status<?>> getFallback(final String id) {
+        log.error("getting order or items by id fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     private static void addSelfLink(@NotNull final Order order) {

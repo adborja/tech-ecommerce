@@ -5,7 +5,9 @@ import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.service.IAddressService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @AllArgsConstructor
 @RestController
+@Slf4j
 public class AddressController {
 
     IAddressService service;
@@ -35,6 +38,7 @@ public class AddressController {
 
 
     @GetMapping("/addresses/{id}")
+    @HystrixCommand(fallbackMethod = "getFallback")
     public  ResponseEntity<Status<?>> getAddress(@PathVariable String id){
         try{
             Address found = service.getAddressById(id);
@@ -46,6 +50,16 @@ public class AddressController {
         }catch (Exception ex){
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private ResponseEntity<Status<?>> getFallback(final String id) {
+        log.error("getting address by id fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     private static void addSelfLink(@NotNull final Address address) {

@@ -21,17 +21,14 @@ public class ProductService {
     }
 
     public Product update(final Product product) {
-        log.info("updating product");
         return repository.save(product);
     }
 
     public Product getById(final String id) {
-        log.info("finding product");
         return repository.findById(id).orElse(null);
     }
 
     public Set<Product> getByUserLiked(final String userId) {
-        log.info("getting by likes");
         return repository.findByUserLiked(userId);
     }
 

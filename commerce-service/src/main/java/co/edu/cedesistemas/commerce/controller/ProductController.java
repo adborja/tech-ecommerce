@@ -7,7 +7,9 @@ import co.edu.cedesistemas.commerce.service.IProductService;
 import co.edu.cedesistemas.commerce.service.ProductService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class ProductController {
 
     IProductService service;
@@ -39,6 +42,7 @@ public class ProductController {
 
 
     @GetMapping("/products/{id}")
+    @HystrixCommand(fallbackMethod = "getFallback")
     public  ResponseEntity<Status<?>> getProduct(@PathVariable String id){
         try{
             Product found = service.getProductById(id);
@@ -52,6 +56,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/by-name")
+    @HystrixCommand(fallbackMethod = "getFallback")
     public  ResponseEntity<Status<?>> getProductByName(@RequestParam String name){
         try{
             List<Product> found = service.getProductByName(name);
@@ -60,6 +65,16 @@ public class ProductController {
         }catch (Exception ex){
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private ResponseEntity<Status<?>> getFallback(final String id) {
+        log.error("getting products by id or name fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @DeleteMapping("/products/{id}")
