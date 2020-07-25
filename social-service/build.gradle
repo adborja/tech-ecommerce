@@ -6,49 +6,51 @@ apply plugin: 'com.palantir.docker'
 group 'co.edu.cedesistemas'
 version '0.0.1-SNAPSHOT'
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation project(":common")
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-neo4j'
-	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation project(":common")
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-neo4j'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
+    implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
 
-	implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
-	implementation "com.google.code.gson:gson:${versions.gson}"
+    implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
+    implementation "com.google.code.gson:gson:${versions.gson}"
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
-	testImplementation "io.rest-assured:json-path:${versions.restAssured}"
-	testImplementation "io.rest-assured:xml-path:${versions.restAssured}"
-	testImplementation "org.mockito:mockito-core:${versions.mockito}"
-	testImplementation "org.hamcrest:hamcrest:${versions.hamcrest}"
-	testImplementation "org.junit.jupiter:junit-jupiter:${versions.jupiter}"
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
+    testImplementation "io.rest-assured:json-path:${versions.restAssured}"
+    testImplementation "io.rest-assured:xml-path:${versions.restAssured}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "org.hamcrest:hamcrest:${versions.hamcrest}"
+    testImplementation "org.junit.jupiter:junit-jupiter:${versions.jupiter}"
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 task unpack(type: Copy) {
-	dependsOn bootJar
-	from(zipTree(tasks.bootJar.outputs.files.singleFile))
-	into("build/dependency")
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
 }
 
 docker {
-	name "${dockerGroup}:${dockerRegistryPort}/commerce/${project.name}:dev"
-	copySpec.from(tasks.unpack.outputs).into("dependency")
-	buildArgs(['DEPENDENCY': "dependency"])
+    name "${dockerGroup}:${dockerRegistryPort}/commerce/${project.name}:dev"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
 }
