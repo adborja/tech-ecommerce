@@ -1,15 +1,13 @@
 package co.edu.cedesistemas.commerce.service;
 
-import co.edu.cedesistemas.commerce.model.User;
-
 import java.util.List;
 
-public interface IUserService {
+import co.edu.cedesistemas.commerce.model.User;
 
-     User createUser(final User user);
-     User getById(final String id);
-     List<User> getByEmail(final String mail);
-     List<User> getByName(final String name);
-     User updateUser(String id, User user)  throws Exception;
-     void deleteUser(final String id);
+public interface IUserService {
+	User createUser(User user);
+	void deleteUser(String id);
+	List<User> getByEmail(String email) throws Exception;
+	User getById(String id);
+	User updateUser(String id, User user) throws Exception;
 }

@@ -26,10 +26,10 @@ public class UserService {
     private final StoreService storeService;
 
     public User createUser(User user) {
-        user.setId(UUID.randomUUID().toString());
-        return repository.save(user);
+    	user.setId(UUID.randomUUID().toString());
+    	return repository.save(user);
     }
-
+    
     public User createUser(String id) {
         User user = new User();
         user.setId(id);
@@ -60,36 +60,36 @@ public class UserService {
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
-        User user = getById(userId);
-
+    	User user = getById(userId);
+        
         Store storeLiked = storeService.getById(storeId);
-
+        
         if(storeLiked == null)
-            throw new Exception("Store not found");
-
+        	throw new Exception("Store not found");
+        
         user.storeRates(StoreRateRelation.builder()
-                .user(user)
-                .store(storeLiked)
-                .rate(value)
-                .build());
+        		.user(user)
+        		.store(storeLiked)
+        		.rate(value)
+        		.build());
         update(user);
     }
 
     public void likeStore(final String userId, final String storeId) throws Exception {
         User user = getById(userId);
         Store storeLiked = storeService.getById(storeId);
-
-        if(user == null)
-            throw new Exception("user not found");
-
+        
+		if(user == null)
+			throw new Exception("user not found");
+                
         if(storeLiked == null)
-            throw new Exception("Store not found");
-
+        	throw new Exception("Store not found");
+        
         user.storeLikes(StoreLikeRelation.builder()
-                .user(user)
-                .store(storeLiked)
-                .storeLikeDate(LocalDateTime.now())
-                .build());
+        		.user(user)
+        		.store(storeLiked)
+        		.storeLikeDate(LocalDateTime.now())
+        		.build());
         update(user);
     }
 
@@ -97,27 +97,27 @@ public class UserService {
         User user = getById(userId);
         User newFriend = getById(friendId);
 
-        if(user == null)
-            throw new Exception("user not found");
-
+		if(user == null)
+			throw new Exception("user not found");
+        
         if(newFriend == null)
-            throw new Exception("friend not found");
-
+        	throw new Exception("friend not found");
+        
         user.addFriend(FriendRelation.builder()
-                .user(user)
-                .friend(newFriend)
-                .friendshipTime(LocalDateTime.now())
-                .build());
+        		.user(user)
+        		.friend(newFriend)
+        		.friendshipTime(LocalDateTime.now())
+        		.build());        	
         update(user);
     }
 
-    public void likeProduct(final String id, final String productId) throws Exception {
-        User user = getById(id);
-        Product productLiked = productService.getById(productId);
-
-        if(user == null)
-            throw new Exception("user not found");
-
+	public void likeProduct(final String id, final String productId) throws Exception {
+		User user = getById(id);
+		Product productLiked = productService.getById(productId);
+		
+		if(user == null)
+			throw new Exception("user not found");
+		
         if (productLiked == null){
             throw new Exception("product not found");
         }
@@ -128,12 +128,12 @@ public class UserService {
                 .likeTime(LocalDateTime.now())
                 .build());
         update(user);
+		
+	}
 
-    }
-
-    public List<StoreOccurrence> recommendStores(String id, String zone, String productType, Integer limit) {
-
-        return storeService.recommendStoresByZoneAndProductType(id, zone, productType, limit);
-
-    }
+	public List<StoreOccurrence> recommendStores(String id, String zone, String productType, Integer limit) {
+		
+		return storeService.recommendStoresByZoneAndProductType(id, zone, productType, limit);
+		
+	}
 }

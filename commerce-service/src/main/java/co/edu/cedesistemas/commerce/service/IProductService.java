@@ -1,14 +1,14 @@
 package co.edu.cedesistemas.commerce.service;
 
-import co.edu.cedesistemas.commerce.model.Product;
-
 import java.util.List;
+
+import co.edu.cedesistemas.commerce.model.Product;
 
 public interface IProductService {
 
-     Product createProduct(final Product product);
-     Product getById(final String id);
-     List<Product> getByName(final String name);
-     Product updateProduct(String id, Product product) throws Exception ;
-     void deleteProduct(final String id);
+	Product createProduct(Product product);
+	void deleteProduct(String id);
+	Product getById(String id);
+	List<Product> getByName(String name) throws Exception;
+	Product updateProduct(String id, Product product) throws Exception;
 }

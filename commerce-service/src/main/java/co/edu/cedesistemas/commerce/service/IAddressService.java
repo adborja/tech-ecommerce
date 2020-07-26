@@ -4,9 +4,6 @@ import co.edu.cedesistemas.commerce.model.Address;
 
 public interface IAddressService {
 
-     Address createAddress(final Address address);
-     Address getById(final String id);
-     Address updateAddress(String id, Address address) throws Exception;
-
-
+	Address createAddress(Address address);
+	Address getById(String id);
 }

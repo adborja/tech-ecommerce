@@ -23,20 +23,20 @@ public class PurchaseController {
     @PutMapping("/purchases/users/{id}/products/{productId}")
     public ResponseEntity<Status<?>> purchase(@PathVariable String id, @PathVariable String productId) {
         try {
-            PurchaseRelation pr = service.purchase(id, productId);
-            return DefaultResponseBuilder.defaultResponse(pr, HttpStatus.OK);
-        } catch (Exception e) {
-            return DefaultResponseBuilder.errorResponse(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        	PurchaseRelation pr = service.purchase(id, productId);
+			return DefaultResponseBuilder.defaultResponse(pr, HttpStatus.OK);
+		} catch (Exception e) {
+			return DefaultResponseBuilder.errorResponse(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
     }
 
     @PutMapping("/purchases/users/{id}")
     public ResponseEntity<Status<?>> purchase(@PathVariable String id, @RequestParam Set<String> productIds) {
-        try {
-            Set<PurchaseRelation> pr = service.purchase(id, productIds);
-            return DefaultResponseBuilder.defaultResponse(pr, HttpStatus.OK);
-        } catch (Exception e) {
-            return DefaultResponseBuilder.errorResponse(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    	try {
+        	Set<PurchaseRelation> pr = service.purchase(id, productIds);
+			return DefaultResponseBuilder.defaultResponse(pr, HttpStatus.OK);
+		} catch (Exception e) {
+			return DefaultResponseBuilder.errorResponse(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
     }
 }
