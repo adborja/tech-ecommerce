@@ -5,6 +5,7 @@ apply plugin: 'com.palantir.docker'
 
 group 'co.edu.cedesistemas'
 version '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
 repositories {
     mavenCentral()
 }
@@ -15,6 +16,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
     implementation "org.springframework.boot:spring-boot-starter-hateoas"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix-dashboard"
 
     implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
     implementation "com.google.code.gson:gson:${versions.gson}"

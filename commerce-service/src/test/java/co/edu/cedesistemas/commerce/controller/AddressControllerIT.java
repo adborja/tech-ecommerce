@@ -62,7 +62,7 @@ public class AddressControllerIT extends BaseIT<Address> {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<Address> addresses = mapper.convertValue(_source, new TypeReference<>(){});
+        List<Address> addresses = mapper.convertValue(_source, new TypeReference<>(){}); 
 
         assertThat(_source, notNullValue());
         assertThat(addresses, notNullValue());

@@ -15,19 +15,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 import co.edu.cedesistemas.commerce.registration.model.User;
 import co.edu.cedesistemas.commerce.registration.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class UserController {
 	
 	private final UserService service;
 	
 	@GetMapping("/users/{id}")
+	@HystrixCommand(fallbackMethod = "getUserByIdFallback")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {        
         try {
             User found = service.getById(id);
@@ -72,5 +77,15 @@ public class UserController {
 	        user.add(selfLink);
 	    }
 	 
+	 public ResponseEntity<Status<?>> getUserByIdFallback(final String id){
+		 log.error("Getting user by id fallback {}", id);
+		 Status<?> status = Status.builder()
+				 ._hits(1)
+				 .message("service unavailable. please try again later")
+				 .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+				 .build();
+		 
+		 return new ResponseEntity<>(status,HttpStatus.SERVICE_UNAVAILABLE);
+	 }
 
 }

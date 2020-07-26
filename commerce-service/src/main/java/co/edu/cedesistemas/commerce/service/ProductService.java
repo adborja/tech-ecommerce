@@ -1,16 +1,21 @@
 package co.edu.cedesistemas.commerce.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.repository.ProductRepository;
+import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ProductService implements IProductService{
 
 	private final ProductRepository repository;
@@ -29,13 +34,19 @@ public class ProductService implements IProductService{
 	}
 	@Override
 	public Product getById(final String id) {
-		Optional<Product> product = repository.findById(id);
-		return product.isPresent() ? product.get() : null;
+		return repository.findById(id).orElse(null);
 	}
 	@Override
 	public Product updateProduct(final String id, final Product product) {
-		return repository.findById(id).isEmpty() ? null : 
-    		repository.save(product);
+		Product found = getById(id);
+		if(found == null) {
+			log.warn("Product not found {}",id);
+			return null;
+		}
+				
+		BeanUtils.copyProperties(product, found, Utils.getNullPropertyNames(product));
+		
+		return repository.save(found); 
 	}
 	@Override
 	public void deleteProduct(final String id) {

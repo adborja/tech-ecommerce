@@ -44,7 +44,7 @@ public class StoreController {
     }
 
     @GetMapping("/stores/{id}")
-    @HystrixCommand(fallbackMethod = "getByIdFallback")
+    @HystrixCommand(fallbackMethod = "getStoreByIdFallback")
     public ResponseEntity<Status<?>> getStoreById(@PathVariable String id) {
         try {
             Store found = service.getById(id);
@@ -53,11 +53,13 @@ public class StoreController {
                 return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
             } else return DefaultResponseBuilder.errorResponse("store not found", null, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
+        	log.error(ex.getMessage(),ex);
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/stores/by-name")
+    @HystrixCommand(fallbackMethod = "getStoresByNameFallback")
     public ResponseEntity<Status<?>> getStoresByName(@RequestParam String name) {
         try {
             List<Store> found = service.getByName(name);
@@ -69,6 +71,7 @@ public class StoreController {
     }
 
     @GetMapping("/stores/by-type")
+    @HystrixCommand(fallbackMethod = "getStoresByTypeFallback")
     public ResponseEntity<Status<?>> getStoresByType(@RequestParam Store.Type type) {
         try {
             List<Store> found = service.getByType(type);
@@ -120,8 +123,28 @@ public class StoreController {
         store.add(update);
     }
 
-    private ResponseEntity<Status<?>> getByIdFallback(final String id) {
+    private ResponseEntity<Status<?>> getStoreByIdFallback(final String id) {
         log.error("getting store by id fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+    
+    private ResponseEntity<Status<?>> getStoresByNameFallback(final String name) {
+        log.error("getting store by name fallback {}", name);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+    
+    private ResponseEntity<Status<?>> getStoresByTypeFallback(final Store.Type type) {
+        log.error("getting store by type fallback {}", type);
         Status<?> status = Status.builder()
                 ._hits(1)
                 .message("service unavailable. please try again")
