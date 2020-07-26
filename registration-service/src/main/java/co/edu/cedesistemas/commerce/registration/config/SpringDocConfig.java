@@ -15,8 +15,8 @@ public class SpringDocConfig {
         return new OpenAPI()
                 .components(new Components().addSecuritySchemes("basicScheme",
                         new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
-                .info(new Info().title("Commerce API").version("v1").description(
-                        "REST API for Commerce management")
+                .info(new Info().title("Registration API").version("v1").description(
+                        "REST API for Registration management")
                         .termsOfService("http://swagger.io/terms/")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")));
     }

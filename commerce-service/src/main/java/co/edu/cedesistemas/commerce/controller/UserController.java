@@ -6,6 +6,7 @@ import co.edu.cedesistemas.commerce.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,12 +23,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class UserController {
 
     private final IUserService userService;
 
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
+        log.info("Creating user...");
         try {
             User created = this.userService.createUser(user);
             addSelfLink(created);
@@ -95,6 +98,7 @@ public class UserController {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     private static void addSelfLink(@NotNull User user) {
         Link selfLink = linkTo(methodOn(UserController.class)

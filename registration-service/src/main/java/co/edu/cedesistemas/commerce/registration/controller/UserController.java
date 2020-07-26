@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.registration.model.User;
 import co.edu.cedesistemas.commerce.registration.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
@@ -22,6 +23,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users/{id}")
+    @HystrixCommand(fallbackMethod = "getUserByIdByIdFallback")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         log.info("Get users by id");
         try {
@@ -37,6 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
+    @HystrixCommand(fallbackMethod = "createUserFallback")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
         log.info("Creating user...");
         try {
@@ -64,6 +67,24 @@ public class UserController {
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private ResponseEntity<Status<?>> getUserByIdByIdFallback(final String id) {
+        log.error("Getting user by id fallback {}", id);
+        Status<?> status = Status.builder()._hits(1)
+                .message("Service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    private ResponseEntity<Status<?>> createUserFallback(@RequestBody User user) {
+        log.error("Creating user fallback {}", user.getName());
+        Status<?> status = Status.builder()
+                .message("Service unavailable to create user. Please try in a moment")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     private void addSelfLink(User user) {
