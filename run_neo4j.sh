@@ -7,6 +7,7 @@ docker run --restart=unless-stopped \
         -v /Users/lina/Documents/David/cedesistemas/var/data/neo4j/plugins:/var/lib/neo4j/plugins \
         --hostname neo4j.cedesistemas.local \
         --name neo4j.cedesistemas.local \
+        --net cedesistemas_network \
         --memory=1024m \
         -e "TZ=America/Bogota" \
         -e "NEO4J_AUTH=none" \

@@ -28,7 +28,7 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
-
+        log.info("usuario",user);
         User created = service.createUser(user);
         addSelfLink(created);
 

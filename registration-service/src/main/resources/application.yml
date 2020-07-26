@@ -1,7 +1,19 @@
 spring:
   application:
     name: registration-service
-
+  data:
+    mongodb:
+      authentication-database: admin
+      database: tech-ecommerce
+      port: 27017
+      host: mongodb.cedesistemas.local
+  zipkin:
+    base-url: http://localhost:9411/
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
 
 server:
   port: ${PORT:8082}

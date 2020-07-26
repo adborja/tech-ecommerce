@@ -7,6 +7,7 @@ import co.edu.cedesistemas.commerce.social.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class UserController {
     private final UserService service;
     private final StoreService storeService;
@@ -35,8 +37,10 @@ public class UserController {
     public ResponseEntity<Status<?>> like(@PathVariable String id, @PathVariable String productId) {
         try {
             service.likeProduct(id, productId);
+            log.info("le gusto el producto", productId);
             return DefaultResponseBuilder.defaultResponse("product like",HttpStatus.OK);
         } catch (Exception e) {
+            log.error(e.getMessage(),e);
             return DefaultResponseBuilder.errorResponse(e.getMessage(),e,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -48,6 +52,7 @@ public class UserController {
             service.likeStore(id, storeId);
             return DefaultResponseBuilder.defaultResponse("",HttpStatus.OK);
         } catch (Exception e) {
+            log.error(e.getMessage(),e);
             return DefaultResponseBuilder.errorResponse(e.getMessage(),e,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -60,6 +65,7 @@ public class UserController {
             service.rateStore(id, storeId,rate);
             return DefaultResponseBuilder.defaultResponse("",HttpStatus.OK);
         } catch (Exception e) {
+            log.error(e.getMessage(),e);
             return DefaultResponseBuilder.errorResponse(e.getMessage(),e,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -68,17 +74,25 @@ public class UserController {
     public ResponseEntity<Status<?>> addFriend(@PathVariable String id, @PathVariable String friendId) {
         try {
             service.addFriend(id, friendId);
+            log.info(id + "es amigo de " + friendId);
             return DefaultResponseBuilder.defaultResponse(id + "es amigo de " + friendId ,HttpStatus.OK);
         } catch (Exception e) {
+            log.error(e.getMessage(),e);
             return DefaultResponseBuilder.errorResponse(e.getMessage(),e,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
-
-        User user = service.getById(id);
-        return DefaultResponseBuilder.defaultResponse(user,HttpStatus.OK);
+        try {
+            User user = service.getById(id);
+            log.info("el usuario consultado es" + id);
+            return DefaultResponseBuilder.defaultResponse(user, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            log.error("error consultando el usuario",e);
+            return DefaultResponseBuilder.errorResponse("error consultando el usuario",e,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/users/{id}/stores/recommend")
