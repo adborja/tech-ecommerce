@@ -1,6 +1,5 @@
 package co.edu.cedesistemas.commerce.social.service;
 
-import co.edu.cedesistemas.commerce.social.controller.StoreController;
 import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.model.User;
@@ -11,15 +10,11 @@ import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 @AllArgsConstructor
@@ -40,7 +35,7 @@ public class UserService {
     }
 
     public User getById(final String id) {
-        User user = repository.findById(id).orElse(null);
+        User user = repository.findUser(id);
         if (user != null) {
             Set<Product> productsLiked = productService.getByUserLiked(user.getId());
             user.set_liked(productsLiked.stream().map(Product::getId).collect(Collectors.toSet()));
@@ -59,7 +54,7 @@ public class UserService {
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
-        User user = repository.findById(userId).orElse(null);
+        User user = repository.findUser(userId);
         Store store = storeService.getById(storeId);
         if(user == null || store == null){
             log.warn("User or store not found, not was possible rate store");
@@ -71,7 +66,7 @@ public class UserService {
     }
 
     public void likeStore(final String userId, final String storeId) throws Exception {
-        User user = repository.findById(userId).orElse(null);
+        User user = repository.findUser(userId);
         Store store = storeService.getById(storeId);
         if(user == null || store == null){
             log.warn("User or store not found, not was possible like store");
@@ -83,7 +78,7 @@ public class UserService {
     }
 
     public void likeProduct(final String userId, final String productId) throws Exception {
-        User user = repository.findById(userId).orElse(null);
+        User user = repository.findUser(userId);
         Product product = productService.getById(productId);
         if(user == null || product == null){
             log.warn("User or product not found, not was possible like product");
@@ -95,8 +90,8 @@ public class UserService {
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        User user = repository.findById(userId).orElse(null);
-        User friendUser = repository.findById(friendId).orElse(null);
+        User user = repository.findUser(userId);
+        User friendUser = repository.findUser(friendId);
         if(user == null){
             log.warn("User not found, not was possible add a friend");
             throw new Exception("User not found, not was possible add a friend");

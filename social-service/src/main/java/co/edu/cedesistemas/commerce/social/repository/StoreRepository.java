@@ -33,6 +33,8 @@ public interface StoreRepository extends Neo4jRepository<Store, String> {
     @Query("MATCH (u:User)-[pur:PURCHASES]->(p:Product)<-[:HAS]-(s:Store {id: $storeId}) RETURN p.id as productId , count(pur) as occurrence ORDER BY occurrence DESC LIMIT $limit")
     List<ProductOccurrence> findTopNProducts(@Param("storeId") String storeId, @Param("limit") Integer limit);
 
+    @Query("match (s:Store{id:$idStore}) return s")
+    Store findStore(@Param("idStore") String idStore);
 
     @QueryResult
     @Data

@@ -12,4 +12,7 @@ import java.util.Set;
 public interface UserRepository extends Neo4jRepository<User, String> {
     @Query("MATCH (u:User)-[:IS_FRIEND_OF]-(user:User {id:$userId}) RETURN u")
     Set<User> findFriendsByUser(@Param("userId") String userId);
+
+    @Query("match (u:User{id:$idUser}) return u")
+    User findUser(@Param("idUser") String idUser);
 }

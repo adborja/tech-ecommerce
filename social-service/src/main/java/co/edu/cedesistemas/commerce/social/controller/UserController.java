@@ -7,6 +7,7 @@ import co.edu.cedesistemas.commerce.social.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class UserController {
     private final UserService service;
     private final StoreService storeService;
@@ -65,6 +67,7 @@ public class UserController {
     @PutMapping("/users/{id}/friends/{friendId}")
     public ResponseEntity<Status<?>> addFriend(@PathVariable String id, @PathVariable String friendId) {
         try {
+            log.info("adding friend to user "+id);
             service.addFriend(id,friendId);
             return DefaultResponseBuilder.defaultResponse("Add friend Ok", HttpStatus.OK);
         } catch (Exception ex) {
@@ -76,7 +79,7 @@ public class UserController {
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         try {
             User found = service.getById(id);
-            return DefaultResponseBuilder.defaultResponse(found, HttpStatus.FOUND);
+            return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
