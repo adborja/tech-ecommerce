@@ -4,6 +4,13 @@ spring:
   data:
     neo4j:
       uri: bolt://localhost:7687
+  zipkin:
+    base-url: http://jaeger.cedesistemas.local:9411/
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
 
 server:
   port: ${PORT:8082}

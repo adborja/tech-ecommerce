@@ -28,11 +28,12 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
         try {
-            //user.setId(UUID.randomUUID().toString());
             User created = service.createUser(user);
             created.add(linkTo(methodOn(UserController.class).getUserById(user.getId())).withSelfRel());
+            log.info("user created!! {}",user);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
+            log.error(ex.getMessage(),ex);
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -43,9 +44,11 @@ public class UserController {
             User found = service.getById(id);
             if (found != null) {
                 found.add(linkTo(methodOn(UserController.class).getUserById(id)).withSelfRel());
+                log.info("user found! {}",found);
                 return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
             } else return DefaultResponseBuilder.defaultResponse("user not found", HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
+            log.error(ex.getMessage(),ex);
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -9,6 +9,7 @@ import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
 import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository repository;
     private final ProductService productService;
@@ -25,6 +27,7 @@ public class UserService {
     public User createUser(String id) {
         User user = new User();
         user.setId(id);
+        log.info("user created!! {} ",user);
         return repository.save(user);
     }
 
@@ -47,6 +50,7 @@ public class UserService {
                     .friends(friends.stream().map(User::getId).collect(Collectors.toSet()))
                     .build();
             user.set_friends(result);
+            log.info("user found!! {}",user);
         }
         return user;
     }
@@ -73,8 +77,7 @@ public class UserService {
     public void addFriend(final String userId, final String friendId) throws Exception {
         User friend = repository.findById(friendId).orElse(null);
         User user =repository.findById(userId).orElse(null);
-        //User user =findUser(userId);
-
+        log.info("add friend from service  {} ",userId);
         if(user !=null && friend!=null){
             user.addFriend(FriendRelation.builder().user(user).friend(friend).friendshipTime(LocalDateTime.now()).build());
             repository.save(user);

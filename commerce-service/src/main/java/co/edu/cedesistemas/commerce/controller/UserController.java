@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.model.User;
 import co.edu.cedesistemas.commerce.service.IUserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -26,6 +26,7 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
         try {
+            log.info("create user {}", user);
             User created = service.createUser(user);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
@@ -34,6 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
+    @HystrixCommand(fallbackMethod = "getUserByIdFallback")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         try {
             User found = service.getById(id);
@@ -45,6 +47,17 @@ public class UserController {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public ResponseEntity<Status<?>> getUserByIdFallback(final String id){
+        log.error("getting User by if fallback {}", id);
+
+        Status<?> status= Status.builder()
+                ._hits(1)
+                .message("service unavaible, pelase try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value()).build();
+        return new ResponseEntity<>(status,HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
 
     @GetMapping("/users/by-email")
     public ResponseEntity<Status<?>> getUserByEmail(@RequestParam String email) {

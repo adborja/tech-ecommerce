@@ -6,6 +6,7 @@ import co.edu.cedesistemas.commerce.registration.repository.UserRepository;
 import co.edu.cedesistemas.common.SpringProfile;
 import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Profile("!" + SpringProfile.SANDBOX)
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService implements IUserService {
     private final UserRepository repository;
 
@@ -24,10 +26,12 @@ public class UserService implements IUserService {
         user.setCreatedAt(LocalDateTime.now());
         user.setId(UUID.randomUUID().toString());
         user.setStatus(User.Status.INACTIVE);
+        log.info("user created!! {} ",user);
         return repository.save(user);
     }
 
     public User getById(final String id) {
+        log.info("user found{}",id);
         return repository.findById(id).orElse(null);
     }
 

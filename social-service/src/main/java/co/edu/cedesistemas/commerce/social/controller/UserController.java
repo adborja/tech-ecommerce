@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.social.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,18 +16,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class UserController {
     private final UserService service;
 
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
-       User userCreate = service.createUser(user.getId());
-       if(userCreate !=null){
-           return DefaultResponseBuilder.defaultResponse(userCreate, HttpStatus.CREATED);
-       }
-        else return DefaultResponseBuilder.defaultResponse("user not found", HttpStatus.NOT_FOUND);
+        try {
+            User userCreate = service.createUser(user.getId());
+            log.info("user created!! {} ",user.getId());
+            return DefaultResponseBuilder.defaultResponse(userCreate, HttpStatus.CREATED);
+        }catch (Exception ex){
+            log.error(ex.getMessage(),ex);
+            return DefaultResponseBuilder.defaultResponse("user not found", HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/users/{id}/products/{productId}/like")
@@ -64,6 +72,7 @@ public class UserController {
     public ResponseEntity<Status<?>> addFriend(@PathVariable String id, @PathVariable String friendId) {
         try {
             service.addFriend(id,friendId);
+            log.info("add friend from controller  {} ",id);
             return DefaultResponseBuilder.defaultResponse("user's friends", HttpStatus.CREATED);
         } catch (Exception e) {
             return DefaultResponseBuilder.errorResponse(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -74,6 +83,7 @@ public class UserController {
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
        User  user=  service.getById(id);
        if(user!=null){
+           log.info("user found! {}",id);
            return DefaultResponseBuilder.defaultResponse(user, HttpStatus.OK);
        }
        return DefaultResponseBuilder.defaultResponse("user not found", HttpStatus.NOT_FOUND);
