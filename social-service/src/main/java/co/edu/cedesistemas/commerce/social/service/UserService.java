@@ -1,17 +1,29 @@
 package co.edu.cedesistemas.commerce.social.service;
 
+import co.edu.cedesistemas.commerce.social.controller.StoreController;
 import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.model.User;
+import co.edu.cedesistemas.commerce.social.model.relation.FriendRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository repository;
     private final ProductService productService;
@@ -47,14 +59,52 @@ public class UserService {
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).orElse(null);
+        Store store = storeService.getById(storeId);
+        if(user == null || store == null){
+            log.warn("User or store not found, not was possible rate store");
+            throw new Exception("User or store not found, not was possible rate store");
+        }
+        StoreRateRelation rate = StoreRateRelation.builder().rate(value).user(user).store(store).build();
+        user.storeRates(rate);
+        repository.save(user);
     }
 
     public void likeStore(final String userId, final String storeId) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).orElse(null);
+        Store store = storeService.getById(storeId);
+        if(user == null || store == null){
+            log.warn("User or store not found, not was possible like store");
+            throw new Exception("User or store not found, not was possible like store");
+        }
+        StoreLikeRelation like = StoreLikeRelation.builder().user(user).store(store).build();
+        user.storeLikes(like);
+        repository.save(user);
+    }
+
+    public void likeProduct(final String userId, final String productId) throws Exception {
+        User user = repository.findById(userId).orElse(null);
+        Product product = productService.getById(productId);
+        if(user == null || product == null){
+            log.warn("User or product not found, not was possible like product");
+            throw new Exception("User or product not found, not was possible like product");
+        }
+        ProductLikeRelation like = ProductLikeRelation.builder().user(user).product(product).build();
+        user.likes(like);
+        repository.save(user);
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).orElse(null);
+        User friendUser = repository.findById(friendId).orElse(null);
+        if(user == null){
+            log.warn("User not found, not was possible add a friend");
+            throw new Exception("User not found, not was possible add a friend");
+        }
+        FriendRelation relation = FriendRelation.builder().user(user).friend(friendUser).build();
+        user.addFriend(relation);
+        repository.save(user);
     }
+
+
 }

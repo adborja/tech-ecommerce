@@ -13,12 +13,19 @@ dependencies {
 	implementation project(":common")
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-neo4j'
-	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	implementation "org.springframework.boot:spring-boot-starter-hateoas"
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
+	implementation "org.springframework.cloud:spring-cloud-starter-zipkin"
+	implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix"
+	implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix-dashboard"
 
 	implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
 	implementation "com.google.code.gson:gson:${versions.gson}"
+
+	implementation "org.graylog2:gelfj:${versions.gelf}"
+	implementation "biz.paluch.logging:logstash-gelf:${versions.logstash_gelf}"
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
