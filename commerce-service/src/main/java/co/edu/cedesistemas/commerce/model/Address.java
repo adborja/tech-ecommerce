@@ -1,12 +1,18 @@
 package co.edu.cedesistemas.commerce.model;
 
-import co.edu.cedesistemas.common.model.Entity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.RepresentationModel;
 
 @Data
-@EqualsAndHashCode(of = "id")
-public class Address implements Entity<String> {
+@EqualsAndHashCode(of = "id", callSuper=true)
+@Document("address")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Address extends RepresentationModel<Store> {
+    @Id
     private String id;
     private String name;
     private String description;
@@ -18,9 +24,4 @@ public class Address implements Entity<String> {
     private String street2;
     private String street3;
     private String zip;
-
-    @Override
-    public String getId() {
-        return id;
-    }
 }

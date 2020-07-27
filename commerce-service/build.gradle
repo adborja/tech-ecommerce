@@ -1,26 +1,50 @@
-plugins {
-    id 'java'
-}
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: "org.springframework.boot"
+apply plugin: 'com.palantir.docker'
 
 group 'co.edu.cedesistemas'
 version '0.0.1-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation project(":common")
-    implementation "org.springframework:spring-context:${versions.spring}"
-    compileOnly "org.projectlombok:lombok:${versions.lombok}"
-    annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-hateoas"
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
+
+    implementation "com.google.code.gson:gson:${versions.gson}"
+
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    testImplementation 'org.springframework.security:spring-security-test'
     testImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
     testImplementation "io.rest-assured:json-path:${versions.restAssured}"
     testImplementation "io.rest-assured:xml-path:${versions.restAssured}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation "org.hamcrest:hamcrest:${versions.hamcrest}"
-    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation "org.junit.jupiter:junit-jupiter:${versions.jupiter}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+    name "${dockerGroup}:${dockerRegistryPort}/commerce/${project.name}:dev"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
 }
