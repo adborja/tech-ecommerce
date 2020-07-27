@@ -1,10 +1,12 @@
 spring:
+  application:
+    name: social-service
   data:
     neo4j:
-      uri: bolt://neo4j.eladio.internal:7687
+      uri: bolt://neo4j.cedesistemas.local:7687
 
 server:
-  port: 8082
+  port: ${PORT:8082}
   servlet:
     context-path: /api/v1/
 
@@ -16,3 +18,23 @@ springdoc:
     path: /swagger-ui.html
     display-request-duration: true
     groups-order: DESC
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: e-commerce social application
+    port: ${server.port}
+    version: 1.0.0
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://eureka.cedesistemas.local:8761/eureka/

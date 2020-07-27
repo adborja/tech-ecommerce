@@ -5,8 +5,8 @@ docker run --restart=unless-stopped \
         -v /var/data/neo4j/data:/var/lib/neo4j/data \
         -v /var/data/neo4j/conf:/var/lib/neo4j/conf \
         -v /var/data/neo4j/plugins:/var/lib/neo4j/plugins \
-        --hostname neo4j.eladio.local \
-        --name neo4j.eladio.local \
+        --hostname neo4j.cedesistemas.local \
+        --name neo4j.cedesistemas.local \
         --memory=1024m \
         -e "TZ=America/Bogota" \
         -e "NEO4J_AUTH=none" \

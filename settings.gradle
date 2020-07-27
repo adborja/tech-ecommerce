@@ -3,7 +3,9 @@ rootProject.name = 'tech-ecommerce'
 include ':commerce-service'
 include ':common'
 include ':leveling'
-include 'loyalty-service'
 include 'social-service'
+include 'discovery-service'
+include 'gateway-service'
+include 'registration-service'
 
 
