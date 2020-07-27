@@ -61,6 +61,12 @@ public class OrderController {
         }
     }
 
+    @DeleteMapping("/orders/{id}")
+    public ResponseEntity<Status<?>> deleteOrderById(@PathVariable String id) {
+        service.deleteOrder(id);
+        return new ResponseEntity<>(Status.success(), HttpStatus.OK);
+    }
+
     private static void addSelfLink(@NotNull final Order order) {
         Link selfLink = linkTo(methodOn(OrderController.class)
                 .findOrderById(order.getId()))

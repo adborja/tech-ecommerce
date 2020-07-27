@@ -9,4 +9,6 @@ public interface IOrderService {
     Order createOrder(Order order);
     Order getById(String id);
     List<OrderItem> getItemsByOrderId(String id);
+    Order updateOrder(String id, Order order);
+    void deleteOrder(String id);
 }
