@@ -1,8 +1,9 @@
 package co.edu.cedesistemas.commerce.service;
 
-import co.edu.cedesistemas.commerce.event.PaymentEvent;
 import co.edu.cedesistemas.commerce.model.Order;
-import co.edu.cedesistemas.commerce.model.PaymentStatus;
+import co.edu.cedesistemas.common.model.PaymentStatus;
+import co.edu.cedesistemas.common.event.PaymentEvent;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -31,7 +32,7 @@ public class PaymentEventConsumerService {
         if (payment.getStatus().equals(PaymentStatus.APPROVED)) {
             String orderId = payment.getOrderId();
             Order _order = new Order();
-            _order.setStatus(Order.Status.ACCEPTED);
+            _order.setStatus(OrderStatus.ACCEPTED);
             Order order = orderService.updateOrder(orderId, _order);
             log.info("order updated - id: {}, status: {}", order.getId(), order.getStatus());
         }

@@ -15,6 +15,7 @@ public class UserStore {
     private String storeId;
     private LocalDateTime createdAt;
     private Integer points;
+    private Status status;
 
     public enum Status {
         ACTIVE,

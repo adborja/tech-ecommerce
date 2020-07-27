@@ -3,6 +3,7 @@ package co.edu.cedesistemas.commerce.service;
 import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.repository.OrderRepository;
 import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +20,18 @@ import java.util.UUID;
 @Slf4j
 public class OrderService implements IOrderService {
     private final OrderRepository repository;
+    private final EventPublisherService publisherService;
 
     @Override
     public Order createOrder(Order order) {
         order.setId(UUID.randomUUID().toString());
         order.setCreatedAt(LocalDateTime.now());
-        order.setStatus(Order.Status.CREATED);
+        order.setStatus(OrderStatus.CREATED);
         order.calculateValue();
         log.info("order created: {}", order.getId());
+
+        publisherService.publishOrderEvent(order);
+
         return repository.save(order);
     }
 
@@ -38,6 +43,9 @@ public class OrderService implements IOrderService {
             return null;
         }
         BeanUtils.copyProperties(order, found, Utils.getNullPropertyNames(order));
+
+        publisherService.publishOrderEvent(found);
+
         return repository.save(found);
     }
 

@@ -1,8 +1,8 @@
 package co.edu.cedesistemas.commerce.payment.service;
 
 import co.edu.cedesistemas.commerce.payment.config.RabbitMQConfig;
-import co.edu.cedesistemas.commerce.payment.event.PaymentEvent;
 import co.edu.cedesistemas.commerce.payment.model.Payment;
+import co.edu.cedesistemas.common.event.PaymentEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -19,12 +19,13 @@ public class EventPublisherService {
     private final RabbitTemplate template;
 
     public void publishPaymentEvent(Payment payment) {
-        PaymentEvent event = new PaymentEvent();
-        event.setId(payment.getId());
-        event.setOrderId(payment.getOrderId());
-        event.setUserId(payment.getUserId());
-        event.setStatus(payment.getStatus());
-        event.setValue(payment.getValue());
+        PaymentEvent event = PaymentEvent.builder()
+                .id(payment.getId())
+                .orderId(payment.getOrderId())
+                .userId(payment.getUserId())
+                .status(payment.getStatus())
+                .value(payment.getValue())
+                .build();
 
         String json = event.toJSON();
         String msgId = UUID.randomUUID().toString();

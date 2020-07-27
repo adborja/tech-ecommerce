@@ -1,5 +1,7 @@
 package co.edu.cedesistemas.commerce.payment.model;
 
+import co.edu.cedesistemas.common.event.PaymentEvent;
+import co.edu.cedesistemas.common.model.PaymentStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

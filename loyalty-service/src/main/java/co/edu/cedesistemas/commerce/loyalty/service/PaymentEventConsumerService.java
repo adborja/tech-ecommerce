@@ -1,8 +1,8 @@
 package co.edu.cedesistemas.commerce.loyalty.service;
 
-import co.edu.cedesistemas.commerce.loyalty.event.PaymentEvent;
-import co.edu.cedesistemas.commerce.loyalty.model.PaymentStatus;
 import co.edu.cedesistemas.commerce.loyalty.model.UserOrder;
+import co.edu.cedesistemas.common.event.PaymentEvent;
+import co.edu.cedesistemas.common.model.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;

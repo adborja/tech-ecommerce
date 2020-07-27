@@ -1,6 +1,6 @@
 package co.edu.cedesistemas.commerce.loyalty.service;
 
-import co.edu.cedesistemas.commerce.loyalty.model.LoyaltyStatus;
+import co.edu.cedesistemas.common.model.LoyaltyStatus;
 import co.edu.cedesistemas.commerce.loyalty.model.UserOrder;
 import co.edu.cedesistemas.commerce.loyalty.repository.UserOrderRepository;
 import lombok.AllArgsConstructor;

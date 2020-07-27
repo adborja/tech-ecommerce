@@ -1,4 +1,4 @@
-package co.edu.cedesistemas.commerce.payment.model;
+package co.edu.cedesistemas.common.model;
 
 public enum PaymentStatus {
     PENDING,
