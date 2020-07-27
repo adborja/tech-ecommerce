@@ -1,36 +1,61 @@
 package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Order;
-import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.repository.OrderRepository;
 import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.model.OrderStatus;
+import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Profile("!" + SpringProfile.SANDBOX)
-@AllArgsConstructor
 @Service
-public class OrderService implements IOrderService{
-    private OrderRepository repository;
+@AllArgsConstructor
+@Slf4j
+public class OrderService implements IOrderService {
+    private final OrderRepository repository;
+    private final EventPublisherService publisherService;
 
+    @Override
     public Order createOrder(Order order) {
-        order.setStatus(Order.Status.CREATED);
+        order.setId(UUID.randomUUID().toString());
+        order.setCreatedAt(LocalDateTime.now());
+        order.setStatus(OrderStatus.CREATED);
+        order.calculateValue();
+        log.info("order created: {}", order.getId());
+
+        publisherService.publishOrderEvent(order);
+
         return repository.save(order);
     }
 
-    public List<OrderItem> getOrderItemsById(String id) {
-        Optional<Order> optional = repository.findById(id);
-        if(optional.isEmpty()) return Collections.emptyList();
-        else return optional.get().getItems();
+    @Override
+    public Order updateOrder(final String id, final Order order) {
+        Order found = getById(id);
+        if (found == null) {
+            log.warn("order not found: {}", id);
+            return null;
+        }
+        BeanUtils.copyProperties(order, found, Utils.getNullPropertyNames(order));
+
+        publisherService.publishOrderEvent(found);
+
+        return repository.save(found);
     }
 
-    public Order getOrderById(String id) {
-        Order order = repository.findById(id).orElse(null);
-        return order;
+    @Override
+    public Order getById(final String id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void deleteOrder(final String id) {
+        repository.deleteById(id);
     }
 }
