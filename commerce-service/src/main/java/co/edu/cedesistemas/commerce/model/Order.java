@@ -33,4 +33,5 @@ public class Order extends RepresentationModel<Order> {
             orderValue = (float) sum;
         }
     }
+
 }

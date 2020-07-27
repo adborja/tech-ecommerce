@@ -3,6 +3,7 @@ package co.edu.cedesistemas.commerce.controller;
 import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import co.edu.cedesistemas.common.model.Status;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ public class OrderController {
     public ResponseEntity<Status<?>> createOrder(@RequestBody Order order) {
         log.info("Creating the order...");
         try {
-            order.setStatus(Order.Status.CREATED);
+            order.setStatus(OrderStatus.CREATED);
             Order created = this.orderService.createOrder(order);
             log.info("The order was created successfully");
             addLinks(created);
@@ -48,7 +49,7 @@ public class OrderController {
     public ResponseEntity<Status<?>> getOrderById(@PathVariable String id) {
         log.info("Getting the order by id");
         try {
-            Optional<Order> order = this.orderService.findById(id);
+            Optional<Order> order = Optional.ofNullable(this.orderService.getById(id));
 
             if (order.isPresent()) {
                 addSelfLink(order.get());
@@ -66,7 +67,7 @@ public class OrderController {
     public ResponseEntity<Status<?>> getOrderItems(@PathVariable String id) {
         log.info("Getting the order items...");
         try {
-            Optional<Order> order = this.orderService.findById(id);
+            Optional<Order> order = Optional.ofNullable(this.orderService.getById(id));
 
             if (order.isPresent()) {
                 addSelfLink(order.get());
