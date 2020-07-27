@@ -2,13 +2,17 @@ package co.edu.cedesistemas.common.event;
 
 import co.edu.cedesistemas.common.model.OrderStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderEvent {
     private String id; // order id
     private String storeId;
