@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.service.IUserService;
 import co.edu.cedesistemas.commerce.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
 import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
+    @HystrixCommand(fallbackMethod = "getUserByIdFallback")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String userId){
         try{
             User user = this.userService.getUserById(userId);
@@ -42,6 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/by-email")
+    @HystrixCommand(fallbackMethod = "getServiceFallback")
     public ResponseEntity<Status<?>> getUserByEmail(@RequestParam String email){
         try{
             User user = this.userService.getUserByEmail(email);
@@ -77,5 +80,24 @@ public class UserController {
         }catch (Exception ex){
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    //FallBacks
+    private ResponseEntity<Status<?>> getUserByIdFallback(String userId){
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    private ResponseEntity<Status<?>> getServiceFallback(){
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 }
