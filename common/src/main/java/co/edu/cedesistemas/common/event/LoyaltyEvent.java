@@ -10,6 +10,8 @@ import lombok.Data;
 public class LoyaltyEvent {
     private String orderId;
     private String userId;
+    private String storeId;
+    private String userStoreId;
     private Float orderValue;
     private LoyaltyStatus status;
 
@@ -35,12 +37,5 @@ public class LoyaltyEvent {
             ex.printStackTrace();
             return null;
         }
-    }
-
-    public enum Status {
-        CREATED,
-        DELETED,
-        FAILED,
-        PENDING
     }
 }

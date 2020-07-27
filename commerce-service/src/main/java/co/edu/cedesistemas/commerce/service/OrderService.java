@@ -50,7 +50,12 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Order getById(String id) {
+    public Order getById(final String id) {
         return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void deleteOrder(final String id) {
+        repository.deleteById(id);
     }
 }

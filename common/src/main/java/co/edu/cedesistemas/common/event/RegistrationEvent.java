@@ -36,8 +36,8 @@ public class RegistrationEvent {
     }
 
     public enum Status {
-        CREATED,
-        DELETED,
+        USER_CREATED,
+        USER_DELETED,
         FAILED
     }
 }

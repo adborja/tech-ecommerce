@@ -2,8 +2,8 @@ package co.edu.cedesistemas.common.model;
 
 public enum LoyaltyStatus {
     REGISTERED,
-    CREATED,
-    DELETED,
+    USER_CREATED,
+    USER_DELETED,
     FAILED,
     PENDING
 }

@@ -1,5 +1,6 @@
 package co.edu.cedesistemas.commerce.loyalty.model;
 
+import co.edu.cedesistemas.common.model.LoyaltyStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,10 +16,5 @@ public class UserStore {
     private String storeId;
     private LocalDateTime createdAt;
     private Integer points;
-    private Status status;
-
-    public enum Status {
-        ACTIVE,
-        INACTIVE
-    }
+    private LoyaltyStatus status;
 }

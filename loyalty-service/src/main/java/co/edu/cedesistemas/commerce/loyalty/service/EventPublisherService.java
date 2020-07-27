@@ -2,6 +2,7 @@ package co.edu.cedesistemas.commerce.loyalty.service;
 
 import co.edu.cedesistemas.commerce.loyalty.config.RabbitMQConfig;
 import co.edu.cedesistemas.commerce.loyalty.model.UserOrder;
+import co.edu.cedesistemas.commerce.loyalty.model.UserStore;
 import co.edu.cedesistemas.common.event.LoyaltyEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,22 @@ public class EventPublisherService {
         String json = event.toJSON();
         String msgId = UUID.randomUUID().toString();
         String correlationId = order.getId();
+
+        publish(msgId, correlationId, json);
+
+    }
+
+    public void publishLoyaltyEvent(UserStore userStore) {
+        LoyaltyEvent event = LoyaltyEvent.builder()
+                .userStoreId(userStore.getId())
+                .userId(userStore.getUserId())
+                .storeId(userStore.getStoreId())
+                .status(userStore.getStatus())
+                .build();
+
+        String json = event.toJSON();
+        String msgId = UUID.randomUUID().toString();
+        String correlationId = userStore.getUserId();
 
         publish(msgId, correlationId, json);
 
