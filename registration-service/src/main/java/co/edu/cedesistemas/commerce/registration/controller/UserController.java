@@ -35,11 +35,12 @@ public class UserController {
 	@HystrixCommand(fallbackMethod = "getUserByIdFallback")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {        
         try {
+    		log.info("Attempt to get user {}",id);
             User found = service.getById(id);
-            addSelfLink(found);
             if (found != null) {
+            	addSelfLink(found);
                 return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
-            } else return DefaultResponseBuilder.errorResponse("user not found", null, HttpStatus.NOT_FOUND); 
+            } else return DefaultResponseBuilder.defaultResponse("user not found", HttpStatus.NOT_FOUND); 
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -48,6 +49,7 @@ public class UserController {
 	@PostMapping("/users")
 	public ResponseEntity<Status<?>> createUser(@RequestBody User user){
 		try {
+    		log.info("Attempt to create user");
             User created = service.createUser(user);
             addSelfLink(created);
             return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
@@ -59,6 +61,7 @@ public class UserController {
 	@PutMapping("/users/{id}/{active}")
 	public ResponseEntity<Status<?>> updateUserStatus(@PathVariable String id, @PathVariable String active) {
         try {
+        	log.info("Attempt to update user {} with status {}",id, active);
             User updated = service.updateUserStatus(id, active);
             if (updated != null) {
                 return DefaultResponseBuilder.defaultResponse(updated, HttpStatus.OK);

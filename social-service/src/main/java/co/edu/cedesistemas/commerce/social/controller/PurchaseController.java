@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.social.service.PurchaseService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,14 @@ import java.util.Set;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class PurchaseController {
     private final PurchaseService service;
 
     @PutMapping("/purchases/users/{id}/products/{productId}")
     public ResponseEntity<Status<?>> purchase(@PathVariable String id, @PathVariable String productId) {
         try {
+        	
         	PurchaseRelation pr = service.purchase(id, productId);
 			return DefaultResponseBuilder.defaultResponse(pr, HttpStatus.OK);
 		} catch (Exception e) {

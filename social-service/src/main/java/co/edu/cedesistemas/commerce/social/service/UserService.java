@@ -10,6 +10,8 @@ import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository.StoreOccurrence;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,27 +22,32 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository repository;
     private final ProductService productService;
     private final StoreService storeService;
 
     public User createUser(User user) {
-    	user.setId(UUID.randomUUID().toString());
+    	log.info("creating user");
+    	user.setId(user.getId());
     	return repository.save(user);
     }
     
     public User createUser(String id) {
+    	log.info("creating user with id {}",id);
         User user = new User();
         user.setId(id);
         return repository.save(user);
     }
 
     public User update(User user) {
+    	log.info("updating user");
         return repository.save(user);
     }
 
     public User getById(final String id) {
+    	log.info("getting user by id {}",id);
         User user = repository.findById(id).orElse(null);
         if (user != null) {
             Set<Product> productsLiked = productService.getByUserLiked(user.getId());
@@ -60,6 +67,7 @@ public class UserService {
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
+    	log.info("rating store {} with rate {} by user {}",storeId,value,userId);
     	User user = getById(userId);
         
         Store storeLiked = storeService.getById(storeId);
@@ -76,6 +84,7 @@ public class UserService {
     }
 
     public void likeStore(final String userId, final String storeId) throws Exception {
+    	log.info("getting like to store {} by user {}",storeId,userId);
         User user = getById(userId);
         Store storeLiked = storeService.getById(storeId);
         
@@ -94,6 +103,7 @@ public class UserService {
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
+    	log.info("adding friend {} by user {}",friendId,userId);
         User user = getById(userId);
         User newFriend = getById(friendId);
 
@@ -112,6 +122,7 @@ public class UserService {
     }
 
 	public void likeProduct(final String id, final String productId) throws Exception {
+    	log.info("getting like to product {} by user {}",productId,id);
 		User user = getById(id);
 		Product productLiked = productService.getById(productId);
 		
@@ -132,7 +143,8 @@ public class UserService {
 	}
 
 	public List<StoreOccurrence> recommendStores(String id, String zone, String productType, Integer limit) {
-		
+		log.info("recommending stores with zone {} and product type {} by user {} - results limit {}",
+				zone, productType, id, limit);
 		return storeService.recommendStoresByZoneAndProductType(id, zone, productType, limit);
 		
 	}
