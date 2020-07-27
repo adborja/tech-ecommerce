@@ -7,4 +7,6 @@ include 'social-service'
 include 'discovery-service'
 include 'gateway-service'
 include 'registration-service'
+include 'loyalty-service'
+include 'payment-service'
 
