@@ -9,6 +9,13 @@ spring:
       host: mongodb.cedesistemas.local
   profiles:
     active: sanbox
+  zipkin:
+    base-url: http://jaeger.cedesistemas.local:9411/
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
 
 server:
   port: 7080

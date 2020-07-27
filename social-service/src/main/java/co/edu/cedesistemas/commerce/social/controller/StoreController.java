@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import co.edu.cedesistemas.commerce.social.service.StoreService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
@@ -32,6 +33,7 @@ public class StoreController {
     private final StoreService service;
 
     @PostMapping("/stores")
+    //@HystrixCommand(fallbackMethod = "createStoreFallback")
     public ResponseEntity<Status<?>> createStore(@RequestBody Store store) {
         try {
             Store created = service.createStore(store);
@@ -88,5 +90,15 @@ public class StoreController {
                 .withRel("top-5-products")
                 .withType("GET");
         store.add(byTypeLink);
+    }
+
+    private ResponseEntity<Status<?>> createStoreFallback(Store store) {
+        log.error("creating store fallback {}", store.getId());
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again. Store id: "+store.getId())
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 }

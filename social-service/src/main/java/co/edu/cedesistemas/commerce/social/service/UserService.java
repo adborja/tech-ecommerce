@@ -99,7 +99,7 @@ public class UserService {
         }
         User userFriend = repository.findById(friendId).orElse(null);
         if (userFriend == null) {
-            throw new Exception("user not found");
+            throw new Exception("userFriend not found");
         }
         FriendRelation friendRelation = FriendRelation.builder()
                 .friendshipTime(LocalDateTime.now())
