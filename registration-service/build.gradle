@@ -24,6 +24,9 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
     implementation "com.google.code.gson:gson:${versions.gson}"
 
+    implementation "org.graylog2:gelfj:${versions.gelf}"
+    implementation "biz.paluch.logging:logstash-gelf:${versions.logstash_gelf}"
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
