@@ -1,0 +1,85 @@
+buildscript {
+    ext {
+        springBootVersion = "2.3.1.RELEASE"
+        gradleDocker = "0.22.1"
+        springCloudVersion = "Hoxton.SR6"
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "gradle.plugin.com.palantir.gradle.docker:gradle-docker:${gradleDocker}"
+    }
+}
+
+plugins {
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+    id 'java-library'
+}
+
+group = 'co.edu.cedesistemas'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+allprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    jcenter()
+    mavenLocal()
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.SR4")
+    dockerGroup = 'registry.cedesistemas.internal'
+    dockerRegistryPort = '5000'
+    versions = [
+            "gelf": "1.1.16",
+            "logstash_gelf": "1.13.0",
+            "springdoc": "1.4.3",
+            "mockito": "3.1.0",
+            "hamcrest": "2.1",
+            "restAssured": "4.1.2",
+            "lombok": "1.18.12",
+            "gson": "2.8.5",
+            "spring": "5.2.7.RELEASE",
+            "jackson": "2.11.1",
+            "jupiter": "5.6.2"
+    ]
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:${versions.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+    testImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
+    testImplementation "io.rest-assured:json-path:${versions.restAssured}"
+    testImplementation "io.rest-assured:xml-path:${versions.restAssured}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "org.hamcrest:hamcrest:${versions.hamcrest}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${versions.jupiter}"
+}
