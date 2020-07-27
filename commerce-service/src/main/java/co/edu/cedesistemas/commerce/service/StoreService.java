@@ -2,6 +2,7 @@ package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.repository.StoreRepository;
+import co.edu.cedesistemas.commerce.service.interfaces.IStoreService;
 import co.edu.cedesistemas.common.SpringProfile;
 import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;

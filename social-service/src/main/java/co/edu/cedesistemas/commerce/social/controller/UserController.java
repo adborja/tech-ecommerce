@@ -5,7 +5,9 @@ import co.edu.cedesistemas.commerce.social.service.StoreService;
 import co.edu.cedesistemas.commerce.social.service.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class UserController {
     private final UserService service;
     private final StoreService storeService;
@@ -69,6 +72,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
+    @HystrixCommand(fallbackMethod = "getByIdFallback")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         try {
             return DefaultResponseBuilder.defaultResponse(service.getById(id), HttpStatus.CREATED);
@@ -86,5 +90,15 @@ public class UserController {
         }catch (Exception e){
             return DefaultResponseBuilder.errorResponse(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private ResponseEntity<Status<?>> getByIdFallback(final String id) {
+        log.error("getting user by id fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 }

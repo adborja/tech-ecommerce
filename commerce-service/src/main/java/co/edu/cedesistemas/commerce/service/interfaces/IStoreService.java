@@ -1,4 +1,4 @@
-package co.edu.cedesistemas.commerce.service;
+package co.edu.cedesistemas.commerce.service.interfaces;
 
 import co.edu.cedesistemas.commerce.model.Store;
 

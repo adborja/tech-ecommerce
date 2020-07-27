@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.User;
 import co.edu.cedesistemas.commerce.social.model.relation.PurchaseRelation;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,11 +13,13 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class PurchaseService {
     private final UserService userService;
     private final ProductService productService;
 
     public PurchaseRelation purchase(final String userId, final String productId) throws Exception {
+        log.warn("creando relacion usuario: " + userId + " -> producto: " + productId);
         User user = userService.getById(userId);
         if (user == null) {
             throw new Exception("user not found");
@@ -40,6 +43,7 @@ public class PurchaseService {
     public Set<PurchaseRelation> purchase(final String userId, final Set<String> productIds) throws Exception {
         User user = userService.getById(userId);
         if (user == null) {
+            log.warn("usuario no existe: " + userId);
             throw new Exception("user not found");
         }
         Set<PurchaseRelation> purchases = productIds.stream()
