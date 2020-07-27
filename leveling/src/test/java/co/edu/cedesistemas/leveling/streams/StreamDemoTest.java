@@ -65,6 +65,7 @@ public class StreamDemoTest {
                 .mapToInt(s -> (int) s.getV())
                 .sum();
         assertThat(sSum, equalTo(1200));
+
     }
 
     @Test
