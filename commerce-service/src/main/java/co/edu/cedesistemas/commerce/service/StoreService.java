@@ -21,6 +21,7 @@ import java.util.UUID;
 public class StoreService implements IStoreService {
     private final StoreRepository repository;
 
+
     @Override
     public Store createStore(final Store store) {
         log.info("creating store {}", store.getName());

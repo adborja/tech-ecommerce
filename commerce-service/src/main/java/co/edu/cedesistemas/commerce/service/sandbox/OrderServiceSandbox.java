@@ -31,12 +31,13 @@ public class OrderServiceSandbox implements  IOrderService{
         product2.setName("Queso");
 
         OrderItem orderItem1 = new OrderItem();
-        orderItem1.setProduct(product);
+        orderItem1.setProductId(UUID.randomUUID().toString());
         orderItem1.setFinalPrice((float) 2500);
         orderItem1.setQuantity(10);
 
+
         OrderItem orderItem2 = new OrderItem();
-        orderItem2.setProduct(product2);
+        orderItem2.setProductId(UUID.randomUUID().toString());
         orderItem2.setFinalPrice((float) 4800);
         orderItem2.setQuantity(10);
 
@@ -54,16 +55,18 @@ public class OrderServiceSandbox implements  IOrderService{
     @Override
     public Order getOrder(final String id)
     {
+        String idNuevo=null;
         Order order = new Order();
         User user = new User();
 
-        user.setId(UUID.randomUUID().toString());
+        idNuevo=UUID.randomUUID().toString();
+        user.setId(idNuevo);
         user.setName("Jaime");
         user.setLastName("Barrera");
 
         order.setId(id);
         order.setCreatedAt(LocalDateTime.now());
-        order.setUser(user);
+        order.setUserId(idNuevo);
         return order;
     }
 
