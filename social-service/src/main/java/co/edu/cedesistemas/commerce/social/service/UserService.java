@@ -55,6 +55,14 @@ public class UserService {
         return user;
     }
 
+    public void deleteUser(final String id) {
+        User found = getById(id);
+        if (found != null) {
+            repository.deleteById(id);
+            publisherService.publishSocialUserEvent(found, SocialEvent.Status.DELETED);
+        }
+    }
+
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
         User foundUser = this.getById(userId);
         Store foundStore = this.storeService.getStoreById(storeId);

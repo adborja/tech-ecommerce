@@ -39,5 +39,4 @@ public class EventPublisherService {
         Message message = new Message(evtMsgBytes, msgProps);
         template.send(RabbitMQConfig.TOPIC_EXCHANGE, "registration.event." + msgId, message);
     }
-
 }

@@ -18,7 +18,7 @@ import java.util.UUID;
 public class EventPublisherService {
     private final RabbitTemplate template;
 
-    public void publishSocialEvent(User user, SocialEvent.Status status) {
+    public void publishSocialUserEvent(User user, SocialEvent.Status status) {
         SocialEvent event = SocialEvent.builder()
                 .userId(user.getId())
                 .status(status)
