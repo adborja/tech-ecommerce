@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.model;
 
 import lombok.*;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.RepresentationModel;
@@ -20,9 +21,10 @@ public class Order extends RepresentationModel<Order> {
     private String userId;
     private String storeId;
     private String shippingAddressId;
-    private Status status;
+    private OrderStatus status;
     private LocalDateTime createdAt;
     private List<OrderItem> items;
+    private Float orderValue;
     private User user;
     private Store store;
     private Address shippingAddress;
@@ -34,5 +36,11 @@ public class Order extends RepresentationModel<Order> {
         CANCELLED,
         SHIPPED,
         DELIVERED
+    }
+    public void calculateValue() {
+        if (items != null) {
+            double sum = items.stream().mapToDouble(i -> i.getFinalPrice() * i.getQuantity()).sum();
+            orderValue = (float) sum;
+        }
     }
 }

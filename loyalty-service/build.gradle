@@ -6,10 +6,6 @@ apply plugin: 'com.palantir.docker'
 group 'co.edu.cedesistemas'
 version '0.0.1-SNAPSHOT'
 
-bootRun{
-    systemProperties System.properties
-}
-
 dependencies {
     implementation project(":common")
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
