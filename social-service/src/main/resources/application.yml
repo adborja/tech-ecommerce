@@ -12,6 +12,11 @@ spring:
   sleuth:
     sampler:
     probability: 1
+  rabbitmq:
+    host: rabbitmq.cedesistemas.local
+    port: 5672
+    username: guest
+    password: guest
 server:
   port: ${PORT:8082}
   servlet:
