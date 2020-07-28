@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-    private static final String QUEUE_NAME = "payment.event.q";
-    private static final String ROUTING_KEY = "payment.event.#";
-    public static final String TOPIC_EXCHANGE = "payment.event.x";
+    private static final String QUEUE_NAME = "social.event.q";
+    private static final String ROUTING_KEY = "social.event.#";
+    public static final String TOPIC_EXCHANGE = "social.event.x";
 
     @Value("${spring.rabbitmq.host:localhost}")
     private String hostname;

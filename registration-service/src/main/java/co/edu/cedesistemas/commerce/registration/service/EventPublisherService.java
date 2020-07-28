@@ -1,8 +1,8 @@
 package co.edu.cedesistemas.commerce.registration.service;
 
-import co.edu.cedesistemas.commerce.payment.config.RabbitMQConfig;
-import co.edu.cedesistemas.commerce.payment.model.Payment;
-import co.edu.cedesistemas.common.event.PaymentEvent;
+import co.edu.cedesistemas.commerce.registration.config.RabbitMQConfig;
+import co.edu.cedesistemas.commerce.registration.model.User;
+import co.edu.cedesistemas.common.event.RegistrationEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -18,18 +18,15 @@ import java.util.UUID;
 public class EventPublisherService {
     private final RabbitTemplate template;
 
-    public void publishPaymentEvent(Payment payment) {
-        PaymentEvent event = PaymentEvent.builder()
-                .id(payment.getId())
-                .orderId(payment.getOrderId())
-                .userId(payment.getUserId())
-                .status(payment.getStatus())
-                .value(payment.getValue())
+    public void publishRegistrationEvent(User user, RegistrationEvent.Status status) {
+        RegistrationEvent event = RegistrationEvent.builder()
+                .userId(user.getId())
+                .status(status)
                 .build();
 
         String json = event.toJSON();
         String msgId = UUID.randomUUID().toString();
-        String correlationId = payment.getId();
+        String correlationId = user.getId();
         String contentType = "application/json";
 
         MessageProperties msgProps = new MessageProperties();
@@ -40,6 +37,7 @@ public class EventPublisherService {
         byte[] evtMsgBytes = json.getBytes();
 
         Message message = new Message(evtMsgBytes, msgProps);
-        template.send(RabbitMQConfig.TOPIC_EXCHANGE, "payment.event." + msgId, message);
+        template.send(RabbitMQConfig.TOPIC_EXCHANGE, "registration.event." + msgId, message);
     }
+
 }

@@ -69,6 +69,17 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Status<?>> deleteUser(@PathVariable String id) {
+        log.info("Deleting user...");
+        try {
+            this.userService.deleteUser(id);
+            return DefaultResponseBuilder.defaultResponse("User deleted successfully", HttpStatus.OK);
+        } catch (Exception ex) {
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     private ResponseEntity<Status<?>> getUserByIdByIdFallback(final String id) {
         log.error("Getting user by id fallback {}", id);
         Status<?> status = Status.builder()._hits(1)

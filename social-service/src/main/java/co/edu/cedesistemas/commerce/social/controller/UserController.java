@@ -151,4 +151,16 @@ public class UserController {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Status<?>> deleteUser(@PathVariable String id) {
+        log.info("Deleting user...");
+        try {
+            this.service.deleteUser(id);
+            return DefaultResponseBuilder.defaultResponse("User deleted successfully", HttpStatus.OK);
+        } catch (Exception ex) {
+            log.error("There was an error deleting the user");
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

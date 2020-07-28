@@ -8,6 +8,7 @@ import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
 import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
 import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
+import co.edu.cedesistemas.common.event.SocialEvent;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,14 @@ public class UserService {
     private final UserRepository repository;
     private final ProductService productService;
     private final StoreService storeService;
+    private final EventPublisherService publisherService;
 
     public User createUser(String id) {
         User user = new User();
         user.setId(id);
-        return repository.save(user);
+        User userCreated = repository.save(user);
+        this.publisherService.publishSocialEvent(user, SocialEvent.Status.CREATED);
+        return userCreated;
     }
 
     public User update(User user) {
@@ -82,5 +86,14 @@ public class UserService {
                 .friend(foundFriend).friendshipTime(LocalDateTime.now())
                 .user(foundUser).build());
         this.repository.save(foundUser);
+    }
+
+    public void deleteUser(String id) {
+        User userFound = this.getById(id);
+
+        if (userFound != null) {
+            this.repository.delete(userFound);
+            this.publisherService.publishSocialEvent(userFound, SocialEvent.Status.DELETED);
+        }
     }
 }

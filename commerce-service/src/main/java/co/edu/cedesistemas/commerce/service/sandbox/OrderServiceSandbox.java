@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,22 @@ public class OrderServiceSandbox implements IOrderService {
     }
 
     @Override
-    public Optional<Order> findById(String id) {
+    public Order updateOrder(String id, Order order) {
+        return null;
+    }
+
+    @Override
+    public void deleteOrder(String id) {
+
+    }
+
+    @Override
+    public Order getById(String id) {
 
         Order order = new Order();
         order.setId(id);
         order.setCreatedAt(LocalDateTime.now());
-        order.setStatus(Order.Status.CREATED);
+        order.setStatus(OrderStatus.CREATED);
 
         OrderItem item1 = new OrderItem();
         item1.setFinalPrice(2000f);
@@ -44,6 +55,6 @@ public class OrderServiceSandbox implements IOrderService {
         order.setStoreId("84748494");
         order.setUserId("9090948894849");
 
-        return Optional.of(order);
+        return order;
     }
 }
