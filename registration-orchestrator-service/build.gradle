@@ -12,27 +12,13 @@ repositories {
 dependencies {
     implementation project(":common")
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
-    implementation "org.springframework.boot:spring-boot-starter-hateoas"
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix"
-    implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix-dashboard"
-    implementation "org.springframework.boot:spring-boot-starter-amqp"
-
-
-    implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
-    implementation "org.springframework.cloud:spring-cloud-starter-zipkin"
-
-    implementation "org.graylog2:gelfj:${versions.gelf}"
-    implementation "biz.paluch.logging:logstash-gelf:${versions.logstash_gelf}"
-
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.3.1.RELEASE'
 
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
     implementation "org.springframework.cloud:spring-cloud-starter-zipkin"
     implementation "org.springframework.boot:spring-boot-starter-amqp"
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
     implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
     implementation "com.google.code.gson:gson:${versions.gson}"
