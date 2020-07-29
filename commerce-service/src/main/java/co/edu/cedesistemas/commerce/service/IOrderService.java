@@ -10,7 +10,10 @@ public interface IOrderService {
 
     Order createOrder(Order order);
 
-    Order getById(String id) throws Exception;
+    Order updateOrder(String id, Order order) throws Exception;
+
+   Order getById(String id) throws Exception;
+
 
     List<OrderItem> getOrderItems(String id);
 }

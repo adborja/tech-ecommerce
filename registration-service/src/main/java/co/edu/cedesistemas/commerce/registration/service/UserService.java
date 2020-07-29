@@ -2,6 +2,7 @@ package co.edu.cedesistemas.commerce.registration.service;
 
 import co.edu.cedesistemas.commerce.registration.model.User;
 import co.edu.cedesistemas.commerce.registration.repository.UserRepository;
+import co.edu.cedesistemas.common.event.RegistrationEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,14 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository repository;
+    private final EventPublisherService publisherService;
 
     public User createUser(User user) {
         log.info("creating user {}", user.getName());
     	user.setStatus(User.Status.INACTIVE);
-        return repository.save(user);
+        User userCreated = repository.save(user);
+    	publisherService.publishregistrationEvent(userCreated, RegistrationEvent.Status.USER_CREATED);
+        return userCreated;
     }
 
     public User getById(String id) {
@@ -29,7 +33,18 @@ public class UserService {
         log.info("activate user with id: {}", id);
         User userActive = getById(id);
         userActive.setStatus(User.Status.ACTIVE);
+
         return repository.save(userActive);
+
+    }
+
+    public void deleteUser(String id){
+
+        User found = getById(id);
+        if (found != null){
+            repository.deleteById(id);
+            publisherService.publishregistrationEvent(found, RegistrationEvent.Status.USER_CREATED);
+        }
 
     }
 }

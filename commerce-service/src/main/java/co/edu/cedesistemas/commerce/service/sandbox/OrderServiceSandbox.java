@@ -3,10 +3,11 @@ package co.edu.cedesistemas.commerce.service.sandbox;
 import co.edu.cedesistemas.commerce.model.*;
 import co.edu.cedesistemas.commerce.service.*;
 import co.edu.cedesistemas.common.SpringProfile;
-import co.edu.cedesistemas.common.model.Status;
+import co.edu.cedesistemas.common.model.OrderStatus;
+import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,11 +19,6 @@ import java.util.UUID;
 @Service
 public class OrderServiceSandbox implements IOrderService {
 
-    private final IAddressService addressService;
-    private final IProductService productService;
-    private final IUserService userService;
-    private final IStoreService storeService;
-
     @Override
     public Order createOrder(Order order) {
         order.setId(UUID.randomUUID().toString());
@@ -30,40 +26,24 @@ public class OrderServiceSandbox implements IOrderService {
     }
 
     @Override
-    public Order getById(String id) throws Exception {
+    public Order updateOrder(String id, Order order) throws Exception {
+        if (order.getId() != null) {
+            throw new Exception("id cannot be updated");
+        }
+        Order found = getById(id);
+        BeanUtils.copyProperties(order, found, Utils.getNullPropertyNames(order));
+        return found;
+    }
 
-        Address addressCreated = addressService.getById(UUID.randomUUID().toString());
-        Product productCreated = productService.getById(UUID.randomUUID().toString());
-        User userCreated = userService.getById(UUID.randomUUID().toString());
-        Store storeCreated = storeService.getById(UUID.randomUUID().toString());
+    @Override
+    public Order getById(String id)  throws Exception{
 
-        // Product
-/*        Product p = new Product();
-        p.setId(UUID.randomUUID().toString());
-        p.setName("name Product");
-        p.setDescription("description Product");*/
+
         // OrderItems
         final OrderItem orderItem = new OrderItem();
         orderItem.setProductId(UUID.randomUUID().toString());
         orderItem.setFinalPrice(123.2F);
         orderItem.setQuantity(12);
-        // User
-        /*final User user = new User();
-        user.setId(UUID.randomUUID().toString());
-        user.setEmail("123@store.com");
-        user.setName("fake name");
-        user.setLastName("fake lasname");
-        // Store
-        final Store store = new Store();
-        store.setId(UUID.randomUUID().toString());
-        store.setName("face name store");
-
-
-        store.setPhone("123-123-123");
-        store.setAddress("fake address");
-        store.setType(Store.Type.TECHNOLOGY);
-        store.setCreatedAt(LocalDateTime.now());*/
-        //Address
 
 
         return Order.builder()
@@ -71,7 +51,7 @@ public class OrderServiceSandbox implements IOrderService {
                 .userId(UUID.randomUUID().toString())
                 .storeId(UUID.randomUUID().toString())
                 .shippingAddressId(UUID.randomUUID().toString())
-                .status(Order.Status.CREATED)
+                .status(OrderStatus.CREATED)
                 .createdAt(LocalDateTime.now())
                 .items(List.of(orderItem))
                 .build();

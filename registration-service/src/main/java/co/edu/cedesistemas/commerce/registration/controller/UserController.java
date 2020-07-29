@@ -63,6 +63,12 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Status<?>> deleteUserById(@PathVariable String id) {
+        service.deleteUser(id);
+        return new ResponseEntity<>(Status.success(), HttpStatus.OK);
+    }
+
     private static void addSelfLink(@NotNull final User user) {
         Link selfLink = linkTo(methodOn(UserController.class)
                 .getUserById(user.getId()))

@@ -1,5 +1,6 @@
 package co.edu.cedesistemas.commerce.payment.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Slf4j
 public class RabbitMQConfig {
     private static final String QUEUE_NAME = "payment.event.q";
     private static final String ROUTING_KEY = "payment.event.#";
@@ -31,18 +33,21 @@ public class RabbitMQConfig {
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory cf = new CachingConnectionFactory(hostname, port);
-        cf.setUsername(username);
-        cf.setPassword(password);
+        cf.setUri("amqp://foxmowaw:GaVJ7_DMMl8PihaPcPuzWsNVcQVVdaai@llama.rmq.cloudamqp.com/foxmowaw");
+       // cf.setUsername(username);
+        //cf.setPassword(password);
         return cf;
     }
 
     @Bean
     public Queue queue() {
+        log.info("crando cola");
         return new Queue(QUEUE_NAME, true);
     }
 
     @Bean
     public TopicExchange exchange() {
+        log.info("crando exchange");
         return new TopicExchange(TOPIC_EXCHANGE);
     }
 
@@ -58,6 +63,7 @@ public class RabbitMQConfig {
 
     @Bean
     public RabbitTemplate template() {
+        log.info("template");
         RabbitTemplate template = new RabbitTemplate(connectionFactory());
         template.setRoutingKey(ROUTING_KEY);
         return template;

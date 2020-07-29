@@ -1,10 +1,6 @@
-package co.edu.cedesistemas.commerce.loyalty.config;
+package co.edu.cedesistemas.commerce.social.config;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -15,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-    private static final String QUEUE_NAME = "loyalty.event.q";
-    private static final String ROUTING_KEY = "loyalty.event.#";
-    public static final String TOPIC_EXCHANGE = "loyalty.event.x";
+    private static final String QUEUE_NAME = "social.event.q";
+    private static final String ROUTING_KEY = "social.event.#";
+    public static final String TOPIC_EXCHANGE = "social.event.x";
 
     @Value("${spring.rabbitmq.host:localhost}")
     private String hostname;
@@ -31,9 +27,8 @@ public class RabbitMQConfig {
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory cf = new CachingConnectionFactory(hostname, port);
-        cf.setUri("amqp://foxmowaw:GaVJ7_DMMl8PihaPcPuzWsNVcQVVdaai@llama.rmq.cloudamqp.com/foxmowaw");
-       // cf.setUsername(username);
-        //cf.setPassword(password);
+        cf.setUsername(username);
+        cf.setPassword(password);
         return cf;
     }
 

@@ -1,5 +1,6 @@
 package co.edu.cedesistemas.commerce.model;
 
+import co.edu.cedesistemas.common.model.OrderStatus;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

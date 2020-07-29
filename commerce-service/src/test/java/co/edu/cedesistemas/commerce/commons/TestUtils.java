@@ -6,6 +6,7 @@ import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.model.User;
+import co.edu.cedesistemas.common.model.OrderStatus;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -24,7 +25,7 @@ public final class TestUtils {
         order.setId(UUID.randomUUID().toString());
         order.setCreatedAt(LocalDateTime.now());
         order.setShippingAddressId(UUID.randomUUID().toString());
-        order.setStatus(Order.Status.CREATED);
+        order.setStatus(OrderStatus.CREATED);
         order.setStoreId(UUID.randomUUID().toString());
         order.setUserId(UUID.randomUUID().toString());
         return order;

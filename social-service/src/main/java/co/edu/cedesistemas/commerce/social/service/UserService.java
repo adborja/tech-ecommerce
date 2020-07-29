@@ -8,12 +8,11 @@ import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
 import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
 import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
+import co.edu.cedesistemas.common.event.SocialEvent;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,6 +22,7 @@ public class UserService {
     private final UserRepository repository;
     private final ProductService productService;
     private final StoreService storeService;
+    private final EventPublisherService publisherService;
 
     public User createUser(String id) {
         User user = new User();
@@ -93,11 +93,11 @@ public class UserService {
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        User user = repository.findById(userId).orElse(null);
+        User user = repository.findUser(userId).orElse(null);
         if (user == null) {
             throw new Exception("user not found");
         }
-        User userFriend = repository.findById(friendId).orElse(null);
+        User userFriend = repository.findUser(friendId).orElse(null);
         if (userFriend == null) {
             throw new Exception("userFriend not found");
         }
@@ -109,6 +109,14 @@ public class UserService {
         user.addFriend(friendRelation);
         repository.save(user);
 
+    }
+
+    public void deleteUser(final String id) {
+        User found = getById(id);
+        if (found != null) {
+            repository.deleteById(id);
+            publisherService.publishSocialUserEvent(found, SocialEvent.Status.DELETED);
+        }
     }
 
     public void likeProduct(String userId, String productId) throws Exception{

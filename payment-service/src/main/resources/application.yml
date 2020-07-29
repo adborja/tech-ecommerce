@@ -15,10 +15,10 @@ spring:
     sampler:
       probability: 1
   rabbitmq:
-    host: rabbitmq.cedesistemas.local
+    host: foxmowaw:GaVJ7_DMMl8PihaPcPuzWsNVcQVVdaai@llama.rmq.cloudamqp.com/foxmowaw
     port: 5672
-    username: guest
-    password: guest
+    username: foxmowaw
+    password: GaVJ7_DMMl8PihaPcPuzWsNVcQVVdaai
 
 server:
   port: ${PORT:8084}

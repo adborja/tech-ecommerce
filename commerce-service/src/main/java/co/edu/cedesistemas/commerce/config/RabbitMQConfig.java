@@ -31,8 +31,9 @@ public class RabbitMQConfig {
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory cf = new CachingConnectionFactory(hostname, port);
-        cf.setUsername(username);
-        cf.setPassword(password);
+        cf.setUri("amqp://foxmowaw:GaVJ7_DMMl8PihaPcPuzWsNVcQVVdaai@llama.rmq.cloudamqp.com/foxmowaw");
+        //cf.setUsername(username);
+        //cf.setPassword(password);
         return cf;
     }
 
