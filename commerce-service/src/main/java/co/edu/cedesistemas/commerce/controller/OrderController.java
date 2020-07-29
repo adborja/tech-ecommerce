@@ -1,8 +1,8 @@
 package co.edu.cedesistemas.commerce.controller;
 
-import co.edu.cedesistemas.commerce.model.*;
+import co.edu.cedesistemas.commerce.model.Order;
+import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.service.IOrderService;
-import co.edu.cedesistemas.commerce.service.OrderService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -14,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -48,9 +46,9 @@ public class OrderController {
     @HystrixCommand(fallbackMethod = "getByIdFallback")
     public ResponseEntity<Status<?>> getAddress(@PathVariable String id) {
         try {
-            Optional<Order> order = service.getOrder(id);
-            if (order.isPresent()) {
-                List<OrderItem> orderItems =  order.get().getItems();
+            Order order = service.getById(id);
+            if (order != null) {
+                List<OrderItem> orderItems =  order.getItems();
                 return DefaultResponseBuilder.defaultResponse(orderItems, HttpStatus.OK);
             }
             else
@@ -66,9 +64,8 @@ public class OrderController {
     @HystrixCommand(fallbackMethod = "getByIdFallback")
     public ResponseEntity<Status<?>> getItems(@PathVariable String id) {
         try {
-            Optional<Order> order = service.getOrder(id);
-            if(order.isPresent()) {
-
+            Order order = service.getById(id);
+            if(order!=null) {
                 return DefaultResponseBuilder.defaultResponse(order, HttpStatus.OK);
             }
             else
@@ -104,6 +101,12 @@ public class OrderController {
                 .code(HttpStatus.SERVICE_UNAVAILABLE.value())
                 .build();
         return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @DeleteMapping("/orders/{id}")
+    public ResponseEntity<Status<?>> deleteOrderById(@PathVariable String id) {
+        service.deleteOrder(id);
+        return new ResponseEntity<>(Status.success(), HttpStatus.OK);
     }
 
 }

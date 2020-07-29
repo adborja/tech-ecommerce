@@ -37,29 +37,11 @@ zuul:
   routes:
     commerce:
       path: /commerce/**
-      url: http://localhost:8081/
-    registration:
-      path: /registration/**
-      #serviceId: social-service
-      url: http://localhost:8082/
+      serviceId: commerce-service
     social:
       path: /social/**
-      url: http://localhost:8083/
+      serviceId: social-service
 
-#ribbon:
-#  eureka:
-#    enabled: false
-
-#social-service:
-#  ribbon:
-#    listOfServers: http://localhost:8082, http://localhost:9082
-#=======
-#      serviceId: commerce-service
-#    social:
-#      path: /social/**
-#      serviceId: social-service
-#
-#ribbon:
-#  eureka:
-#    enabled: true
-#>>>>>>> develop
+ribbon:
+  eureka:
+    enabled: true

@@ -36,7 +36,6 @@ public class UserService {
         return repository.save(updated);
     }
 
-
     public void deleteUser(final User user) {
         repository.delete(user);
     }
