@@ -2,6 +2,7 @@ package co.edu.cedesistemas.commerce.registration.service;
 
 import co.edu.cedesistemas.commerce.registration.model.User;
 import co.edu.cedesistemas.commerce.registration.repository.UserRepository;
+import co.edu.cedesistemas.common.event.RegistrationEvent;
 import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +17,15 @@ import java.util.UUID;
 @Slf4j
 public class UserService {
     private final UserRepository repository;
+    private final EventPublisherService publisherService;
 
     public User createUser(final User user) {
         log.info("R creating User {}", user.getName());
         user.setId(UUID.randomUUID().toString());
         user.setStatus(User.Status.INACTIVE);
-        return repository.save(user);
+        User created = repository.save(user);
+        publisherService.publishRegistrationEvent(created, RegistrationEvent.Status.USER_CREATED);
+        return created;
     }
 
     public User getById(final String id) {
@@ -36,5 +40,14 @@ public class UserService {
         }
         user.setStatus(User.Status.ACTIVE);
         return repository.save(user);
+    }
+    
+    public void deleteUser(String id){
+        User found = getById(id);
+        if(found != null){
+            repository.deleteById(id);
+            publisherService.publishRegistrationEvent(found, RegistrationEvent.Status.USER_DELETED);
+        }
+
     }
 }
