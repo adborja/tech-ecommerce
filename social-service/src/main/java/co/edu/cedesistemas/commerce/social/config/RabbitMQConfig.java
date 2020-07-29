@@ -1,4 +1,4 @@
-package co.edu.cedesistemas.commerce.registration.config;
+package co.edu.cedesistemas.commerce.social.config;
 
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-    private static final String QUEUE_NAME = "registration.event.q";
-    private static final String ROUTING_KEY = "registration.event.#";
-    public static final String TOPIC_EXCHANGE = "registration.event.x";
+    private static final String QUEUE_NAME = "social.event.q";
+    private static final String ROUTING_KEY = "social.event.#";
+    public static final String TOPIC_EXCHANGE = "social.event.x";
 
     @Value("${spring.rabbitmq.host:localhost}")
     private String hostname;

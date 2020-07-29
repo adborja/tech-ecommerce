@@ -1,19 +1,18 @@
 spring:
   application:
     name: registration-orchestrator-service
-  data:
-    zipkin:
-      base-url: http://jaeger.cedesistemas.local:9411/
-      sender:
-        type: web
-    sleuth:
-      sampler:
-        probability: 1
-    rabbitmq:
-      host: rabbitmq.cedesistemas.local
-      port: 5672
-      username: guest
-      password: guest
+  zipkin:
+    base-url: http://jaeger.cedesistemas.local:9411/
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
+  rabbitmq:
+    host: rabbitmq.cedesistemas.local
+    port: 5672
+    username: guest
+    password: guest
 
 server:
   port: ${PORT:8086}
@@ -38,7 +37,7 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    description: e-commerce registration orchestrator service
+    description: e-commerce registration orchestrator application
     version: 1.0.0
 
 eureka:
