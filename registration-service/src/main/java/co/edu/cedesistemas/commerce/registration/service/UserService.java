@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.registration.repository.UserRepository;
 import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -40,6 +41,7 @@ public class UserService {
         repository.delete(user);
     }
 
+    @Cacheable(value = "registration-user",key = "#id")
     public Optional<User> getUser(final String id) {
            return repository.findById(id);
     }

@@ -25,6 +25,8 @@ dependencies {
 	implementation "org.graylog2:gelfj:${versions.gelf}"
 	implementation "biz.paluch.logging:logstash-gelf:${versions.logstash_gelf}"
 
+	implementation "org.springframework.boot:spring-boot-starter-data-redis"
+
 
 	implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
 	implementation "com.google.code.gson:gson:${versions.gson}"

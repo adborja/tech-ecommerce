@@ -11,6 +11,7 @@ import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import co.edu.cedesistemas.common.event.SocialEvent;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -146,6 +147,7 @@ public class UserService {
 
     }
 
+    @Cacheable(value = "social-recommendStores", key = "#id '-' + #zone + '-' + #productType" )
     public List<StoreRepository.StoreOccurrence> recommendStores (String id, String zone,
                                                                   String productType,  Integer limit)
     {
