@@ -62,7 +62,7 @@ public class RegistrationOrchestratorService {
                     .build());
         } else if (event.getStatus().equals(SocialEvent.Status.FAILED)) {
             registrationServiceClient.deleteUser(event.getUserId());
-            loyaltyServiceClient.deleteUserStore(event.getUserId());
+            socialServiceClient.deleteUser(event.getUserId());
         }
     }
 
