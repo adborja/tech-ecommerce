@@ -1,8 +1,10 @@
 package co.edu.cedesistemas.commerce.registration.controller;
 
 import co.edu.cedesistemas.commerce.registration.model.User;
+import co.edu.cedesistemas.commerce.registration.services.EventPublisherService;
 import co.edu.cedesistemas.commerce.registration.services.UserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
+import co.edu.cedesistemas.common.event.RegistrationEvent;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +26,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private final EventPublisherService publisherService;
 
     @PostMapping
     public ResponseEntity<Status<?>> createUser(@RequestBody User user){
         try{
             User userCreated = userService.createUser(user);
             addSelfLink(userCreated);
+            publisherService.publishRegistrationEvent(userCreated, RegistrationEvent.Status.USER_CREATED);
             return DefaultResponseBuilder.defaultResponse(userCreated, HttpStatus.CREATED);
         }catch (Exception ex){
             log.error(ex.getMessage());
@@ -60,6 +64,21 @@ public class UserController {
             }else{
                 return DefaultResponseBuilder.errorResponse("User not found", null, HttpStatus.NOT_FOUND);
             }
+        }catch (Exception ex){
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Status<?>> deleteUser(@PathVariable String userId){
+        try{
+            User userFound = userService.getUserById(userId);
+            if(userFound != null){
+                userService.deleteUser(userId);
+                publisherService.publishRegistrationEvent(userFound, RegistrationEvent.Status.USER_DELETED);
+            }
+
+            return DefaultResponseBuilder.defaultResponse("User Deleted", HttpStatus.OK);
         }catch (Exception ex){
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
