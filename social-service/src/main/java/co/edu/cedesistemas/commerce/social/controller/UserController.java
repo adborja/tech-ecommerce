@@ -2,9 +2,12 @@ package co.edu.cedesistemas.commerce.social.controller;
 
 import co.edu.cedesistemas.commerce.social.model.User;
 import co.edu.cedesistemas.commerce.social.service.UserService;
+import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +23,8 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<Status<?>> createUser(@RequestBody User user) {
-        // TODO: Implement method here
-        return null;
+        User created = service.createUser(user.getId());
+        return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
     }
 
     @PutMapping("/users/{id}/products/{productId}/like")
@@ -60,5 +63,11 @@ public class UserController {
                                                      @RequestParam String productType, @RequestParam Integer limit) {
         // TODO: Implement method here
         return null;
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Status<?>> deleteById(@PathVariable String id) {
+        service.deleteUser(id);
+        return new ResponseEntity<>(Status.success(), HttpStatus.OK);
     }
 }
