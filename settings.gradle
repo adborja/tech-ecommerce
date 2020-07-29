@@ -10,4 +10,5 @@ include 'registration-service'
 include 'loyalty-service'
 include 'payment-service'
 include 'registration-orchestrator-service'
+include 'inventory-service'
 
