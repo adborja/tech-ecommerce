@@ -1,3 +1,4 @@
+
 package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.model.Order;
@@ -73,5 +74,10 @@ public class OrderController {
                 .withRel("items")
                 .withType("GET");
         order.add(byTypeLink);
+    }
+    @DeleteMapping("/orders/{id}")
+    public ResponseEntity<Status<?>> deleteOrderById(@PathVariable String id) {
+        service.deleteOrder(id);
+        return new ResponseEntity<>(Status.success(), HttpStatus.OK);
     }
 }

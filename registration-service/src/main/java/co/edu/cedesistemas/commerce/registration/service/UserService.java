@@ -2,6 +2,7 @@ package co.edu.cedesistemas.commerce.registration.service;
 
 import co.edu.cedesistemas.commerce.registration.model.User;
 import co.edu.cedesistemas.commerce.registration.repository.UserRepository;
+import co.edu.cedesistemas.common.event.RegistrationEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,25 +11,25 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Slf4j
 public class UserService {
+    private final UserRepository repository;
+    private final EventPublisherService publisherService;
 
-    private UserRepository repository;
-
-    public User getUserById(String id){
-        return repository.findUserById(id).orElse(null);
+    public User createUser(final User user) {
+        user.setStatus(User.Status.ACTIVE);
+        User created = repository.save(user);
+        publisherService.publishRegistrationEvent(created, RegistrationEvent.Status.USER_CREATED);
+        return created;
     }
 
-    public User activateUserById(String id){
-        User user = repository.findUserById(id).orElse(new User());
-        log.debug("creando usuario: " + id);
-        if (user.getId() != null) {
-            user.setStatus(User.Status.ACTIVE);
-            user = repository.save(user);
+    public void deleteUser(final String id) {
+        User found = getById(id);
+        if (found != null) {
+            repository.deleteById(id);
+            publisherService.publishRegistrationEvent(found, RegistrationEvent.Status.USER_DELETED);
         }
-        return user;
     }
 
-    public User createUser(User user){
-        return repository.save(user);
+    public User getById(final String id) {
+        return repository.findById(id).orElse(null);
     }
-
 }
