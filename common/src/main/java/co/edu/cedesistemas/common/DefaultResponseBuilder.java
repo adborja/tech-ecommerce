@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.common;
 
 import co.edu.cedesistemas.common.model.Status;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,7 +22,8 @@ public class DefaultResponseBuilder {
         return new ResponseEntity<>(status, httpStatus);
     }
 
-    public static <T> ResponseEntity<Status<?>> defaultResponse(final T obj, HttpStatus httpStatus) {
+    public static <T> ResponseEntity<Status<?>> defaultResponse(final T obj, HttpHeaders headers,
+                                                                HttpStatus httpStatus) {
         int hits = 1;
         Class<?> _class = obj.getClass();
         Collection<?> result;
@@ -42,6 +44,10 @@ public class DefaultResponseBuilder {
                 .code(httpStatus.value())
                 .message(httpStatus.toString())
                 .build();
-        return new ResponseEntity<>(status, httpStatus);
+        return new ResponseEntity<>(status, headers, httpStatus);
+    }
+
+    public static <T> ResponseEntity<Status<?>> defaultResponse(final T obj, HttpStatus httpStatus) {
+        return defaultResponse(obj, null, httpStatus);
     }
 }

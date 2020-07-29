@@ -8,6 +8,12 @@ spring:
   sleuth:
     sampler:
       probability: 1
+  data:
+    mongodb:
+      authentication-database: admin
+      database: gateway
+      port: 27017
+      host: mongodb.cedesistemas.local
 
 server:
   port: 8080
