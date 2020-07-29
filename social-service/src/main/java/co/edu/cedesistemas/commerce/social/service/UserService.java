@@ -9,6 +9,7 @@ import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
 import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository.StoreOccurrence;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
+import co.edu.cedesistemas.common.event.SocialEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +28,7 @@ public class UserService {
     private final UserRepository repository;
     private final ProductService productService;
     private final StoreService storeService;
+    private final EventPublisherService publisherService;
 
     public User createUser(User user) {
     	log.info("creating user");
@@ -38,7 +40,9 @@ public class UserService {
     	log.info("creating user with id {}",id);
         User user = new User();
         user.setId(id);
-        return repository.save(user);
+        User created = repository.save(user);
+        publisherService.publishSocialUserEvent(created, SocialEvent.Status.CREATED);
+        return created;
     }
 
     public User update(User user) {
@@ -64,6 +68,14 @@ public class UserService {
             user.set_friends(result);
         }
         return user;
+    }
+
+    public void deleteUser(final String id) {
+        User found = getById(id);
+        if (found != null) {
+            repository.deleteById(id);
+            publisherService.publishSocialUserEvent(found, SocialEvent.Status.DELETED);
+        }
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {

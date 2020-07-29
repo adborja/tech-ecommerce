@@ -1,10 +1,10 @@
 package co.edu.cedesistemas.commerce.registration.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 import co.edu.cedesistemas.commerce.registration.model.User;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository extends MongoRepository<User, String>{
-	
-	
+@Repository
+public interface UserRepository extends MongoRepository<User, String> {
+
 }

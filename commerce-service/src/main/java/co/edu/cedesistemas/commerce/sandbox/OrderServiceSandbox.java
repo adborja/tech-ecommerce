@@ -9,11 +9,11 @@ import org.springframework.context.annotation.Profile;
 
 import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.model.Order;
-import co.edu.cedesistemas.commerce.model.Order.Status;
 import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.model.OrderStatus;
 
 @Profile(SpringProfile.SANDBOX)
 public class OrderServiceSandbox implements IOrderService{
@@ -59,7 +59,7 @@ public class OrderServiceSandbox implements IOrderService{
 		Order o = new Order();
 		o.setItems(getItemsByOrder(id));
 		o.setId(UUID.randomUUID().toString());
-		o.setStatus(Status.CREATED);
+		o.setStatus(OrderStatus.CREATED);
 		o.setShippingAddressId(a.getId());
 		
 		return o;
