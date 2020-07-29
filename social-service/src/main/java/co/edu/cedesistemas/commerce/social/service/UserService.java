@@ -3,10 +3,15 @@ package co.edu.cedesistemas.commerce.social.service;
 import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.model.User;
+import co.edu.cedesistemas.commerce.social.model.relation.FriendRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,14 +52,49 @@ public class UserService {
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
-        // TODO: Implement method here
+
+        User user = repository.findById(userId).orElse(null);
+        Store store = storeService.getById(storeId);
+        StoreRateRelation storeRateRelation = StoreRateRelation.builder().build();
+        storeRateRelation.setUser(user);
+        storeRateRelation.setStore(store);
+        user.storeRates(storeRateRelation);
+        repository.save(user);
+
     }
 
     public void likeStore(final String userId, final String storeId) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).orElse(null);
+        Store store = storeService.getById(storeId);
+        StoreLikeRelation storeLikeRelation = StoreLikeRelation.builder().build();
+        storeLikeRelation.setUser(user);
+        storeLikeRelation.setStore(store);
+        user.storeLikes(storeLikeRelation);
+        repository.save(user);
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        // TODO: Implement method here
+        User user = repository.findById(userId).orElse(null);
+        User friend = repository.findById(userId).orElse(null);
+        Set<User> friends = new HashSet<>();
+        friends.add(user);
+        friends.add(friend);
+        FriendRelation friendRelation = FriendRelation.builder().build();
+        friend.addFriend(friendRelation);
+        repository.save(user);
     }
+    public void like(final String userId, final String productId) throws Exception {
+        User user = repository.findById(userId).orElse(null);
+        Product product = productService.getById(productId);
+        ProductLikeRelation productLikeRelation = ProductLikeRelation.builder().build();
+        productLikeRelation.setProduct(product);
+        productLikeRelation.setUser(user);
+        user.likes(ProductLikeRelation.builder()
+                .user(user)
+                .product(product)
+                .build());
+        update(user);
+
+        }
+
 }

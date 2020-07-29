@@ -72,6 +72,7 @@ public class User {
         liked.add(product);
     }
 
+
     public void storeLikes(StoreLikeRelation store) {
         if (storesLiked == null) {
             storesLiked = new HashSet<>();
