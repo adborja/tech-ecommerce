@@ -105,6 +105,6 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Status<?>> deleteById(@PathVariable String id) {
         userService.deleteUser(id);
-        return new ResponseEntity<>(Status.success(), HttpStatus.OK);
+        return DefaultResponseBuilder.defaultResponse(Status.SUCCESS_CODE, HttpStatus.OK);
     }
 }

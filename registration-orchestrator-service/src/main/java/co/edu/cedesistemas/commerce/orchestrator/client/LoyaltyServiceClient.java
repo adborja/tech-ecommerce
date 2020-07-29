@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "social-service", path = "/api/v1")
-public interface SocialServiceClient {
-    @PostMapping("/users")
-    ResponseEntity<String> createUser(@RequestBody User user);
+@FeignClient(name = "loyalty-service", path = "/api/v1")
+public interface LoyaltyServiceClient {
+    @PostMapping("/user-stores")
+    ResponseEntity<Status<?>> createUserStore(@RequestBody UserStore userStore);
 
-    @DeleteMapping("/users/{id}")
-    ResponseEntity<Status<?>> deleteUser(@PathVariable String id);
+    @DeleteMapping("/user-stores/{id}")
+    ResponseEntity<Status<?>> deleteLoyaltyUser(@PathVariable String id);
 
     @Data
     @Builder
-    class User {
+    class UserStore{
         private String id;
     }
 }

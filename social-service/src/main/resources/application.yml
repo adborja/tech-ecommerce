@@ -1,9 +1,8 @@
 spring:
   application:
     name: social-service
-  data:
-    neo4j:
-      uri: bolt://neo4j.cedesistemas.local:7687
+  neo4j:
+    uri: bolt://neo4j.cedesistemas.local:7687
   rabbitmq:
     host: rabbitmq.cedesistemas.local
     port: 5672

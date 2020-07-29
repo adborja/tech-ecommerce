@@ -3,6 +3,7 @@ package co.edu.cedesistemas.commerce.service.sandbox;
 import co.edu.cedesistemas.commerce.model.*;
 import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.context.annotation.Profile;
@@ -17,12 +18,22 @@ import java.util.UUID;
 public class OrderServiceSandbox implements IOrderService {
     @Override
     public Order createOrder(Order order) {
-        order.setStatus(Order.Status.CREATED);
+        order.setStatus(OrderStatus.CREATED);
         return order;
     }
 
     @Override
     public Order getOrderById(String orderId) {
+        return null;
+    }
+
+    @Override
+    public Order updateOrder(String id, Order order) {
+        return null;
+    }
+
+    @Override
+    public Order getById(String orderId) {
         User user = User.builder()
                 .id(UUID.randomUUID().toString())
                 .email(RandomStringUtils.randomAlphanumeric(5) + "@company.com")
@@ -67,10 +78,15 @@ public class OrderServiceSandbox implements IOrderService {
         return Order.builder()
                 .id(UUID.randomUUID().toString())
                 .items(items)
-                .status(Order.Status.CREATED)
+                .status(OrderStatus.CREATED)
                 .storeId(store.getId())
                 .shippingAddressId(address.getId())
                 .userId(user.getId())
                 .build();
+    }
+
+    @Override
+    public void deleteOrder(String id) {
+
     }
 }

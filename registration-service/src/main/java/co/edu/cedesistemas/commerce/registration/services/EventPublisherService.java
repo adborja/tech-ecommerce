@@ -39,6 +39,6 @@ public class EventPublisherService {
         byte[] evtMsgBytes = json.getBytes();
 
         Message message = new Message(evtMsgBytes, msgProps);
-        template.send(RabbitMQConfig.TOPIC_EXCHANGE, "order.event." + msgId, message);
+        template.send(RabbitMQConfig.TOPIC_EXCHANGE, "registration.event." + msgId, message);
     }
 }

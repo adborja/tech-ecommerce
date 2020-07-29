@@ -17,38 +17,39 @@ public class OrderController {
     private final IOrderService orderService;
 
     @PostMapping
-    public ResponseEntity<Status<?>> createOrder(@RequestBody Order order){
-        try{
+    public ResponseEntity<Status<?>> createOrder(@RequestBody Order order) {
+        try {
             return DefaultResponseBuilder.defaultResponse(orderService.createOrder(order), HttpStatus.CREATED);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<Status<?>> getOrderById(@PathVariable String orderId){
-        try{
+    public ResponseEntity<Status<?>> getOrderById(@PathVariable String orderId) {
+        try {
             Order order = orderService.getOrderById(orderId);
-            if(order != null){
+            if (order != null) {
                 return DefaultResponseBuilder.defaultResponse(order, HttpStatus.OK);
-            }else {
+            } else {
                 return DefaultResponseBuilder.errorResponse("Order Not Found", null, HttpStatus.NOT_FOUND);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/{orderId}/items")
-    public ResponseEntity<Status<?>> getOrdeItemsByOrderId(@PathVariable String orderId){
-        try{
+    public ResponseEntity<Status<?>> getOrdeItemsByOrderId(@PathVariable String orderId) {
+        try {
             Order order = orderService.getOrderById(orderId);
-            if(order != null){
+            if (order != null) {
                 return DefaultResponseBuilder.defaultResponse(order.getItems(), HttpStatus.OK);
-            }else {
+            } else {
                 return DefaultResponseBuilder.errorResponse("Order not found", null, HttpStatus.NOT_FOUND);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 }

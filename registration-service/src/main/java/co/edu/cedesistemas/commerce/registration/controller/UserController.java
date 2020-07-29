@@ -33,7 +33,6 @@ public class UserController {
         try{
             User userCreated = userService.createUser(user);
             addSelfLink(userCreated);
-            publisherService.publishRegistrationEvent(userCreated, RegistrationEvent.Status.USER_CREATED);
             return DefaultResponseBuilder.defaultResponse(userCreated, HttpStatus.CREATED);
         }catch (Exception ex){
             log.error(ex.getMessage());
@@ -72,12 +71,7 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<Status<?>> deleteUser(@PathVariable String userId){
         try{
-            User userFound = userService.getUserById(userId);
-            if(userFound != null){
-                userService.deleteUser(userId);
-                publisherService.publishRegistrationEvent(userFound, RegistrationEvent.Status.USER_DELETED);
-            }
-
+            userService.deleteUser(userId);
             return DefaultResponseBuilder.defaultResponse("User Deleted", HttpStatus.OK);
         }catch (Exception ex){
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);

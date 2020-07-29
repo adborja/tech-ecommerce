@@ -36,6 +36,11 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    public Order getOrderById(String orderId) {
+        return null;
+    }
+
+    @Override
     public Order updateOrder(final String id, final Order order) {
         Order found = getById(id);
         if (found == null) {

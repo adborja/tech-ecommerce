@@ -30,7 +30,6 @@ public class UserService {
     public User createUser(String id) {
         User user = new User();
         user.setId(id);
-        return userRepository.save(user);
         User created = userRepository.save(user);
         publisherService.publishSocialUserEvent(created, SocialEvent.Status.CREATED);
         return created;
@@ -62,7 +61,7 @@ public class UserService {
     public void deleteUser(final String id) {
         User found = getById(id);
         if (found != null) {
-            repository.deleteById(id);
+            userRepository.deleteById(id);
             publisherService.publishSocialUserEvent(found, SocialEvent.Status.DELETED);
         }
     }

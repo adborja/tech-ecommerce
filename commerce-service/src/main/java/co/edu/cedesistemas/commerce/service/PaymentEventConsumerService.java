@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 public class PaymentEventConsumerService {
     private final OrderService orderService;
 
-    @RabbitListener(queues = "payment.event.q")
+    //@RabbitListener(queues = "payment.event.q")
     public void listenPaymentEvent(Message in) {
         String message = new String(in.getBody(), StandardCharsets.UTF_8);
         log.debug("received message: {}", message);

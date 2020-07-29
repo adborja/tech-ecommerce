@@ -50,6 +50,9 @@ zuul:
     payment:
       path: /payment/**
       serviceId: payment-service
+    loyalty:
+      path: /loyalty/**
+      serviceId: loyalty-service
 
 ribbon:
   eureka:
