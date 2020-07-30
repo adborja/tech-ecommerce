@@ -48,7 +48,7 @@ public class UserController {
 		} catch (Exception e) {
 			return DefaultResponseBuilder.errorResponse(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-        return DefaultResponseBuilder.defaultResponse(null,HttpStatus.OK);
+        return DefaultResponseBuilder.defaultResponse("product liked",HttpStatus.OK);
     }
 
     @PutMapping("/users/{id}/stores/{storeId}/like")
@@ -59,7 +59,7 @@ public class UserController {
 		} catch (Exception e) {
 			return DefaultResponseBuilder.errorResponse(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-        return DefaultResponseBuilder.defaultResponse(null,HttpStatus.OK);
+        return DefaultResponseBuilder.defaultResponse("store liked",HttpStatus.OK);
     }
 
     @PutMapping("/users/{id}/stores/{storeId}/rate")
@@ -71,7 +71,7 @@ public class UserController {
 		} catch (Exception e) {
 			return DefaultResponseBuilder.errorResponse(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-        return DefaultResponseBuilder.defaultResponse(null,HttpStatus.OK);
+        return DefaultResponseBuilder.defaultResponse("store rated",HttpStatus.OK);
     }
 
     @PutMapping("/users/{id}/friends/{friendId}")

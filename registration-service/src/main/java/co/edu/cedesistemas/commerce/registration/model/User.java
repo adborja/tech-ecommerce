@@ -7,15 +7,16 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.RepresentationModel;
+import java.io.Serializable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-@EqualsAndHashCode(of = "id", callSuper = true)
+@EqualsAndHashCode(of = "id", callSuper = false)
 @ToString
 @Document
-public class User extends RepresentationModel<User> {
+public class User extends RepresentationModel<User> implements Serializable{
 	@Id
 	private String id;
 	private String name;

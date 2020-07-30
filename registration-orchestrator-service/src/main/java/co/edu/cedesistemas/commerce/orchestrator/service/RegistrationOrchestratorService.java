@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.orchestrator.service;
 
 import co.edu.cedesistemas.commerce.orchestrator.client.SocialServiceClient;
+import co.edu.cedesistemas.commerce.orchestrator.client.RegistrationServiceClient;
 import co.edu.cedesistemas.common.event.RegistrationEvent;
 import co.edu.cedesistemas.common.event.SocialEvent;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class RegistrationOrchestratorService {
     private final SocialServiceClient socialServiceClient;
+    private final RegistrationServiceClient registrationServiceClient;
 
     @RabbitListener(queues = "registration.event.q")
     public void registerSocialUser(Message in) {
@@ -26,6 +28,8 @@ public class RegistrationOrchestratorService {
             socialServiceClient.createUser(SocialServiceClient.User.builder()
                     .id(event.getUserId())
                     .build());
+        } else if (event.getStatus().equals(RegistrationEvent.Status.FAILED)) {
+        	registrationServiceClient.deleteUser(event.getUserId());
         }
     }
 

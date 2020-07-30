@@ -13,6 +13,7 @@ import co.edu.cedesistemas.common.event.SocialEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,7 +34,10 @@ public class UserService {
     public User createUser(User user) {
     	log.info("creating user");
     	user.setId(user.getId());
-    	return repository.save(user);
+    	User created = repository.save(user);
+//        publisherService.publishSocialUserEvent(created, SocialEvent.Status.CREATED);
+
+    	return created;
     }
     
     public User createUser(String id) {
@@ -50,6 +54,7 @@ public class UserService {
         return repository.save(user);
     }
 
+    @Cacheable(cacheNames = "social-user", key = "#id")
     public User getById(final String id) {
     	log.info("getting user by id {}",id);
         User user = repository.findById(id).orElse(null);
@@ -154,6 +159,7 @@ public class UserService {
 		
 	}
 
+	
 	public List<StoreOccurrence> recommendStores(String id, String zone, String productType, Integer limit) {
 		log.info("recommending stores with zone {} and product type {} by user {} - results limit {}",
 				zone, productType, id, limit);

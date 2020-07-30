@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import co.edu.cedesistemas.commerce.registration.model.User;
@@ -21,6 +22,7 @@ public class UserService {
 	private final UserRepository repository;
 	private final EventPublisherService publisherService;
 
+	@Cacheable(cacheNames = "registration-user", key = "#id")
 	public User getById(final String id) {
     	log.info("getting user by id {}",id);
 
@@ -33,7 +35,7 @@ public class UserService {
 		user.setId(UUID.randomUUID().toString());
 		user.setCreatedAt(LocalDateTime.now());
 		User created = repository.save(user);
-        publisherService.publishRegistrationEvent(created, RegistrationEvent.Status.USER_CREATED);
+//        publisherService.publishRegistrationEvent(created, RegistrationEvent.Status.USER_CREATED);
 		return created;
 	}
 

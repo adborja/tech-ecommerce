@@ -14,13 +14,14 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.Transient;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
 @EqualsAndHashCode(of = "id")
 @NodeEntity
-public class User {
+public class User implements Serializable{
     @Id
     private String id;
 
@@ -95,7 +96,7 @@ public class User {
 
     @Data
     @Builder
-    public static class UserFriendResult {
+    public static class UserFriendResult implements Serializable {
         private int _hints;
         private Set<String> friends;
     }

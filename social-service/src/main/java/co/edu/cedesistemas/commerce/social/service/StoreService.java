@@ -8,6 +8,8 @@ import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
 import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -77,7 +79,7 @@ public class StoreService {
     	repository.save(store);
     }
 
-
+    @Cacheable(cacheNames = "store-topn-products", key = "#storeId + '-' + #limit")
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
         return repository.findTopNProducts(storeId, limit);
     }
