@@ -1,13 +1,21 @@
 package co.edu.cedesistemas.commerce.social.service;
 
+import co.edu.cedesistemas.commerce.social.model.Location;
 import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.model.User;
+import co.edu.cedesistemas.commerce.social.model.relation.FriendRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.ProductLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreLikeRelation;
+import co.edu.cedesistemas.commerce.social.model.relation.StoreRateRelation;
+import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import co.edu.cedesistemas.common.event.SocialEvent;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,14 +67,72 @@ public class UserService {
     }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
-        // TODO: Implement method here
+        User user = getById(userId);
+        if(user == null){
+            throw new Exception("User not found");
+        }
+        Store store = storeService.getById(storeId);
+        if(store == null){
+            throw new Exception("Store not found");
+        }
+
+        StoreRateRelation relation = StoreRateRelation.builder()
+                .rate(value).rateTime(LocalDateTime.now()).user(user).store(store).build();
+        user.storeRates(relation);
+        update(user);
     }
 
     public void likeStore(final String userId, final String storeId) throws Exception {
-        // TODO: Implement method here
+        User found = getById(userId);
+        if(found == null){
+            throw new Exception("User not found");
+        }
+        Store store = storeService.getById(storeId);
+        if(store == null){
+            throw new Exception("Store not found");
+        }
+
+        StoreLikeRelation relation = StoreLikeRelation.builder()
+                .store(store).user(found).storeLikeDate(LocalDateTime.now()).build();
+
+        found.storeLikes(relation);
+        update(found);
+    }
+
+    public void likeProduct(final String userId, final String productId) throws Exception{
+        User user = getById(userId);
+        if(user == null){
+            throw new Exception("User not found");
+        }
+        Product product = productService.getById(productId);
+        if(product == null){
+            throw new Exception("Product not found");
+        }
+
+        ProductLikeRelation relation = ProductLikeRelation.builder()
+                .user(user).product(product).likeTime(LocalDateTime.now()).build();
+        user.likes(relation);
+        update(user);
     }
 
     public void addFriend(final String userId, final String friendId) throws Exception {
-        // TODO: Implement method here
+        User user = getById(userId);
+        if(user == null){
+            throw new Exception("User not found");
+        }
+        User friend = getById(friendId);
+        if(friend == null){
+            throw new Exception("Friend not found");
+        }
+
+        FriendRelation relation = FriendRelation.builder()
+                .user(user).friend(friend).friendshipTime(LocalDateTime.now()).build();
+        user.addFriend(relation);
+        update(user);
+    }
+
+    public List<StoreRepository.StoreOccurrence> recommendedStores(
+            final String userId, final String zone, final String productType, final Integer limit){
+        return storeService.recommendStoresByZoneAndProductType(userId, zone, productType, limit);
     }
 }

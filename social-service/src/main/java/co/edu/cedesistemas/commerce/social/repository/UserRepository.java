@@ -1,5 +1,8 @@
 package co.edu.cedesistemas.commerce.social.repository;
 
+import co.edu.cedesistemas.commerce.social.model.Location;
+import co.edu.cedesistemas.commerce.social.model.ProductType;
+import co.edu.cedesistemas.commerce.social.model.Store;
 import co.edu.cedesistemas.commerce.social.model.User;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
