@@ -1,7 +1,8 @@
 package co.edu.cedesistemas.commerce.registration.service;
 
 import co.edu.cedesistemas.commerce.registration.model.User;
-import co.edu.cedesistemas.commerce.registration.repository.UserRespository;
+import co.edu.cedesistemas.commerce.registration.repository.UserRepository;
+import co.edu.cedesistemas.common.event.RegistrationEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,30 +13,25 @@ import java.util.UUID;
 @AllArgsConstructor
 @Slf4j
 public class UserService {
+    private final UserRepository repository;
+    private final EventPublisherService publisherService;
 
-    UserRespository repository;
-
-    public User getUser(String id){
-        log.info("Getting user");
-        return repository.findById(id).get();
-    }
-
-    public User activateUser(String id){
-        log.info("Activating user");
-        User user = repository.findById(id).get();
+    public User createUser(final User user) {
         user.setStatus(User.Status.ACTIVE);
-        return user;
+        User created = repository.save(user);
+        publisherService.publishRegistrationEvent(created, RegistrationEvent.Status.USER_CREATED);
+        return created;
     }
 
-    public User createUser(User user){
-        log.info("Creating user");
-        user.setId(UUID.randomUUID().toString());
-        user.setStatus(User.Status.INACTIVE);
-        repository.save(user);
-        return user;
+    public void deleteUser(final String id) {
+        User found = getById(id);
+        if (found != null) {
+            repository.deleteById(id);
+            publisherService.publishRegistrationEvent(found, RegistrationEvent.Status.USER_DELETED);
+        }
     }
 
-    public void deleteUser(String id){
-        repository.deleteById(id);
+    public User getById(final String id) {
+        return repository.findById(id).orElse(null);
     }
 }
