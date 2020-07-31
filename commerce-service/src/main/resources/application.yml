@@ -6,7 +6,7 @@ spring:
       authentication-database: admin
       database: tech-ecommerce
       port: 27017
-      host: localhost
+      host: mongodb.cedesistemas.local
 
 
 server:

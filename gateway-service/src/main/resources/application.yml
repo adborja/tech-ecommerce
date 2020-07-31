@@ -41,7 +41,4 @@ zuul:
 
 ribbon:
   eureka:
-    enabled: false
-social-service:
-  ribbon:
-    listOfServers: http://localhost:8082, http://localhost:9082
+    enabled: true
