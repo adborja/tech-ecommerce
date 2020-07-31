@@ -5,12 +5,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.RepresentationModel;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 @EqualsAndHashCode(of = "id")
 @Document("address")
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Address extends RepresentationModel<Address> {
     @Id
     private String id;

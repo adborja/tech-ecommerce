@@ -8,12 +8,12 @@ import org.springframework.hateoas.RepresentationModel;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 @EqualsAndHashCode(of = "id")
 @Document("order")
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Order extends RepresentationModel<Order> {
     @Id
     private String id;

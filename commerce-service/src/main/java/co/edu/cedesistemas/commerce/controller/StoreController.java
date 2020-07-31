@@ -7,7 +7,7 @@ import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.service.IStoreService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+///import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
@@ -44,7 +44,7 @@ public class StoreController {
     }
 
     @GetMapping("/stores/{id}")
-    @HystrixCommand(fallbackMethod = "getByIdFallback")
+  //  @HystrixCommand(fallbackMethod = "getByIdFallback")
     public ResponseEntity<Status<?>> getStoreById(@PathVariable String id) {
         try {
             Store found = service.getById(id);

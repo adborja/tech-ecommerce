@@ -28,7 +28,7 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    description: e-commerce social application
+    description: e-commerce social applicationrerew
     port: ${server.port}
     version: 1.0.0
 
