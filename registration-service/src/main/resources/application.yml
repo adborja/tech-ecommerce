@@ -37,6 +37,12 @@ management:
       exposure:
         include: '*'
 
+cache:
+  type: redis
+  redis: time-to-live
+  host: redis.cedesistemas.local
+  port: 6379
+
 info:
   app:
     name: registration-service
