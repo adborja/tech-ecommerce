@@ -17,10 +17,18 @@ spring:
     sampler:
       probability: 1
   rabbitmq:
-    host: rabbitmq.cedesistemas.local
+    host: llama.rmq.cloudamqp.com
+    virtual-host: foxmowaw
     port: 5672
-    username: guest
-    password: guest
+    username: foxmowaw
+    password: GaVJ7_DMMl8PihaPcPuzWsNVcQVVdaai
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+  redis:
+    host: redis.cedesistemas.local
+    port: 6379
 
 server:
   port: 7080

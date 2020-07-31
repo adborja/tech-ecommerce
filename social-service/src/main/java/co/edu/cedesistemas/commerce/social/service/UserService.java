@@ -121,14 +121,6 @@ public class UserService {
 
     }
 
-    public void deleteUser(final String id) {
-        User found = getById(id);
-        if (found != null) {
-            repository.deleteById(id);
-            publisherService.publishSocialUserEvent(found, SocialEvent.Status.DELETED);
-        }
-    }
-
     public void likeProduct(String userId, String productId) throws Exception{
         User user = repository.findById(userId).orElse(null);
         if (user == null) {

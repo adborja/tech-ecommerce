@@ -16,7 +16,7 @@ import java.util.List;
 @FeignClient(name = "commerce-service", path = "/api/v1")
 public interface CommerceServiceClient {
     @PostMapping("/orders")
-    ResponseEntity<String> createUser(@RequestBody Order order);
+    ResponseEntity<String> createOrder(@RequestBody Order order);
 
     @Data
     @Builder

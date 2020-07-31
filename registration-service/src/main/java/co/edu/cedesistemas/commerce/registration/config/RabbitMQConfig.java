@@ -21,6 +21,8 @@ public class RabbitMQConfig {
 
     @Value("${spring.rabbitmq.host:localhost}")
     private String hostname;
+    @Value("${spring.rabbitmq.virtual-host}")
+    private String virtualhost;
     @Value("${spring.rabbitmq.port:5672}")
     private Integer port;
     @Value("${spring.rabbitmq.username:guest}")
@@ -31,18 +33,22 @@ public class RabbitMQConfig {
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory cf = new CachingConnectionFactory(hostname, port);
-        cf.setUsername(username);
-        cf.setPassword(password);
+        cf.setUri("amqp://foxmowaw:GaVJ7_DMMl8PihaPcPuzWsNVcQVVdaai@llama.rmq.cloudamqp.com/foxmowaw");
+        //cf.setVirtualHost(virtualhost);
+        //cf.setUsername(username);
+        //cf.setPassword(password);
         return cf;
     }
 
     @Bean
     public Queue queue() {
+        System.out.println("retorna cola");
         return new Queue(QUEUE_NAME, true);
     }
 
     @Bean
     public TopicExchange exchange() {
+        System.out.printf("retorna topic");
         return new TopicExchange(TOPIC_EXCHANGE);
     }
 
@@ -53,6 +59,7 @@ public class RabbitMQConfig {
 
     @Bean
     public AmqpAdmin amqpAdmin() {
+        System.out.println("Retorna connectionFactory");
         return new RabbitAdmin(connectionFactory());
     }
 
@@ -60,6 +67,7 @@ public class RabbitMQConfig {
     public RabbitTemplate template() {
         RabbitTemplate template = new RabbitTemplate(connectionFactory());
         template.setRoutingKey(ROUTING_KEY);
+        System.out.println("retorna template");
         return template;
     }
 }

@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.loyalty.model.UserOrder;
 import co.edu.cedesistemas.commerce.loyalty.repository.UserOrderRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ public class UserOrderService {
     private final UserOrderRepository repository;
     private final EventPublisherService publisherService;
 
+    @Cacheable(value = "loyalty_service_order", key = "#orderId"+"-"+"#userId"+"-"+"#orderValue")
     public UserOrder registerOrder(@NotNull final String orderId, @NotNull String userId, @NotNull Float orderValue) {
         UserOrder uo = new UserOrder();
         uo.setId(orderId);

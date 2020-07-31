@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    @HystrixCommand(fallbackMethod = "getUserByIdFallback")
+    //@HystrixCommand(fallbackMethod = "getUserByIdFallback")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         try {
             User found = service.getById(id);

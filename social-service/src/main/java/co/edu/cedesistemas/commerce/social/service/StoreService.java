@@ -10,6 +10,7 @@ import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -96,7 +97,7 @@ public class StoreService {
         }
     }
 
-
+    @Cacheable(value = "social_top_products", key = "#storeId" + "-" + "#limit")
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
         List<StoreRepository.ProductOccurrence> productOccurrenceList = repository.findTopNProducts(storeId,limit);
         return productOccurrenceList;

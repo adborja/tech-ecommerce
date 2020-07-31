@@ -20,6 +20,13 @@ spring:
     port: 5672
     username: foxmowaw
     password: GaVJ7_DMMl8PihaPcPuzWsNVcQVVdaai
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+  redis:
+    host: redis.cedesistemas.local
+    port: 6379
 
 server:
   port: ${PORT:8085}

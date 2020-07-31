@@ -4,8 +4,10 @@ import co.edu.cedesistemas.commerce.orchestrator.client.CommerceServiceClient;
 import co.edu.cedesistemas.commerce.orchestrator.client.LoyaltyServiceClient;
 import co.edu.cedesistemas.commerce.orchestrator.client.RegistrationServiceClient;
 import co.edu.cedesistemas.commerce.orchestrator.client.SocialServiceClient;
+import co.edu.cedesistemas.common.event.LoyaltyEvent;
 import co.edu.cedesistemas.common.event.RegistrationEvent;
 import co.edu.cedesistemas.common.event.SocialEvent;
+import co.edu.cedesistemas.common.model.LoyaltyStatus;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -28,6 +30,7 @@ public class RegistrationOrchestratorService {
     @RabbitListener(queues = "registration.event.q")
     public void registerSocialUser(Message in) {
         String msg = new String(in.getBody(), StandardCharsets.UTF_8);
+        System.out.println("registerSocialUser-evento recibido..."+msg);
         RegistrationEvent event = RegistrationEvent.fromJSON(msg);
 
         if (event.getStatus().equals(RegistrationEvent.Status.USER_CREATED)) {
@@ -37,7 +40,7 @@ public class RegistrationOrchestratorService {
         }
     }
 
-    @RabbitListener(queues = "social.event.q")
+   @RabbitListener(queues = "social.event.q")
     public void registerLoyaltyUser(Message in) {
         String msg = new String(in.getBody(), StandardCharsets.UTF_8);
         SocialEvent event = SocialEvent.fromJSON(msg);
@@ -57,12 +60,10 @@ public class RegistrationOrchestratorService {
     @RabbitListener(queues = "loyalty.event.q")
     public void registerOrderService(Message in) {
         String msg = new String(in.getBody(), StandardCharsets.UTF_8);
-        SocialEvent event = SocialEvent.fromJSON(msg);
+        LoyaltyEvent event = LoyaltyEvent.fromJSON(msg);
 
-        if (event.getStatus().equals(SocialEvent.Status.CREATED)) {
-            // Invocar cliente feign de loyalty para crear el usuario
-        } else if (event.getStatus().equals(SocialEvent.Status.FAILED)) {
-            //Invocar cliente feign de registration-service para compensar (eliminar) el usuario
+        if (event.getStatus().equals(LoyaltyStatus.USER_CREATED)) {
+            // Invocar cliente feign de commerce_service para crear la orden
         }
     }
 

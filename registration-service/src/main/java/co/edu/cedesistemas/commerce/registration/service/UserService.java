@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.registration.repository.UserRepository;
 import co.edu.cedesistemas.common.event.RegistrationEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,8 +24,17 @@ public class UserService {
         return userCreated;
     }
 
+    @Cacheable(value = "registration_service_user", key = "#id")
     public User getById(String id) {
         log.info("getting user by id: {}", id);
+
+        try {
+            log.info("simulating long time operation");
+            Thread.sleep(5000L);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+
         return repository.findById(id).orElse(null);
     }
 
