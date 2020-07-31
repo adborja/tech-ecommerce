@@ -15,10 +15,17 @@ spring:
     sampler:
       probability: 1
   rabbitmq:
-    host: rabbitmq.cedesistemas.local
+    host: localhost
     port: 5672
     username: guest
     password: guest
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+  redis:
+    host: localhost
+    port: 6379
 
 server:
   port: ${PORT:8083}

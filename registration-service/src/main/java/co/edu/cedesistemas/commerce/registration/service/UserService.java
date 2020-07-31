@@ -7,6 +7,7 @@ import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,14 @@ public class UserService {
         return created;
     }
 
+    @Cacheable(cacheNames = "registration_cache", key = "#id")
     public User getById(final String id) {
+        try {
+            log.info("simulating long time operation");
+            Thread.sleep(5000L);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
         log.info("R retrieving Product by Id {}", id);
         return repository.findById(id).get();
     }
