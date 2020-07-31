@@ -34,4 +34,8 @@ public class UserService {
         repository.save(user);
         return user;
     }
+
+    public void deleteUser(String id){
+        repository.deleteById(id);
+    }
 }
