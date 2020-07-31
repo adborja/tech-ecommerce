@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: configuration-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: git@github.com:adborja/tech-ecommerce-config.git
+          clone-on-start: true
+      enabled: false
+    bus:
+      enabled: true
+      trace:
+        enabled: true
+  rabbitmq:
+    host: rabbitmq.cedesistemas.local
+    port: 5672
+    username: guest
+    password: guest
+  security:
+    user:
+      name: configadmin
+      password: cedesistemas
+
+server:
+  port: 8760
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: e-commerce configuration service
+    version: 1.0.0
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://eureka.cedesistemas.local:8761/eureka/
+
+encrypt:
+  key-store:
+    location: classpath:config-service.jks
+    password: cedesistemas
+    alias: config-service
+    secret: cedesistemas
