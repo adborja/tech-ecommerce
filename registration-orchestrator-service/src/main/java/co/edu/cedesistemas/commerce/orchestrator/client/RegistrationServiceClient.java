@@ -1,6 +1,5 @@
 package co.edu.cedesistemas.commerce.orchestrator.client;
 
-import co.edu.cedesistemas.common.model.Status;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -10,14 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "social-service", path = "/api/v1")
-public interface SocialServiceClient {
+@FeignClient(name = "registration-service", path = "/api/v1")
+public interface RegistrationServiceClient {
     @PostMapping("/users")
-    ResponseEntity<String> createUser(@RequestBody User user);
+    ResponseEntity<String> createUser(@RequestBody RegistrationServiceClient.User user);
 
     @DeleteMapping("/users/{id}")
-    ResponseEntity<Status<?>> deleteUser(@PathVariable String id);
-
+    ResponseEntity<String> deleteUser(@PathVariable String id);
 
     @Data
     @Builder

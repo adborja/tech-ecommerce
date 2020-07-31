@@ -28,7 +28,7 @@ public class UserService {
         User user = new User();
         user.setId(id);
         User userCreated = repository.save(user);
-        this.publisherService.publishSocialEvent(user, SocialEvent.Status.CREATED);
+        this.publisherService.publishSocialUserEvent(user, SocialEvent.Status.CREATED);
         return userCreated;
     }
 
@@ -55,13 +55,6 @@ public class UserService {
         return user;
     }
 
-    public void deleteUser(final String id) {
-        User found = getById(id);
-        if (found != null) {
-            repository.deleteById(id);
-            publisherService.publishSocialUserEvent(found, SocialEvent.Status.DELETED);
-        }
-    }
 
     public void rateStore(final String userId, final String storeId, float value) throws Exception {
         User foundUser = this.getById(userId);
@@ -101,7 +94,7 @@ public class UserService {
 
         if (userFound != null) {
             this.repository.delete(userFound);
-            this.publisherService.publishSocialEvent(userFound, SocialEvent.Status.DELETED);
+            this.publisherService.publishSocialUserEvent(userFound, SocialEvent.Status.DELETED);
         }
     }
 }

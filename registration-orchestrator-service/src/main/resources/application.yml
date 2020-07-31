@@ -15,7 +15,7 @@ spring:
     password: guest
 
 server:
-  port: ${PORT:8086}
+  port: ${PORT:8087}
   servlet:
     context-path: /api/v1/
 
