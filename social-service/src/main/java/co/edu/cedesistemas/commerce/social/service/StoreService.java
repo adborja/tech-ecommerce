@@ -8,6 +8,7 @@ import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
 import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -51,7 +52,6 @@ public class StoreService {
         });
 
 
-
         return repository.save(store);
     }
 
@@ -80,10 +80,12 @@ public class StoreService {
     }
 
 
+    @Cacheable(value = "social_get_top_n_products", key = "#storeId" + "#limit")
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
         return this.repository.findTopNProducts(storeId, limit);
     }
 
+    @Cacheable(value = "social_recommend_stores_by_zone_and_product_type", key = "#userId" + "#zone" + "#productType" + "#limit")
     public List<StoreRepository.StoreOccurrence> recommendStoresByZoneAndProductType(final String userId,
                                                                                      final String zone,
                                                                                      final String productType,

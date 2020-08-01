@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.registration.model.User;
 import co.edu.cedesistemas.commerce.registration.repository.UserRepository;
 import co.edu.cedesistemas.common.event.RegistrationEvent;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +14,7 @@ public class UserService {
     private UserRepository userRepository;
     private final EventPublisherService publisherService;
 
+    @Cacheable(value = "registration_find_user_by_id", key = "#id")
     public User findById(String id) {
         return this.userRepository.findById(id).orElse(null);
     }
