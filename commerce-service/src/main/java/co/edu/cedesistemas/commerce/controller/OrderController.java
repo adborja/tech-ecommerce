@@ -23,6 +23,12 @@ public class OrderController {
 
     private IOrderService service;
 
+    @PostMapping("/orders")
+    public ResponseEntity<Status<?>> createOrder(@RequestBody Order order) {
+        Order created = service.createOrder(order);
+        return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
+    }
+
     @GetMapping("/orders/{id}")
     public ResponseEntity<Status<?>> getOrder(@PathVariable String id){
         try{
@@ -69,6 +75,11 @@ public class OrderController {
                 .withType("GET");
         order.add(deleted);
 
+    }
+    @DeleteMapping("/orders/{id}")
+    public ResponseEntity<Status<?>> deleteOrderById(@PathVariable String id) {
+        service.deleteOrder(id);
+        return new ResponseEntity<>(Status.success(), HttpStatus.OK);
     }
 
 }

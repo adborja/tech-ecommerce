@@ -18,6 +18,12 @@ dependencies {
 
     implementation "org.springframework.boot:spring-boot-starter-actuator"
 
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
+    implementation "org.springframework.cloud:spring-cloud-starter-zipkin"
+    implementation "org.springframework.boot:spring-boot-starter-amqp"
+
     implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
     implementation "com.google.code.gson:gson:${versions.gson}"
 

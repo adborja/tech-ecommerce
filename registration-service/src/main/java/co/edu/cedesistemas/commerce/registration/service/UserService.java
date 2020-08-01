@@ -29,4 +29,12 @@ public class UserService {
         return repository.save(userActive);
 
     }
+
+    public void deleteUser(final String id) {
+        User found = getById(id);
+        if (found != null) {
+            repository.deleteById(id);
+            publisherService.publishRegistrationEvent(found, RegistrationEvent.Status.USER_DELETED);
+        }
+    }
 }
