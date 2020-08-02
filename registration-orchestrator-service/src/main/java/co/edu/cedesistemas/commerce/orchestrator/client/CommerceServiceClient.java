@@ -1,5 +1,6 @@
-package co.edu.cedesistemas.comerce.orchestrator.client;
+package co.edu.cedesistemas.commerce.orchestrator.client;
 
+import co.edu.cedesistemas.common.model.Status;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -9,18 +10,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "loyalty-service", path = "/api/v1")
-public interface LoyaltyServiceClient {
+@FeignClient(name = "commerce-service", path = "/api/v1")
+public interface CommerceServiceClient {
 
-    @PostMapping("/user-stores")
-    ResponseEntity<String> createUser(@RequestBody UserStore userStore);
+    @PostMapping("/orders")
+    ResponseEntity<String> createOrder(@RequestBody Order order);
 
-    @DeleteMapping("/user-stores/{id}")
-    ResponseEntity<String> deleteUserStore(@PathVariable String id);
+    @DeleteMapping("/orders/{id}")
+    ResponseEntity<String> deleteOrderById(@PathVariable String id);
 
     @Data
     @Builder
-    class UserStore {
+    class Order {
         private String userId;
     }
 }

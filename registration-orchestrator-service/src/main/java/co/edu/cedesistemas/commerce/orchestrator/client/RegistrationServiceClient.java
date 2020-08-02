@@ -1,4 +1,4 @@
-package co.edu.cedesistemas.comerce.orchestrator.client;
+package co.edu.cedesistemas.commerce.orchestrator.client;
 
 import co.edu.cedesistemas.common.model.Status;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
