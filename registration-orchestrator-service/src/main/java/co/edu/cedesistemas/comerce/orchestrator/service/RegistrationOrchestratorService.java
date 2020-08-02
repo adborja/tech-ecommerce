@@ -44,7 +44,7 @@ public class RegistrationOrchestratorService {
 
         if (event.getStatus().equals(SocialEvent.Status.CREATED)) {
             loyaltyServiceClient.createUser(LoyaltyServiceClient.UserStore.builder()
-                    .id(event.getUserId())
+                    .userId(event.getUserId())
                     .build());
         } else if (event.getStatus().equals(SocialEvent.Status.FAILED)) {
             registrationServiceClient.deleteUser(event.getUserId());

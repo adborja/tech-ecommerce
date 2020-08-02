@@ -21,6 +21,6 @@ public interface LoyaltyServiceClient {
     @Data
     @Builder
     class UserStore {
-        private String id;
+        private String userId;
     }
 }
