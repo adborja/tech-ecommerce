@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.loyalty.model.UserOrder;
 import co.edu.cedesistemas.commerce.loyalty.repository.UserOrderRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ public class UserOrderService {
     private final UserOrderRepository repository;
     private final EventPublisherService publisherService;
 
-    @Value("${app.loyalty.points-conversion-rate}")
-    int pointsConvertRate;
+    //@Autowired
+    private final int pointsConvertRate;
 
     public UserOrder registerOrder(@NotNull final String orderId, @NotNull String userId, @NotNull Float orderValue) {
         UserOrder uo = new UserOrder();
