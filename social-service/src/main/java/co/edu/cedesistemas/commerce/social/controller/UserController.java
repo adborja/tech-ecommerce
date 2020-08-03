@@ -10,13 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -100,5 +94,26 @@ public class UserController {
                 .code(HttpStatus.SERVICE_UNAVAILABLE.value())
                 .build();
         return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    private ResponseEntity<Status<?>> deleteByIdFallback(final String id) {
+        log.error("deleting user by id fallback {}", id);
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @DeleteMapping("/users/{id}")
+    @HystrixCommand(fallbackMethod = "deleteByIdFallback")
+    public ResponseEntity<Status<?>> deleteUserById(@PathVariable String id) {
+        try {
+            service.deleteUser(id);
+            return DefaultResponseBuilder.defaultResponse(Status.success(), HttpStatus.CREATED);
+        }catch (Exception e){
+            return DefaultResponseBuilder.errorResponse(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package co.edu.cedesistemas.commerce.registration.controller;
 
 import co.edu.cedesistemas.commerce.registration.model.User;

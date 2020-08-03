@@ -22,14 +22,23 @@ public class UserService {
     }
 
     public void deleteUser(final String id) {
-        User found = getById(id);
+        User found = getUserById(id);
         if (found != null) {
             repository.deleteById(id);
             publisherService.publishRegistrationEvent(found, RegistrationEvent.Status.USER_DELETED);
         }
     }
 
-    public User getById(final String id) {
-        return repository.findById(id).orElse(null);
+    public User getUserById(String id){
+        return repository.findUserById(id).orElse(null);
+    }
+
+    public User activateUserById(String id){
+        User user = repository.findUserById(id).orElse(new User());
+        if (user.getId() != null) {
+            user.setStatus(User.Status.ACTIVE);
+            user = repository.save(user);
+        }
+        return user;
     }
 }
