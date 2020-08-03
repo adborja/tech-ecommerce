@@ -4,6 +4,11 @@ spring:
   data:
     neo4j:
       uri: bolt://neo4j.cedesistemas.local:7687
+  rabbitmq:
+    host: rabbitmq.cedesistemas.local
+    port: 5672
+    username: guest
+    password: guest
 
 server:
   port: ${PORT:8082}
