@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class UserOrder {
     @Id
     private String id; //order id
+    private String storeId;
     private String userId;
     private Float orderValue;
     private LoyaltyStatus status;
