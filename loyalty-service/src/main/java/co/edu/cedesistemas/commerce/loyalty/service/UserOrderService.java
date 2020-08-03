@@ -10,6 +10,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -17,6 +18,7 @@ import javax.validation.constraints.NotNull;
 @Slf4j
 public class UserOrderService {
     private final UserOrderRepository repository;
+    private final UserStoreService userStoreService;
     private final EventPublisherService publisherService;
 
     private final Integer pointConversionRate;
@@ -24,6 +26,7 @@ public class UserOrderService {
     public UserOrder registerOrder(@NotNull final String orderId, @NotNull String userId, @NotNull Float orderValue) {
         UserOrder uo = new UserOrder();
         uo.setId(orderId);
+        uo.setStoreId(storeId);
         uo.setUserId(userId);
         uo.setStatus(LoyaltyStatus.REGISTERED);
         uo.setOrderValue(orderValue);
@@ -31,10 +34,16 @@ public class UserOrderService {
         log.info("************ pointConversions from registerOrder method "+ pointConversionRate);
         uo.calculatePoints(pointConversionRate);
 
+        userStoreService.updatePoints(storeId, userId, uo.getPoints());
+
         UserOrder result = repository.save(uo);
 
         publisherService.publishLoyaltyEvent(result);
 
         return result;
+    }
+
+    public List<UserOrder> getUserOrders(final String userId) {
+        return repository.findByUserId(userId);
     }
 }
