@@ -13,6 +13,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ import javax.validation.constraints.NotNull;
 public class UserOrderService {
 
     private final UserOrderRepository repository;
+    private final UserStoreService userStoreService;
     private final EventPublisherService publisherService;
 
     @Value("${app.loyalty.points-conversion-rate:200}")
@@ -32,15 +34,22 @@ public class UserOrderService {
         log.info("pointsConversionRate..{}",pointsConversionRate);
         UserOrder uo = new UserOrder();
         uo.setId(orderId);
+        uo.setStoreId(storeId);
         uo.setUserId(userId);
         uo.setStatus(LoyaltyStatus.REGISTERED);
         uo.setOrderValue(orderValue);
         uo.calculatePoints(pointsConversionRate);
+
+        userStoreService.updatePoints(storeId, userId, uo.getPoints());
 
         UserOrder result = repository.save(uo);
 
         publisherService.publishLoyaltyEvent(result);
 
         return result;
+    }
+
+    public List<UserOrder> getUserOrders(final String userId) {
+        return repository.findByUserId(userId);
     }
 }
