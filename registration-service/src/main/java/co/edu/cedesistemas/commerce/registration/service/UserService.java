@@ -2,22 +2,23 @@ package co.edu.cedesistemas.commerce.registration.service;
 
 import co.edu.cedesistemas.commerce.registration.model.User;
 import co.edu.cedesistemas.commerce.registration.repository.UserRepository;
+import co.edu.cedesistemas.common.event.RegistrationEvent;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class UserService{
     private final UserRepository repository;
+    private final EventPublisherService publisherService;
 
     public User createUser(final User user) {
-        user.setId(UUID.randomUUID().toString());
-        user.setStatus(User.Status.INACTIVE);
-        user.setCreatedAt(LocalDateTime.now());
-        return repository.save(user);
+        user.setStatus(User.Status.ACTIVE);
+        User created = repository.save(user);
+        publisherService.publishRegistrationEvent(created, RegistrationEvent.Status.USER_CREATED);
+        return created;
     }
 
 

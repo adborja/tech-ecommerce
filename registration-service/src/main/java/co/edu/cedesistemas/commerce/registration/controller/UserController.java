@@ -80,10 +80,10 @@ public class UserController {
         return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
     
-     @DeleteMapping("/users/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<Status<?>> deleteUser(@PathVariable String id) {
         service.deleteUser(id);
         return new ResponseEntity<>(Status.success(), HttpStatus.OK);
     }
 }
-}
+

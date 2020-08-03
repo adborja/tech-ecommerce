@@ -110,4 +110,4 @@ public class UserController {
         return new ResponseEntity<>(Status.success(), HttpStatus.OK);
     }
 }
-}
+
