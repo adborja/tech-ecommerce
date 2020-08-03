@@ -21,6 +21,8 @@ public class RabbitMQConfig {
 
     @Value("${spring.rabbitmq.host:localhost}")
     private String hostname;
+    @Value("${spring.rabbitmq.virtual-host:}")
+    private String virtualHost;
     @Value("${spring.rabbitmq.port:5672}")
     private Integer port;
     @Value("${spring.rabbitmq.username:guest}")
@@ -33,6 +35,8 @@ public class RabbitMQConfig {
         CachingConnectionFactory cf = new CachingConnectionFactory(hostname, port);
         cf.setUsername(username);
         cf.setPassword(password);
+        if (!virtualHost.equals(""))
+            cf.setVirtualHost(virtualHost);
         return cf;
     }
 
