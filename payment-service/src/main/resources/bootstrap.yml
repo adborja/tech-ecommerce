@@ -1,15 +1,11 @@
 spring:
   application:
-    name: registration-service
-    description: e-commerce registration service
-    version: 1.0.0
-
-  data:
-    mongodb:
-      authentication-database: admin
-      database: tech-ecommerce
-      port: 27017
-      host: mongodb.cedesistemas.local
+    name: payment-service
+  cloud:
+    config:
+      uri: http://config.cedesistemas.local:8760
+      username: configadmin
+      password: cedesistemas
   zipkin:
     base-url: http://jaeger.cedesistemas.local:9411/
     sender:
@@ -18,13 +14,8 @@ spring:
     sampler:
       probability: 1
 
-  rabbitmq:
-    host: rabbitmq.cedesistemas.local
-    port: 5672
-    username: guest
-    password: guest
 server:
-  port: ${PORT:8083}
+  port: ${PORT:8084}
   servlet:
     context-path: /api/v1/
 
@@ -43,19 +34,10 @@ management:
       exposure:
         include: '*'
 
-
-cache:
-  type: redis
-  redis: time-to-live
-  host: redis.cedesistemas.local
-  port: 6379
-
-
 info:
   app:
     name: ${spring.application.name}
-    description: e-commerce registration application
-
+    description: e-commerce payment application
     version: 1.0.0
 
 eureka:
@@ -64,3 +46,7 @@ eureka:
     fetch-registry: true
     service-url:
       default-zone: http://eureka.cedesistemas.local:8761/eureka/
+
+ribbon:
+  eureka:
+    enabled: false

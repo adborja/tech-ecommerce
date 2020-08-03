@@ -1,9 +1,6 @@
 spring:
   application:
-    name: registration-service
-    description: e-commerce registration service
-    version: 1.0.0
-
+    name: inventory-service
   data:
     mongodb:
       authentication-database: admin
@@ -17,14 +14,21 @@ spring:
   sleuth:
     sampler:
       probability: 1
-
   rabbitmq:
     host: rabbitmq.cedesistemas.local
     port: 5672
     username: guest
     password: guest
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+  redis:
+    host: redis.cedesistemas.local
+    port: 6379
+
 server:
-  port: ${PORT:8083}
+  port: ${PORT:8087}
   servlet:
     context-path: /api/v1/
 
@@ -43,19 +47,10 @@ management:
       exposure:
         include: '*'
 
-
-cache:
-  type: redis
-  redis: time-to-live
-  host: redis.cedesistemas.local
-  port: 6379
-
-
 info:
   app:
     name: ${spring.application.name}
-    description: e-commerce registration application
-
+    description: e-commerce inventory service
     version: 1.0.0
 
 eureka:

@@ -12,8 +12,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Profile("!" + SpringProfile.SANDBOX)
 @Service
@@ -25,8 +27,13 @@ public class OrderService implements IOrderService {
     private final EventPublisherService publisherService;
 
     public Order createOrder(final Order order) {
+        order.setId(UUID.randomUUID().toString());
+        order.setCreatedAt(LocalDateTime.now());
         order.setStatus(OrderStatus.CREATED);
+        order.calculateValue();
+        log.info("order created: {}", order.getId());
 
+        publisherService.publishOrderEvent(order);
         return repository.save(order);
     }
 
@@ -52,9 +59,9 @@ public class OrderService implements IOrderService {
             return null;
         }
         BeanUtils.copyProperties(order, found, Utils.getNullPropertyNames(order));
-
         publisherService.publishOrderEvent(found);
-
         return repository.save(found);
     }
+
+
 }
