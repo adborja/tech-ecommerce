@@ -28,7 +28,7 @@ public class UserOrderService {
         uo.setStatus(LoyaltyStatus.REGISTERED);
         uo.setOrderValue(orderValue);
         log.info("·······####" + pointsConvertRate +" puntos para conversion");
-        uo.calculatePoints(pointsConvertRate);0git
+        uo.calculatePoints(pointsConvertRate);
         userStoreService.updatePoints(storeId, userId, uo.getPoints());
 
         UserOrder result = repository.save(uo);
