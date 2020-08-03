@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: loyalty-service
+  data:
+    mongodb:
+      authentication-database: admin
+      database: tech-ecommerce
+      port: 27017
+      host: mongodb.cedesistemas.local
+  cloud:
+    config:
+      uri: http://config.cedesistemas.local:8760
+      username: configadmin
+      password: cedesistemas
+  zipkin:
+    base-url: http://jaeger.cedesistemas.local:9411/
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
+
+server:
+  port: ${PORT:8089}
+  servlet:
+    context-path: /api/v1/
+
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: DESC
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: e-commerce payment application
+    version: 1.0.0
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://eureka.cedesistemas.local:8761/eureka/
+
+ribbon:
+  eureka:
+    enabled: false
