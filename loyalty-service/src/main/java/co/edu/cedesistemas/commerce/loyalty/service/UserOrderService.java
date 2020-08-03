@@ -4,6 +4,7 @@ import co.edu.cedesistemas.common.model.LoyaltyStatus;
 import co.edu.cedesistemas.commerce.loyalty.model.UserOrder;
 import co.edu.cedesistemas.commerce.loyalty.repository.UserOrderRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -13,15 +14,16 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 
+@RefreshScope
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class UserOrderService {
     private final UserOrderRepository repository;
     private final EventPublisherService publisherService;
     
     @Value("${app.loyalty.points-conversion-rate}")
-    private final int pointsConversionRate;
+    private Integer pointsConversionRate;
 
     public UserOrder registerOrder(@NotNull final String orderId, @NotNull String userId, @NotNull Float orderValue) {
         UserOrder uo = new UserOrder();

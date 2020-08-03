@@ -1,6 +1,11 @@
 spring:
   application:
     name: loyalty-service
+  cloud:
+    config:
+      uri: http://config.cedesistemas.local:8760
+      username: configadmin
+      password: cedesistemas
   data:
     mongodb:
       authentication-database: admin
@@ -17,7 +22,7 @@ spring:
 
 app:
   loyalty:
-    points-conversion-rate: 5
+    points-conversion-rate: 1000
 
 server:
   port: ${PORT:8085}

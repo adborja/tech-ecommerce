@@ -4,6 +4,3 @@ spring:
     port: 5672
     username: guest
     password: guest
-app:
-  loyalty:
-    points-conversion-rate: 5
