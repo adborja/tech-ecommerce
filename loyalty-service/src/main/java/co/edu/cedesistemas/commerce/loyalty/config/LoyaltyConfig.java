@@ -15,7 +15,7 @@ public class LoyaltyConfig {
     public int pointConversionRate;
 
     @Bean
-    public int getPointsConvertRate(){
+    public int getPointConversionRate(){
         log.info("************ pointConversions from LoyaltyConfig" + pointConversionRate);
         return pointConversionRate;
     }
