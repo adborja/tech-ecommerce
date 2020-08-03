@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.model.User;
 import co.edu.cedesistemas.commerce.service.IUserService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
@@ -36,6 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
+    @HystrixCommand(fallbackMethod = "getUserByIdFallback")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         try {
             User found = service.getById(id);
@@ -47,6 +49,7 @@ public class UserController {
     }
 
     @GetMapping("/users/by-email")
+    @HystrixCommand(fallbackMethod = "getServiceFallback")
     public ResponseEntity<Status<?>> getUserByEmail(@RequestParam String email) {
         try {
             List<User> found = service.getByEmail(email);
@@ -105,6 +108,21 @@ public class UserController {
         user.add(deleteLink);
     }
 
+    private ResponseEntity<Status<?>> getUserByIdFallback(String userId){
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
 
-
+    private ResponseEntity<Status<?>> getServiceFallback(){
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
 }
