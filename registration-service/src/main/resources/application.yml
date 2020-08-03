@@ -14,11 +14,25 @@ spring:
   sleuth:
     sampler:
       probability: 1
+  rabbitmq:
+    host: rabbitmq.cedesistemas.local
+    port: 5672
+    username: guest
+    password: guest
 
 server:
   port: ${PORT:8083}
   servlet:
     context-path: /api/v1/
+
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: DESC
 
 management:
   endpoints:
@@ -29,8 +43,7 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    description: e-commerce registration service
-    port: ${server.port}
+    description: e-commerce registration application
     version: 1.0.0
 
 eureka:

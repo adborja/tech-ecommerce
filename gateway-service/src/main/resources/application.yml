@@ -44,7 +44,9 @@ zuul:
     registration:
       path: /registration/**
       serviceId: registration-service
-
+    payment:
+      path: /payment/**
+      serviceId: payment-service
 
 ribbon:
   eureka:

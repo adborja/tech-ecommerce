@@ -35,4 +35,12 @@ public class UserService{
             return null;
         }
     }
+    
+        public void deleteUser(final String id) {
+        User found = getById(id);
+        if (found != null) {
+            repository.deleteById(id);
+            publisherService.publishRegistrationEvent(found, RegistrationEvent.Status.USER_DELETED);
+        }
+    }
 }

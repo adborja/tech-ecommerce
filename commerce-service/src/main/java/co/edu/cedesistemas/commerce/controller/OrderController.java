@@ -71,4 +71,11 @@ public class OrderController {
         order.add(byTypeLink);
 
     }
+    
+    @DeleteMapping("/orders/{id}")
+    public ResponseEntity<Status<?>> deleteOrderById(@PathVariable String id) {
+        service.deleteOrder(id);
+        return new ResponseEntity<>(Status.success(), HttpStatus.OK);
+    }
+}
 }
