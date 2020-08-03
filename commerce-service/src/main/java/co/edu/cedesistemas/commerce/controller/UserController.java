@@ -10,6 +10,8 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -36,6 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
+    @HystrixCommand(fallbackMethod = "getUserByIdFallback")
     public ResponseEntity<Status<?>> getUserById(@PathVariable String id) {
         try {
             User found = service.getById(id);
@@ -47,6 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/users/by-email")
+    @HystrixCommand(fallbackMethod = "getServiceFallback")
     public ResponseEntity<Status<?>> getUserByEmail(@RequestParam String email) {
         try {
             List<User> found = service.getByEmail(email);
@@ -103,6 +107,24 @@ public class UserController {
                 .withRel("delete")
                 .withType("DELETE");
         user.add(deleteLink);
+    }
+
+    private ResponseEntity<Status<?>> getUserByIdFallback(String userId){
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    private ResponseEntity<Status<?>> getServiceFallback(){
+        Status<?> status = Status.builder()
+                ._hits(1)
+                .message("service unavailable. please try again")
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .build();
+        return new ResponseEntity<>(status, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
 

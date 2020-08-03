@@ -45,6 +45,18 @@ zuul:
       path: /payment/**
       serviceId: payment-service
 
+
+routes:
+  commerce:
+    path: /commerce/**
+    serviceId: commerce-service
+  social:
+    path: /social/**
+    serviceId: social-service
+  registration:
+    path: /registration/**
+    serviceId: registration-service
+
 ribbon:
   eureka:
     enabled: true
