@@ -9,7 +9,6 @@ import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
 
 import org.springframework.http.HttpStatus;
@@ -26,9 +25,14 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
+
 @AllArgsConstructor
 public class StoreController {
     private final IStoreService service;
+
+    public StoreController(IStoreService service) {
+        this.service = service;
+    }
 
     @PostMapping("/stores")
     public ResponseEntity<Status<?>> createStore(@RequestBody Store store) {
