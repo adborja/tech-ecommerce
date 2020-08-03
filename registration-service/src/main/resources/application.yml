@@ -52,3 +52,4 @@ eureka:
     fetch-registry: true
     service-url:
       default-zone: http://eureka.cedesistemas.local:8761/eureka/
+

@@ -1,8 +1,7 @@
 spring:
   application:
     name: social-service
-  data:
-    neo4j:
+  neo4j:
       uri: bolt://neo4j.cedesistemas.local:7687
   zipkin:
     base-url: http://jaeger.cedesistemas.local:9411/

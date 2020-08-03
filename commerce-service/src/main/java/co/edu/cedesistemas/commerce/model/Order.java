@@ -1,8 +1,7 @@
 package co.edu.cedesistemas.commerce.model;
 
 import co.edu.cedesistemas.common.model.OrderStatus;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.RepresentationModel;
@@ -17,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order extends RepresentationModel<Store> {
+    public static Object OrderStatus;
     @Id
     private String id;
     private String userId;
