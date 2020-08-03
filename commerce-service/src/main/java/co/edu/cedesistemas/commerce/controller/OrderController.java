@@ -11,10 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -75,6 +72,7 @@ public class OrderController {
                 .withType("GET");
         order.add(byTypeLink);
     }
+
     @DeleteMapping("/orders/{id}")
     public ResponseEntity<Status<?>> deleteOrderById(@PathVariable String id) {
         service.deleteOrder(id);

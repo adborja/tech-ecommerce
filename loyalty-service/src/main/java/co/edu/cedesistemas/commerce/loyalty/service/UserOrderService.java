@@ -19,7 +19,7 @@ public class UserOrderService {
     private final UserOrderRepository repository;
     private final EventPublisherService publisherService;
 
-    @Value("${loyalty.pointsconversion.rate}")
+    @Value("${loyalty.pointsconversion.rate:100}")
     private int pointsConversionRate;
 
     public UserOrder registerOrder(@NotNull final String orderId, @NotNull String userId, @NotNull Float orderValue) {

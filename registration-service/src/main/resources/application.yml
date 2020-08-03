@@ -43,7 +43,7 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    description: e-commerce registration application
+    description: Registration application
     version: 1.0.0
 
 eureka:
