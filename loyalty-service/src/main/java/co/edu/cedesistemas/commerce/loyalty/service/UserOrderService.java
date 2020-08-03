@@ -5,36 +5,40 @@ import co.edu.cedesistemas.commerce.loyalty.model.UserOrder;
 import co.edu.cedesistemas.commerce.loyalty.repository.UserOrderRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 @Slf4j
-@RefreshScope
 public class UserOrderService {
     private final UserOrderRepository repository;
     private final EventPublisherService publisherService;
-
-    //@Autowired
+    private final UserStoreService userStoreService;
     private final int pointsConvertRate;
 
-    public UserOrder registerOrder(@NotNull final String orderId, @NotNull String userId, @NotNull Float orderValue) {
+    public UserOrder registerOrder(@NotNull final String orderId, @NotNull final String storeId,
+                                   @NotNull String userId, @NotNull Float orderValue) {
         UserOrder uo = new UserOrder();
         uo.setId(orderId);
+        uo.setStoreId(storeId);
         uo.setUserId(userId);
         uo.setStatus(LoyaltyStatus.REGISTERED);
         uo.setOrderValue(orderValue);
         log.info("·······####" + pointsConvertRate +" puntos para conversion");
-        uo.calculatePoints(pointsConvertRate);
+        uo.calculatePoints(pointsConvertRate);0git
+        userStoreService.updatePoints(storeId, userId, uo.getPoints());
 
         UserOrder result = repository.save(uo);
+
         publisherService.publishLoyaltyEvent(result);
 
         return result;
+    }
+
+    public List<UserOrder> getUserOrders(final String userId) {
+        return repository.findByUserId(userId);
     }
 }
