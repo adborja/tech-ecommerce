@@ -30,8 +30,8 @@ public class PaymentEventConsumerService {
 
         if (payment.getStatus().equals(PaymentStatus.APPROVED)) {
             UserOrder userOrder = userOrderService
-                    .registerOrder(payment.getOrderId(), payment.getUserId(), payment.getValue());
-            log.info("loyalty points registered - user: {}, points: {}", userOrder.getId(), userOrder.getPoints());
+                    .registerOrder(payment.getOrderId(), payment.getStoreId(), payment.getUserId(), payment.getValue());
+            log.info("loyalty points registered - user: {}, points: {}", userOrder.getUserId(), userOrder.getPoints());
         }
     }
 }
