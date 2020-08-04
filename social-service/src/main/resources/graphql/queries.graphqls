@@ -1,0 +1,6 @@
+type Query{
+	user(id: String!): User
+	recommendStoreByProducts(userId: String!, zone: String!, productType: String!, limit: Int): [StoreOccurrence]
+	recommendStoresByZoneAndProductType(userId: String!, zone: String!, productType: String!, limit: Int): [StoreOccurrence]
+	recommendStoresByZone(userId: String!, zone: String!, limit: Int): [StoreOccurrence]
+}

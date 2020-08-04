@@ -22,7 +22,7 @@ public class PurchaseService {
             throw new Exception("user not found");
         }
 
-        Product product = productService.getById(productId);
+        Product product = productService.getProduct(productId);
         if (product == null) {
             throw new Exception("product not found");
         }
