@@ -1,0 +1,55 @@
+type User
+{
+    id: ID!
+    name: String;
+    lastName: String;
+    email: String;
+}
+
+type Store
+{
+    id: ID!
+    name: String;
+    phone: String;
+    address: String;
+    type: Type;
+    createdAt: LocalDateTime;
+    updatedAt: LocalDateTime;
+}
+
+type Product {
+    id: ID!
+    name: String;
+    description: String;
+}
+
+
+type OrderItem {
+   productId: String;
+   finalPrice: Float;
+   quantity: Integer;
+}
+
+type Order {
+    id: ID!
+    userId: String;
+    storeId: String;
+    shippingAddressId: String;
+    status: Status;
+    createdAt: LocalDateTime;
+    items: List<OrderItem>;
+}
+
+type Address {
+    id:ID
+    name: String;
+    description: String;
+    city: String;
+    countryISOCode: String;
+    regionISOCode: String;
+    phoneNumber: String;
+    street1: String;
+    street2: String ;
+    street3: String;
+    zip: String;
+}
