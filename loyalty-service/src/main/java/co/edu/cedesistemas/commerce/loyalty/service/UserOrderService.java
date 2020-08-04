@@ -23,7 +23,8 @@ public class UserOrderService {
 
     private final Integer pointConversionRate;
 
-    public UserOrder registerOrder(@NotNull final String orderId, @NotNull String userId, @NotNull Float orderValue) {
+    public UserOrder registerOrder(@NotNull final String orderId, @NotNull final String storeId,
+                                   @NotNull String userId, @NotNull Float orderValue) {
         UserOrder uo = new UserOrder();
         uo.setId(orderId);
         uo.setStoreId(storeId);
