@@ -8,6 +8,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +58,7 @@ public interface StoreRepository extends Neo4jRepository<Store, String> {
 
     @QueryResult
     @Data
-    class ProductOccurrence {
+    class ProductOccurrence implements Serializable {
         private String productId;
         private Integer occurrence;
     }

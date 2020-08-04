@@ -11,10 +11,10 @@ import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import co.edu.cedesistemas.common.event.SocialEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,6 +39,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Cacheable(value = "user_info", key = "#id")
     public User getById(final String id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
