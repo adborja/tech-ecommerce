@@ -12,5 +12,6 @@ include 'payment-service'
 include 'registration-orchestrator-service'
 include 'inventory-service'
 include 'configuration-service'
+include 'shipping-service'
 
 
