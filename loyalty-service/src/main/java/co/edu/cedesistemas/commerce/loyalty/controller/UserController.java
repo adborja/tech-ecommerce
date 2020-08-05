@@ -35,7 +35,7 @@ public class UserController {
 
     @PostMapping("/user-order")
     public ResponseEntity<Status<?>> createUserOrder(@RequestBody UserOrder userOrder) {
-        UserOrder created = userOrderService.registerOrder(userOrder.getId(),userOrder.getUserId(),userOrder.getOrderValue());
+        UserOrder created = userOrderService.registerOrder(userOrder.getId(),userOrder.getStoreId(),userOrder.getUserId(),userOrder.getOrderValue());
         return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
     }
 }

@@ -29,7 +29,10 @@ public class UserOrderService {
     private Integer pointsConversionRate;
 
 
-    public UserOrder registerOrder(@NotNull final String orderId, @NotNull String userId, @NotNull Float orderValue) {
+    public UserOrder registerOrder(@NotNull final String orderId,
+                                   @NotNull final String storeId,
+                                   @NotNull String userId,
+                                   @NotNull Float orderValue) {
 
         log.info("pointsConversionRate..{}",pointsConversionRate);
         UserOrder uo = new UserOrder();
