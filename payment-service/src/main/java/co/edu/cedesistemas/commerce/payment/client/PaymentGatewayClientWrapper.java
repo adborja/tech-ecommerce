@@ -30,5 +30,4 @@ public class PaymentGatewayClientWrapper {
                 .responseMessage(responseMessage)
                 .build();
     }
-
 }
