@@ -24,10 +24,10 @@ public final class TestUtils {
         final Order order = new Order();
         order.setId(UUID.randomUUID().toString());
         order.setCreatedAt(LocalDateTime.now());
-        order.setShippingAddressId(UUID.randomUUID().toString());
-        order.setStatus(OrderStatus.CREATED);
-        order.setStoreId(UUID.randomUUID().toString());
-        order.setUserId(UUID.randomUUID().toString());
+        order.setShippingAddressId(shippingAddress.getId());
+        order.setStatus(OrderStatus.DELIVERED);
+        order.setStoreId(store.getId());
+        order.setUserId(user.getId());
         return order;
     }
 
