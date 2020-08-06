@@ -29,8 +29,8 @@ public class UserController {
         return new ResponseEntity<>(Status.success(), HttpStatus.OK);
     }
 
-    @PutMapping("/user-order")
-    public ResponseEntity<Status<?>> registerUserStore(@PathVariable UserOrder userOrder) {
+    @PostMapping("/user-order")
+    public ResponseEntity<Status<?>> registerUserStore(@RequestBody UserOrder userOrder) {
         UserOrder updated = userOrderService.registerOrder(userOrder.getId(),userOrder.getStoreId(),userOrder.getUserId(),userOrder.getOrderValue());
         return DefaultResponseBuilder.defaultResponse(updated, HttpStatus.CREATED);
     }
