@@ -1,0 +1,33 @@
+version: '2'
+  services:
+    config-service:
+      container_name: config.cedesistemas.local
+      build:
+        context: configuration-service
+      image: registry.cedesistemas.internal:5000/commerce/configuration-service:dev
+      expose:
+        - 8760
+      ports:
+        - 8760:8760
+      networks:
+        - cedesistemas_network
+    shipping-service:
+      container_name: shipping.cedesistemas.local
+      build:
+        context: shipping-service
+      image: registry.cedesistemas.internal:5000/commerce/shipping-service:dev
+      environment:
+        SPRING_PROFILES_ACTIVE: 'sandbox'
+      expose:
+        - 8096
+      ports:
+        - 8096:8096
+      networks:
+        - cedesistemas_network
+      links:
+        - config-service:config.cedesistemas.local
+      depends_on:
+        - config-service
+  networks:
+    cedesistemas_network:
+      driver: bridge
