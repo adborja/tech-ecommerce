@@ -6,10 +6,28 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Set;
 
 @Repository
 public interface UserRepository extends Neo4jRepository<User, String> {
     @Query("MATCH (u:User)-[:IS_FRIEND_OF]-(user:User {id:$userId}) RETURN u")
     Set<User> findFriendsByUser(@Param("userId") String userId);
+
+    @Query("MATCH (user:User {id: $userId})-[:IS_FRIEND_OF]-(friend)-[:LIKES]->(store:Store)-[:LOCATED_IN]->(loc:Location {zone: $zone}) RETURN store.id as storeId, count(*) AS occurrence, loc.zone as zone ORDER BY occurrence DESC LIMIT $limit")
+    List<StoreRepository.StoreOccurrence> recommendStoreByProducts(@Param("userId") String userId,
+                                                                   @Param("zone") String zone,
+                                                                   @Param("productType") String productType,
+                                                                   @Param("limit") Integer limit);
+
+    List<StoreRepository.StoreOccurrence> recommendStoresByZoneAndProductType(@Param("userId") String userId,
+                                                                              @Param("zone") String zone,
+                                                                              @Param("productType") String productType,
+                                                                              @Param("limit") Integer limit);
+
+    List<StoreRepository.StoreOccurrence> recommendStoresByZone(@Param("userId") String userId,
+                                                                @Param("zone") String zone,
+                                                                @Param("productType") String productType,
+                                                                @Param("limit") Integer limit);
+
 }

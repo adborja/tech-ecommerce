@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -20,6 +21,8 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(of = "id")
 @NodeEntity
+@Builder
+@NoArgsConstructor
 public class User {
     @Id
     private String id;
