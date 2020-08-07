@@ -23,11 +23,9 @@ public class Order extends RepresentationModel<Order> {
     private String shippingAddressId;
     private OrderStatus status;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private List<OrderItem> items;
     private Float orderValue;
-    private User user;
-    private Store store;
-    private Address shippingAddress;
 
     public enum Status {
         CREATED,

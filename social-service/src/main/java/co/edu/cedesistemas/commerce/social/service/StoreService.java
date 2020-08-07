@@ -6,6 +6,7 @@ import co.edu.cedesistemas.commerce.social.repository.ProductRepository;
 import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,7 +56,6 @@ public class StoreService {
     }
 
     public void addProduct(final String storeId, final String productId) throws Exception {
-        // TODO: Implement method here
         Store store = repository.findById(storeId).orElse(null);
         Product prd = new Product();
         prd.setId(productId);
@@ -74,6 +74,7 @@ public class StoreService {
         }
     }
 
+    @Cacheable(value = "social_top_products", key = "#storeId" + "-" + "#limit")
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
         return repository.findTopNProducts(storeId, limit);
     }

@@ -23,6 +23,7 @@ public class UserService implements IUserService {
     public User createUser(final User user) {
         log.info("create user {}", user);
         return repository.save(user);
+
     }
 
     public User getById(final String id) {

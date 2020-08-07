@@ -23,6 +23,16 @@ spring:
     port: 5672
     username: guest
     password: guest
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+    redis:
+      host: redis.cedesistemas.local
+      port: 6379
+
+
 server:
   port: ${PORT:8083}
   servlet:
@@ -42,14 +52,6 @@ management:
     web:
       exposure:
         include: '*'
-
-
-cache:
-  type: redis
-  redis: time-to-live
-  host: redis.cedesistemas.local
-  port: 6379
-
 
 info:
   app:

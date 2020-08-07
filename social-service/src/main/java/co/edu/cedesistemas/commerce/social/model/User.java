@@ -21,7 +21,6 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(of = "id")
 @NodeEntity
-@Builder
 @NoArgsConstructor
 public class User {
     @Id

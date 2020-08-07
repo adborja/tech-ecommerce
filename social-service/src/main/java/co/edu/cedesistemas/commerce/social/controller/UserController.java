@@ -8,13 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -95,5 +89,12 @@ public class UserController {
                                                      @RequestParam String productType, @RequestParam Integer limit) {
 
         return null;
+    }
+
+    @DeleteMapping ("users/{id}")
+    public ResponseEntity<Status<?>> deleteById(@PathVariable String id){
+        service.deleteUser(id);
+        return new ResponseEntity<>(Status.success(),HttpStatus.OK);
+
     }
 }

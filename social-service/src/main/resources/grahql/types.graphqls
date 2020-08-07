@@ -1,14 +1,8 @@
 type User {
     id: ID!
 }
-
-type StoreOccurrence{
-    userId: String!
-    zone:   String!
-    productType:    String!
-    limit:  Int
-
-    storeid string
-    ocurrence int
-    zone stirng
+type StoreOccurrence {
+    storeId: ID!
+    occurrence: Int!
+    zone: String!
 }

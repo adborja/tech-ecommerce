@@ -25,8 +25,9 @@ public class OrderController {
     @PostMapping("/orders")
     public ResponseEntity<Status<?>> createOrder(@RequestBody Order order) {
         try {
+            log.info("create order {}", order);
             Order created = service.createOrder(order);
-            return DefaultResponseBuilder.defaultResponse(order, HttpStatus.CREATED);
+            return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
         } catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }

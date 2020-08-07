@@ -10,6 +10,6 @@ public interface IOrderService {
     Order getById(String id);
     List<OrderItem> getOrderItems(String id);
     void deleteOrder(String id);
-    Order updateOrder(String id, Order order);
+    Order updateOrder(String id, Order order) throws Exception;
 }
 

@@ -106,6 +106,7 @@ public class UserService {
     private Store finStore(final String storeId){
         return storeService.getById(storeId);
     }
+
     public void deleteUser(final String id) {
         User found = getById(id);
         if (found != null) {

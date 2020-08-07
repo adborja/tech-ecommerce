@@ -10,9 +10,9 @@ public class OrderWriteConverter implements Converter<Order, Document> {
     public Document convert(Order order) {
         Document dbo = new Document();
         dbo.put("_id", order.getId());
-        dbo.put("userId", order.getUser().getId());
-        dbo.put("storeId", order.getStore().getId());
-        dbo.put("AddressId", order.getShippingAddress().getId());
+        dbo.put("userId", order.getUserId());
+        dbo.put("storeId", order.getStoreId());
+        dbo.put("AddressId", order.getShippingAddressId());
         dbo.put("status", order.getStatus());
         dbo.put("createdAt", order.getCreatedAt());
         dbo.put("items", order.getItems());
