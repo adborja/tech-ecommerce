@@ -7,6 +7,11 @@ spring:
       database: tech-ecommerce
       port: 27017
       host: mongodb.cedesistemas.local
+  cloud:
+    config:
+      uri: http://config.cedesistemas.local:8760
+      username: configadmin
+      password: cedesistemas
   zipkin:
     base-url: http://jaeger.cedesistemas.local:9411/
     sender:
