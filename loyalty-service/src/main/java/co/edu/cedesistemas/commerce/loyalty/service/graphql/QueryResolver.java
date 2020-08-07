@@ -1,7 +1,6 @@
 package co.edu.cedesistemas.commerce.loyalty.service.graphql;
 
 import co.edu.cedesistemas.commerce.loyalty.model.UserStore;
-import co.edu.cedesistemas.commerce.loyalty.service.UserOrderService;
 import co.edu.cedesistemas.commerce.loyalty.service.UserStoreService;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class QueryResolver implements GraphQLQueryResolver {
     private final UserStoreService userStoreService;
-    private final UserOrderService userOrderService;
 
     public Integer getLoyaltyPoints(final String userId, final String storeId) {
         UserStore userStore = getUserStore(userId, storeId);
