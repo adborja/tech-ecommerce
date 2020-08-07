@@ -1,0 +1,5 @@
+type Query {
+    loyaltyPoints(userId: String!, storeId: String!): Int
+    userStore(userId: String!, storeId: String!): UserStore
+    topNUsers(storeId: String!, limit: Int!): [UserStore]
+}

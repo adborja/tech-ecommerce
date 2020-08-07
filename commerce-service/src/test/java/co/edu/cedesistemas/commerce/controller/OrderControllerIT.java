@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.CommerceApp;
 import co.edu.cedesistemas.commerce.commons.TestUtils;
 import co.edu.cedesistemas.commerce.model.*;
 import co.edu.cedesistemas.common.BaseIT;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,7 +69,7 @@ public class OrderControllerIT extends BaseIT<Order> {
         mvc.perform(get("/orders/" + created.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._source[0].id", is(created.getId())))
-                .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED.name())))
+                .andExpect(jsonPath("$._source[0].status", is(OrderStatus.CREATED.name())))
                 .andExpect(jsonPath("$._source[0].userId", is(created.getUserId())))
                 .andExpect(jsonPath("$._source[0].storeId", is(created.getStoreId())));
     }

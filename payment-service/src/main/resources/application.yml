@@ -5,39 +5,4 @@ spring:
     username: guest
     password: guest
 
-server:
-  port: ${PORT:8085}
-  servlet:
-    context-path: /api/v1/
 
-springdoc:
-  api-docs:
-    groups:
-      enabled: true
-  swagger-ui:
-    path: /swagger-ui.html
-    display-request-duration: true
-    groups-order: DESC
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-
-info:
-  app:
-    name: ${spring.application.name}
-    description: e-commerce payment application
-    version: 1.0.0
-
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      default-zone: http://eureka.cedesistemas.local:8761/eureka/
-
-app:
-  payment-gateway:
-    api-base-uri: http://fastpay.cedesistemas.local:9800/api/v1

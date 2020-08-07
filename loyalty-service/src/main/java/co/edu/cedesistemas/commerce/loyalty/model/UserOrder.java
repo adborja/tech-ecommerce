@@ -10,15 +10,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class UserOrder {
     @Id
     private String id; //order id
+    private String storeId;
     private String userId;
     private Float orderValue;
     private LoyaltyStatus status;
     private Integer points;
 
-    public void calculatePoints() {
+    public void calculatePoints(Integer rate) {
         if (points == null) {
             points = 0;
         }
-        points = points + (int) (orderValue / 1000);
+        points = points + (int) (orderValue / rate);
     }
 }
