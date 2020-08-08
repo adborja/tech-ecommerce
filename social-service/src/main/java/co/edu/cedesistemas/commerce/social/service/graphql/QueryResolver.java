@@ -21,7 +21,20 @@ public class QueryResolver implements GraphQLQueryResolver {
     }
 
     public List<StoreRepository.StoreOccurrence> getRecommendStoreByProducts(final String userId, final String zone,
-                                                                             final String productType, final Integer limit){
+                                                                             final String productType,
+                                                                             final Integer limit){
         return storeService.recommendStoreByProducts(userId,zone,productType,limit);
+    }
+
+    public List<StoreRepository.StoreOccurrence> getRecommendStoresByZoneAndProductType(final String userId,
+                                                                                        final String zone,
+                                                                                        final String productType,
+                                                                                        final Integer limit){
+        return storeService.recommendStoresByZoneAndProductType(userId,zone,productType,limit);
+    }
+
+    public List<StoreRepository.StoreOccurrence> getRecommendStoresByZone(final String userId, final String zone,
+                                                                          final Integer limit){
+        return storeService.recommendStoresByZone(userId,zone,limit);
     }
 }
