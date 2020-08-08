@@ -7,6 +7,7 @@ import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class UserService implements IUserService {
 
     }
 
+    @Cacheable(value = "getUser-id", key = "#id")
     public User getById(final String id) {
         return repository.findById(id).orElse(null);
     }
