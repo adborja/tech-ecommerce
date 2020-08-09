@@ -22,6 +22,7 @@ public class EventPublisherService {
         PaymentEvent event = PaymentEvent.builder()
                 .id(payment.getId())
                 .orderId(payment.getOrderId())
+                .storeId(payment.getStoreId())
                 .userId(payment.getUserId())
                 .status(payment.getStatus())
                 .value(payment.getValue())
