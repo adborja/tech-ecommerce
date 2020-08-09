@@ -24,6 +24,12 @@ dependencies {
 	implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
 	implementation "org.springframework.cloud:spring-cloud-starter-zipkin"
 
+
+	implementation "com.graphql-java:graphql-spring-boot-starter:${versions.graphql}"
+	implementation "com.graphql-java:graphiql-spring-boot-starter:${versions.graphql}"
+	implementation "com.graphql-java:graphql-java-tools:${versions.graphqltools}"
+
+
 	implementation "org.graylog2:gelfj:${versions.gelf}"
 	implementation "biz.paluch.logging:logstash-gelf:${versions.logstash_gelf}"
 

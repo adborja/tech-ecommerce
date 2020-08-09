@@ -29,7 +29,7 @@ server:
 
 springdoc:
   api-docs:
-    groups:
+    grFoups:
       enabled: true
   swagger-ui:
     path: /swagger-ui.html
