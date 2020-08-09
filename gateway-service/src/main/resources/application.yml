@@ -30,7 +30,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      default-zone: http://eureka.cedesistemas.local:8761/eureka/
+        default-zone: http://eureka.cedesistemas.local:8761/eureka/
 
 zuul:
   prefix: /cedesistemas
