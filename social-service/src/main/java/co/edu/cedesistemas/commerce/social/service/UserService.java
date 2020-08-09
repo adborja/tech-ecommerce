@@ -11,6 +11,7 @@ import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import co.edu.cedesistemas.commerce.social.repository.UserRepository;
 import co.edu.cedesistemas.common.event.SocialEvent;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,6 +39,7 @@ public class UserService {
         return repository.save(user);
     }
 
+    @Cacheable(value = "social_user", key = "#id")
     public User getById(final String id) {
         User user = repository.findById(id).orElse(null);
         if (user != null) {

@@ -15,6 +15,13 @@ spring:
     port: 5672
     username: guest
     password: guest
+  cache:
+    type: redis
+    redis:
+      time-to-live: 120000
+  redis:
+    host: redis.cedesistemas.local
+    port: 6379
 
 server:
   port: ${PORT:8082}
