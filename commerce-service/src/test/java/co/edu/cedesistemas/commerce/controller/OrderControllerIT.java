@@ -2,13 +2,9 @@ package co.edu.cedesistemas.commerce.controller;
 
 import co.edu.cedesistemas.commerce.CommerceApp;
 import co.edu.cedesistemas.commerce.commons.TestUtils;
-import co.edu.cedesistemas.commerce.model.Address;
-import co.edu.cedesistemas.commerce.model.Order;
-import co.edu.cedesistemas.commerce.model.OrderItem;
-import co.edu.cedesistemas.commerce.model.Product;
-import co.edu.cedesistemas.commerce.model.Store;
-import co.edu.cedesistemas.commerce.model.User;
+import co.edu.cedesistemas.commerce.model.*;
 import co.edu.cedesistemas.common.BaseIT;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,10 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -74,7 +67,7 @@ public class OrderControllerIT extends BaseIT<Order> {
         mvc.perform(get("/orders/" + created.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._source[0].id", is(created.getId())))
-                .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED.name())))
+                .andExpect(jsonPath("$._source[0].status", is(OrderStatus.CREATED.name())))
                 .andExpect(jsonPath("$._source[0].userId", is(created.getUserId())))
                 .andExpect(jsonPath("$._source[0].storeId", is(created.getStoreId())));
     }
