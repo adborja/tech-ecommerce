@@ -34,8 +34,13 @@ public class UserService {
     public User createUser(User user) {
     	log.info("creating user");
     	user.setId(user.getId());
-    	User created = repository.save(user);
-//        publisherService.publishSocialUserEvent(created, SocialEvent.Status.CREATED);
+    	User created = null;
+    	try {
+	    	created = repository.save(user);
+	    	publisherService.publishSocialUserEvent(created, SocialEvent.Status.CREATED);
+    	}catch (Exception e) {
+    		publisherService.publishSocialUserEvent(created, SocialEvent.Status.FAILED);
+		}
 
     	return created;
     }

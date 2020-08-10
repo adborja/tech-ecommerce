@@ -34,8 +34,10 @@ public class UserService {
     	log.info("creating user");
 		user.setId(UUID.randomUUID().toString());
 		user.setCreatedAt(LocalDateTime.now());
+		user.setUpdatedAt(LocalDateTime.now());
+		user.setStatus(Status.ACTIVE);
 		User created = repository.save(user);
-//        publisherService.publishRegistrationEvent(created, RegistrationEvent.Status.USER_CREATED);
+        publisherService.publishRegistrationEvent(created, RegistrationEvent.Status.USER_CREATED);
 		return created;
 	}
 

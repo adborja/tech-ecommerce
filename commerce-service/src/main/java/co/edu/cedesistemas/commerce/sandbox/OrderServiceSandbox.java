@@ -1,4 +1,4 @@
-package co.edu.cedesistemas.commerce.sandbox;
+	package co.edu.cedesistemas.commerce.sandbox;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -63,6 +63,11 @@ public class OrderServiceSandbox implements IOrderService{
 		o.setShippingAddressId(a.getId());
 		
 		return o;
+	}
+
+	@Override
+	public void deleteOrder(String id) {
+		return;
 	}
 
 }

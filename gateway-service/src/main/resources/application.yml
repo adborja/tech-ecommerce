@@ -45,6 +45,9 @@ zuul:
     registration:
       path: /registration/**
       serviceId: registration-service
+    loyalty:
+      path: /loyalty/**
+      serviceId: loyalty-service
 
 ribbon:
   eureka:

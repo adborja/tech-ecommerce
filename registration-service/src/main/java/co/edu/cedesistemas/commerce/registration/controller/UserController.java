@@ -73,10 +73,14 @@ public class UserController {
     }
 	
 	@DeleteMapping("/users/{id}")
-    public ResponseEntity<Status<?>> deleteUser(@PathVariable String id) {
-        service.deleteUser(id);
-        return new ResponseEntity<>(Status.success(), HttpStatus.OK);
-    }
+	public ResponseEntity<Status<?>> deleteUser(@PathVariable String id) {
+		try {
+			service.deleteUser(id);
+			return new ResponseEntity<>(Status.success(), HttpStatus.OK);
+		} catch (Exception e) {
+			return DefaultResponseBuilder.errorResponse(e.getMessage(), e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	
 	
 	 private static void addSelfLink(@NotNull final User user) {

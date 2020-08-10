@@ -22,11 +22,13 @@ public class UserStoreService {
         userStore.setId(UUID.randomUUID().toString());
         userStore.setCreatedAt(LocalDateTime.now());
         userStore.setStatus(LoyaltyStatus.USER_CREATED);
-        userStore.setPoints(0);
+        userStore.setPoints(userStore.getPoints());
 
-        publisherService.publishLoyaltyEvent(userStore);
+        UserStore created = repository.save(userStore);
+        
+        publisherService.publishLoyaltyEvent(created);
 
-        return repository.save(userStore);
+        return created;
     }
 
     public UserStore updatePoints(final String storeId, final String userId, final int points) {

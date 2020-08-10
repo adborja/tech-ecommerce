@@ -2,6 +2,7 @@ package co.edu.cedesistemas.commerce.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,6 +55,16 @@ public class OrderController {
 			if(found != null) return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK); 
 			else return DefaultResponseBuilder.errorResponse("Orden no encontrada", null, HttpStatus.NOT_FOUND);
 		} catch(Exception ex) {
+			return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@DeleteMapping("/orders/{id}")
+	public ResponseEntity<Status<?>> deleteOrder(@PathVariable String id){
+		try {
+			service.deleteOrder(id);
+			return DefaultResponseBuilder.defaultResponse("order deleted", HttpStatus.OK);
+		}catch (Exception ex) {
 			return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
