@@ -1,10 +1,6 @@
 package co.edu.cedesistemas.commerce.social.service.graphql;
 
 import co.edu.cedesistemas.commerce.social.model.User;
-import co.edu.cedesistemas.commerce.social.model.Store;
-import co.edu.cedesistemas.commerce.social.model.ProductType;
-import co.edu.cedesistemas.commerce.social.model.Product;
-import co.edu.cedesistemas.commerce.social.model.Location;
 
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import co.edu.cedesistemas.commerce.social.service.UserService;
@@ -19,7 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+
+//@AllArgsConstructor
 public class QueryResolver implements GraphQLQueryResolver {
     private final UserService userService;
     private final StoreService storeService;
@@ -27,8 +24,16 @@ public class QueryResolver implements GraphQLQueryResolver {
     private final ProductService productService;
     private final EventPublisherService eventPublisherService;
 
+    public QueryResolver(UserService userService, StoreService storeService, PurchaseService purchaseService, ProductService productService, EventPublisherService eventPublisherService) {
+        this.userService = userService;
+        this.storeService = storeService;
+        this.purchaseService = purchaseService;
+        this.productService = productService;
+        this.eventPublisherService = eventPublisherService;
+    }
+
     public User getuser(String id) {
-        User user = getById(id);
+        User user = userService.getById(id);
         if (user != null) {
             return user;
         }

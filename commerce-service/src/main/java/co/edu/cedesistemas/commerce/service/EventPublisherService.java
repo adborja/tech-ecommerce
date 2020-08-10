@@ -21,9 +21,8 @@ public class EventPublisherService {
                 .id(order.getId())
                 .userId(order.getUserId())
                 .storeId(order.getStoreId())
-                .status(order.getStatus())
-                .build();
-
+                 .build();
+//.status(order.getStatus())
         String json = event.toJSON();
         String msgId = UUID.randomUUID().toString();
         String correlationId = order.getId();

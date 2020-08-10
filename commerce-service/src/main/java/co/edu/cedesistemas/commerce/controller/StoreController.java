@@ -9,6 +9,7 @@ import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
 
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,8 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
-
-@AllArgsConstructor
+@Slf4j
+//@AllArgsConstructor
 public class StoreController {
     private final IStoreService service;
 
@@ -124,7 +125,7 @@ public class StoreController {
     }
 
     private ResponseEntity<Status<?>> getByIdFallback(final String id) {
-        log.error("getting store by id fallback {}", id);
+                log.error("getting store by id fallback {}", id);
         Status<?> status = Status.builder()
                 ._hits(1)
                 .message("service unavailable. please try again")

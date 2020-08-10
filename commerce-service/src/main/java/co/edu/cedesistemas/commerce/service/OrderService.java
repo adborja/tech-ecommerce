@@ -30,4 +30,12 @@ public class OrderService implements IOrderService{
 		Optional<Order> order = repository.findById(id);
 		return order.isPresent() ? order.get() : null;
 	}
+
+    public Order updateOrder(String orderId, Order order) {
+		 if (repository.findById(orderId).isPresent() )
+		{
+			return order;
+		}
+		else return null;
+    }
 }

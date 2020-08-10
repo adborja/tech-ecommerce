@@ -1,5 +1,6 @@
 package co.edu.cedesistemas.commerce.model;
 
+import co.edu.cedesistemas.common.model.OrderStatus;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,9 +21,10 @@ public class Order extends RepresentationModel<Order> {
     private String userId;
     private String storeId;
     private String shippingAddressId;
-    private Status status;
+    private OrderStatus status;
     private LocalDateTime createdAt;
     private List<OrderItem> items;
+
 
     public enum Status {
         CREATED,
@@ -32,4 +34,5 @@ public class Order extends RepresentationModel<Order> {
         SHIPPED,
         DELIVERED
     }
+
 }

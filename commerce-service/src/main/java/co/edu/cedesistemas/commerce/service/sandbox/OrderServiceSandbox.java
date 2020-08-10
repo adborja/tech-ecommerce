@@ -48,7 +48,7 @@ public class OrderServiceSandbox implements  IOrderService{
     public Order createOrder(final Order order) {
         order.setId(UUID.randomUUID().toString());
         order.setCreatedAt(LocalDateTime.now());
-        order.setStatus(Order.Status.CREATED);
+        //order.setStatus(Order.status.CREATED);
         return order;
     }
 
