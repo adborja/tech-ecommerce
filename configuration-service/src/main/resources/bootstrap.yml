@@ -12,6 +12,10 @@ spring:
       enabled: true
       trace:
         enabled: true
+  zipkin:
+    base-url: http://jaeger.cedesistemas.local:9411/
+    sender:
+      type: web
   rabbitmq:
     host: llama.rmq.cloudamqp.com
     virtual-host: foxmowaw
