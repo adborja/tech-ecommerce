@@ -16,9 +16,11 @@ buildscript {
 }
 
 plugins {
+    id 'org.springframework.boot' version '2.2.7.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'java-library'
+    id 'application'
 }
 
 group = 'co.edu.cedesistemas'
@@ -50,6 +52,8 @@ configurations {
 }
 
 repositories {
+    mavenLocal()
+    mavenCentral()
     jcenter()
     mavenLocal()
 }
@@ -59,6 +63,7 @@ ext {
     dockerGroup = 'registry.cedesistemas.internal'
     dockerRegistryPort = '5000'
     versions = [
+            "spring": "5.2.7.RELEASE",
             "gelf": "1.1.16",
             "logstash_gelf": "1.13.0",
             "springdoc": "1.4.3",
@@ -76,12 +81,18 @@ ext {
 }
 
 dependencies {
+    //implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.springframework:spring-web:${versions.spring}"
+
     compileOnly "org.projectlombok:lombok:${versions.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
     testImplementation "io.rest-assured:rest-assured:${versions.restAssured}"
     testImplementation "io.rest-assured:json-path:${versions.restAssured}"
     testImplementation "io.rest-assured:xml-path:${versions.restAssured}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation "org.hamcrest:hamcrest:${versions.hamcrest}"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine:${versions.jupiter}"
+    testImplementation 'org.springframework.security:spring-security-test'
 }
