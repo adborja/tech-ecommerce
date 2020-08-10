@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderEvent {
-    private String id; // order id
+    private String id;
     private String storeId;
     private String userId;
     private LocalDateTime createdAt;

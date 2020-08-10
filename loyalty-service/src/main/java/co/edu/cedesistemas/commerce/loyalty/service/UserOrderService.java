@@ -4,6 +4,7 @@ import co.edu.cedesistemas.common.model.LoyaltyStatus;
 import co.edu.cedesistemas.commerce.loyalty.model.UserOrder;
 import co.edu.cedesistemas.commerce.loyalty.repository.UserOrderRepository;
 import lombok.AllArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class UserOrderService {
     private final UserStoreService userStoreService;
     private final EventPublisherService publisherService;
 
+   // @Value("${loyalty-service-dev-kathe20m.yml}")
+   // private Integer pointsConversionRate;
+
     public UserOrder registerOrder(@NotNull final String orderId, @NotNull final String storeId,
                                    @NotNull String userId, @NotNull Float orderValue) {
         UserOrder uo = new UserOrder();
@@ -26,6 +30,7 @@ public class UserOrderService {
         uo.setUserId(userId);
         uo.setStatus(LoyaltyStatus.REGISTERED);
         uo.setOrderValue(orderValue);
+       // uo.calculatePoints(pointsConversionRate);
         uo.calculatePoints();
 
         userStoreService.updatePoints(storeId, userId, uo.getPoints());

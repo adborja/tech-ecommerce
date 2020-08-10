@@ -27,11 +27,11 @@ public class OrderService implements IOrderService {
     private final EventPublisherService publisherService;
 
     public Order createOrder(final Order order) {
-        order.setId(UUID.randomUUID().toString());
-        order.setCreatedAt(LocalDateTime.now());
+       // order.setId(UUID.randomUUID().toString());
+        //order.setCreatedAt(LocalDateTime.now());
         order.setStatus(OrderStatus.CREATED);
         order.calculateValue();
-        log.info("order created: {}", order.getId());
+        log.info("order created: {}", order);
 
         publisherService.publishOrderEvent(order);
         return repository.save(order);

@@ -47,6 +47,9 @@ zuul:
     registration:
       path: /registration/**
       serviceId: registration-service
+    configuration:
+      path: /configuration/**
+      serviceId: configuration-service
 
 
 ribbon:
