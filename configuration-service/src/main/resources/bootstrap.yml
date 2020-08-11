@@ -12,11 +12,16 @@ spring:
       enabled: true
       trace:
         enabled: true
+  zipkin:
+    base-url: http://jaeger.cedesistemas.local:9411/
+    sender:
+      type: web
   rabbitmq:
     host: rabbitmq.cedesistemas.local
     port: 5672
     username: guest
     password: guest
+    virtual-host:
   security:
     user:
       name: configadmin
