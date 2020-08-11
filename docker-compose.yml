@@ -11,7 +11,7 @@ services:
         aliases:
           - rabbitmq.cedesistemas.local
     volumes:
-      - /var/data/rabbitmq:/home/client
+      - /Users/gabrieljaimegaleano/data/rabbitmq:/home/client
     restart: unless-stopped
 
   mongo:
@@ -24,7 +24,7 @@ services:
         aliases:
           - mongodb.cedesistemas.local
     volumes:
-      - /var/data/mongodb:/data/db
+      - /Users/gabrieljaimegaleano/data/mongodb:/data/db
     restart: unless-stopped
 
   eureka:
@@ -77,6 +77,42 @@ services:
       - rabbitmq
       - eureka
     restart: unless-stopped
+
+  social:
+    container_name: social.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/social-service:dev
+    build: ./social-service
+    ports:
+      - 8082:8082
+    networks:
+      default:
+        aliases:
+          - config.cedesistemas.local
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - eureka
+    restart: unless-stopped    
+
+  loyalty:
+    container_name: loyalty.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/loyalty-service:dev
+    build: ./loyalty-service
+    ports:
+      - 8089:8089
+    networks:
+      default:
+        aliases:
+          - config.cedesistemas.local
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - eureka
+      - mongo
+    restart: unless-stopped     
+
 
   payment:
     container_name: payment.cedesistemas.local
