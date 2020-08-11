@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run --name=payment.cedesistemas.local --hostname payment.cedesistemas.local --net cedesistemas_network -p 8084:8084 -d registry.cedesistemas.internal:5000/commerce/payment-service:dev

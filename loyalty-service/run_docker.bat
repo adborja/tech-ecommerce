@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run --name=loyalty.cedesistemas.local --hostname loyalty.cedesistemas.local --net cedesistemas_network -p 8089:8089 -d registry.cedesistemas.internal:5000/commerce/loyalty-service:dev

@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 services:
   rabbitmq:
     container_name: rabbitmq.cedesistemas.local
@@ -102,6 +102,41 @@ services:
       interval: 1m
       timeout: 10s
       retries: 3
+    restart: unless-stopped
+
+  #social:
+  #  container_name: social.cedesistemas.local
+  #  image: registry.cedesistemas.internal:5000/commerce/social-service:dev
+  #  build: ./social-service
+  #  ports:
+  #    - 8082:8082
+  #  networks:
+  #    default:
+  #      aliases:
+  #        - config.cedesistemas.local
+  #  environment:
+  #    eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
+  #  depends_on:
+  #    - rabbitmq
+  #    - eureka
+  #  restart: unless-stopped
+
+  loyalty:
+    container_name: loyalty.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/loyalty-service:dev
+    build: ./loyalty-service
+    ports:
+      - 8089:8089
+    networks:
+      default:
+        aliases:
+          - config.cedesistemas.local
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - eureka
+      - mongo
     restart: unless-stopped
 
 networks:
