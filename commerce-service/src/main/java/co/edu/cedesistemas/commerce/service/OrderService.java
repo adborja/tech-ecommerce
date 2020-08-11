@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.service;
 
 import co.edu.cedesistemas.commerce.model.Order;
+import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.repository.OrderRepository;
 import co.edu.cedesistemas.common.SpringProfile;
 import co.edu.cedesistemas.common.model.OrderStatus;
@@ -12,6 +13,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Profile("!" + SpringProfile.SANDBOX)
@@ -30,13 +33,11 @@ public class OrderService implements IOrderService {
         order.calculateValue();
         log.info("order created: {}", order.getId());
 
-        publisherService.publishOrderEvent(order);
-
         return repository.save(order);
     }
 
     @Override
-    public Order updateOrder(final String id, final Order order) {
+    public Order updateOrder(String id, Order order) {
         Order found = getById(id);
         if (found == null) {
             log.warn("order not found: {}", id);
@@ -44,14 +45,22 @@ public class OrderService implements IOrderService {
         }
         BeanUtils.copyProperties(order, found, Utils.getNullPropertyNames(order));
 
-        publisherService.publishOrderEvent(found);
 
         return repository.save(found);
     }
 
     @Override
-    public Order getById(final String id) {
+    public Order getById(String id) {
         return repository.findById(id).orElse(null);
+    }
+
+    public List<OrderItem> getOrderItemsById(String id){
+
+        Optional<Order> order = repository.findById(id);
+
+        List<OrderItem> orderItems = order.get().getItems();
+
+        return orderItems;
     }
 
     @Override

@@ -3,7 +3,6 @@ package co.edu.cedesistemas.commerce.controller;
 import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.service.IOrderService;
-import co.edu.cedesistemas.commerce.service.OrderService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -23,16 +23,12 @@ public class OrderController {
 
     private IOrderService service;
 
-    @PostMapping("/orders")
-    public ResponseEntity<Status<?>> createOrder(@RequestBody Order order) {
-        Order created = service.createOrder(order);
-        return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
-    }
+
 
     @GetMapping("/orders/{id}")
     public ResponseEntity<Status<?>> getOrder(@PathVariable String id){
         try{
-            Order found = (Order) service.getOrderById(id);
+            Order found = (Order) service.getById(id);
             if (found != null) {
                 addSelfLink(found);
                 return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);

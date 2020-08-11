@@ -11,12 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static co.edu.cedesistemas.common.model.OrderStatus.ACCEPTED;
+import static co.edu.cedesistemas.common.model.OrderStatus.CREATED;
+
 @Profile(SpringProfile.SANDBOX)
 @Service
 public class OrderServiceSandbox implements IOrderService {
     @Override
     public Order createOrder(Order order) {
-        order.setStatus(Order.Status.CREATED);
+        order.setStatus(CREATED);
         return order;
     }
 
@@ -24,18 +27,18 @@ public class OrderServiceSandbox implements IOrderService {
     public List<OrderItem> getOrderItemsById(String id) {
         List<OrderItem> items = new ArrayList<>();
 
-        OrderItem item1 = OrderItem.builder()
-                .finalPrice(1111.1F)
-                .productId("producto1")
-                .quantity(5).build();
-        OrderItem item2 = OrderItem.builder()
-                .finalPrice(2222.2F)
-                .productId("producto2")
-                .quantity(3).build();
-        OrderItem item3 = OrderItem.builder()
-                .finalPrice(3333.3F)
-                .productId("producto3")
-                .quantity(10).build();
+        OrderItem item1 = new OrderItem();
+        item1.setFinalPrice(1111.1F);
+        item1.setProductId("producto1");
+        item1.setQuantity(5);
+        OrderItem item2 = new OrderItem();
+        item1.setFinalPrice(1111.1F);
+        item1.setProductId("producto2");
+        item1.setQuantity(5);
+        OrderItem item3 = new OrderItem();
+        item1.setFinalPrice(1111.1F);
+        item1.setProductId("producto3");
+        item1.setQuantity(5);
         items.add(item1);
         items.add(item2);
         items.add(item3);
@@ -43,19 +46,30 @@ public class OrderServiceSandbox implements IOrderService {
     }
 
     @Override
-    public Order getOrderById(String id) {
+    public void deleteOrder(String id) {
+
+    }
+
+    @Override
+    public Order updateOrder(String id, Order order) {
+        return null;
+    }
+
+    @Override
+    public Order getById(String id) {
         List<OrderItem> items = new ArrayList<>();
 
-        OrderItem item1 = OrderItem.builder()
-                .finalPrice(1111.1F)
-                .productId("producto1")
-                .quantity(5).build();
+        OrderItem item1 = new OrderItem();
+        item1.setFinalPrice(1111.1F);
+        item1.setProductId("producto1");
+        item1.setQuantity(5);
         items.add(item1);
+        Order order = new Order();
        return Order.builder()
                 .id(id)
                 .items(items)
                 .shippingAddressId("fake address")
-                .status(Order.Status.ACCEPTED)
+                .status(ACCEPTED)
                 .userId("fake user")
                 .storeId("fake store id")
                 .createdAt(LocalDateTime.now()).build();
