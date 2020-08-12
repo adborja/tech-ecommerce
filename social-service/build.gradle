@@ -8,11 +8,7 @@ version '0.0.1-SNAPSHOT'
 repositories {
 	mavenCentral()
 }
-buildscript {
-	ext {
-		springBootVersion = "2.1.3.RELEASE"
-	}
-}
+
 dependencies {
 	implementation project(":common")
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -23,9 +19,6 @@ dependencies {
 	implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
 	implementation "org.springframework.cloud:spring-cloud-starter-zipkin"
 	implementation "org.springframework.boot:spring-boot-starter-amqp"
-	implementation "com.graphql-java:graphql-spring-boot-starter:${versions.graphql}"
-	implementation "com.graphql-java:graphiql-spring-boot-starter:${versions.graphql}"
-	implementation "com.graphql-java:graphql-java-tools:${versions.graphqltools}"
 
 	implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
 	implementation "com.google.code.gson:gson:${versions.gson}"
