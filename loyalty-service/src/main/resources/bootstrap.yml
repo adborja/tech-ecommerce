@@ -1,6 +1,6 @@
 spring:
   application:
-    name: registration-service
+    name: loyalty-service
   data:
     mongodb:
       authentication-database: admin
@@ -19,16 +19,9 @@ spring:
     port: 5672
     username: guest
     password: guest
-  cache:
-    type: redis
-    redis:
-      time-to-live: 60000
-  redis:
-    host: redis.cedesistemas.local
-    port: 6379
 
 server:
-  port: ${PORT:8083}
+  port: ${PORT:8085}
   servlet:
     context-path: /api/v1/
 
@@ -50,7 +43,7 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    description: e-commerce registration application
+    description: e-commerce loyalty application
     version: 1.0.0
 
 eureka:

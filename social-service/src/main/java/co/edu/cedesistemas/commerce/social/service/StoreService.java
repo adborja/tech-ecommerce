@@ -9,6 +9,7 @@ import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -87,24 +88,25 @@ public class StoreService {
         return products;
     }
 
-
+    @Cacheable(value = "social_get_top_n_products", key = "#storeId" + "#limit")
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
         return storeRepository.findTopNProducts(storeId, limit);
     }
 
-    public List<StoreRepository.StoreOccurrence> recommendStoresByZoneAndProductType(final String userId,
+    @Cacheable(value = "social_recommend_stores_by_zone_and_product_type", key = "#userId" + "#zone" + "#productType" + "#limit")
+    public List<StoreRepository.StoreOccurrence> getRecommendStoresByZoneAndProductType(final String userId,
                                                                                      final String zone,
                                                                                      final String productType,
                                                                                      final Integer limit) {
         return storeRepository.findRecommendationByProducts(userId, zone, productType, limit);
     }
 
-    public List<StoreRepository.StoreOccurrence> recommendStoreByProducts(final String userId, final String zone,
+    public List<StoreRepository.StoreOccurrence> getRecommendStoreByProducts(final String userId, final String zone,
                                                                           final String productType, final Integer limit) {
         return storeRepository.findRecommendationByStores(userId, zone, productType, limit);
     }
 
-    public List<StoreRepository.StoreOccurrence> recommendStoresByZone(final String userId, final String zone,
+    public List<StoreRepository.StoreOccurrence> getRecommendStoresByZone(final String userId, final String zone,
                                                                        final Integer limit) {
         return storeRepository.findRecommendationByStores(userId, zone, limit);
     }

@@ -5,6 +5,7 @@ import co.edu.cedesistemas.commerce.loyalty.model.UserOrder;
 import co.edu.cedesistemas.commerce.loyalty.repository.UserOrderRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
@@ -18,15 +19,19 @@ public class UserOrderService {
     private final UserStoreService userStoreService;
     private final EventPublisherService publisherService;
 
+    @Value("${app.loyalty.points-conversion-rate:200}")
+    private Integer pointsConversionRate;
+
     public UserOrder registerOrder(@NotNull final String orderId, @NotNull final String storeId,
                                    @NotNull String userId, @NotNull Float orderValue) {
+        log.info("Points conversion rate {}", this.pointsConversionRate);
         UserOrder uo = new UserOrder();
         uo.setId(orderId);
         uo.setStoreId(storeId);
         uo.setUserId(userId);
         uo.setStatus(LoyaltyStatus.REGISTERED);
         uo.setOrderValue(orderValue);
-        uo.calculatePoints();
+        uo.calculatePoints(pointsConversionRate);
 
         userStoreService.updatePoints(storeId, userId, uo.getPoints());
 

@@ -94,7 +94,7 @@ public class UserController {
     public ResponseEntity<Status<?>> recommendStores(@PathVariable String id, @RequestParam String zone,
                                                      @RequestParam String productType, @RequestParam Integer limit) {
         try{
-            return DefaultResponseBuilder.defaultResponse(storeService.recommendStoresByZoneAndProductType(id, zone, productType, limit),
+            return DefaultResponseBuilder.defaultResponse(storeService.getRecommendStoresByZoneAndProductType(id, zone, productType, limit),
                     HttpStatus.OK);
         }catch (Exception ex) {
             return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);

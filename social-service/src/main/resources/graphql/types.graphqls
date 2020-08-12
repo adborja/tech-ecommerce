@@ -1,0 +1,9 @@
+type User {
+    id: ID!
+}
+
+type StoreOccurrence {
+    storeId: String
+    occurrence: Int
+    zone: String
+}

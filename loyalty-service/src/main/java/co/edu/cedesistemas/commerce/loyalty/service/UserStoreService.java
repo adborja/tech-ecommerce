@@ -48,5 +48,7 @@ public class UserStoreService {
 
     public void deleteUserStore(final String id) {
         repository.deleteById(id);
+        publisherService.publishLoyaltyEvent(UserStore.builder().userId(id).status(LoyaltyStatus.FAILED).build());
+
     }
 }
