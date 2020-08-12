@@ -1,6 +1,6 @@
 #!/bin/bash
 docker run --restart=unless-stopped \
-        -v /var/data/graylog:/usr/share/graylog/data/journal \
+        -v /Users/aegarcesc/Documents/Banco/Test/graylog:/usr/share/graylog/data/journal \
         --hostname graylog.cedesistemas.local \
         --net cedesistemas_network \
         --name graylog.cedesistemas.local \
@@ -19,3 +19,6 @@ docker run --restart=unless-stopped \
         -p 1514:1514 \
         -p 5555:5555/udp \
         -d graylog/graylog:3.3
+
+
+#usuario : admin y clave cedesistemas
