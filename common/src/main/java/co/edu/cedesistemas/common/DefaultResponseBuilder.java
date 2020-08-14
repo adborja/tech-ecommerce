@@ -22,6 +22,11 @@ public class DefaultResponseBuilder {
     }
 
     public static <T> ResponseEntity<Status<?>> defaultResponse(final T obj, HttpStatus httpStatus) {
+        Status<?> status = status(obj, httpStatus);
+        return new ResponseEntity<>(status, httpStatus);
+    }
+
+    public static <T> Status<?> status(T obj, HttpStatus httpStatus) {
         int hits = 1;
         Class<?> _class = obj.getClass();
         Collection<?> result;
@@ -35,13 +40,12 @@ public class DefaultResponseBuilder {
         } else {
             result = Collections.singleton(obj);
         }
-        Status<?> status = Status.builder()
+        return Status.builder()
                 ._hits(hits)
                 ._source(result)
                 ._class(_class.getName())
                 .code(httpStatus.value())
                 .message(httpStatus.toString())
                 .build();
-        return new ResponseEntity<>(status, httpStatus);
     }
 }
