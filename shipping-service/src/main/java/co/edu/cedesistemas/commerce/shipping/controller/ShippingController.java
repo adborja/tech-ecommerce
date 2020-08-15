@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-public class ShippingContoller {
+public class ShippingController {
     private final IShipmentService service;
 
     @PostMapping("/shipments")
