@@ -11,7 +11,7 @@ services:
         aliases:
           - rabbitmq.cedesistemas.local
     volumes:
-      - /var/data/rabbitmq:/home/client
+      - /Users/edwardalexisortizagudelo/Documents/alexis/cedesistemas/var/data/rabbitmq:/home/client
     restart: unless-stopped
 
   mongo:
@@ -24,7 +24,20 @@ services:
         aliases:
           - mongodb.cedesistemas.local
     volumes:
-      - /var/data/mongodb:/data/db
+      - /Users/edwardalexisortizagudelo/Documents/alexis/cedesistemas/var/data/mongodb:/data/db
+    restart: unless-stopped
+
+  neo4j:
+    container_name: neo4j.eladio.local
+    image: neo4j:4.0.3
+    ports:
+      - 7687:7687
+    networks:
+      default:
+        aliases:
+          - mongodb.cedesistemas.local
+    volumes:
+      - /Users/edwardalexisortizagudelo/Documents/alexis/cedesistemas/var/data/neo4j:/data
     restart: unless-stopped
 
   eureka:
@@ -69,13 +82,51 @@ services:
         aliases:
           - config.cedesistemas.local
     volumes:
-      - ~/.ssh/:/root/.ssh/
+      - /Users/edwardalexisortizagudelo/.ssh/:/root/.ssh/
     environment:
       SPRING_PROFILES_ACTIVE: dev
       eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
     depends_on:
       - rabbitmq
       - eureka
+    restart: unless-stopped
+
+  social:
+    container_name: social.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/social-service:dev
+    build: ./social-service
+    ports:
+      - 8770:8770
+    networks:
+      default:
+        aliases:
+          - config.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - eureka
+      - neo4j
+    restart: unless-stopped
+
+  loyalty:
+    container_name: loyalty.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/loyalty-service:dev
+    build: ./loyalty-service
+    ports:
+      - 8790:8790
+    networks:
+      default:
+        aliases:
+          - config.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - eureka
+      - mongo
     restart: unless-stopped
 
   payment:
