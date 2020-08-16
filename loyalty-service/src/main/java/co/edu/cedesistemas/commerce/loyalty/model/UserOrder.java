@@ -15,11 +15,12 @@ public class UserOrder {
     private Float orderValue;
     private LoyaltyStatus status;
     private Integer points;
+    private Integer rate;
 
-    public void calculatePoints() {
+    public void calculatePoints(Integer rate) {
         if (points == null) {
             points = 0;
         }
-        points = points + (int) (orderValue / 1000);
+        points = points + (int) (orderValue / rate);
     }
 }

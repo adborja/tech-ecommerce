@@ -3,24 +3,27 @@ package co.edu.cedesistemas.commerce.loyalty.service;
 import co.edu.cedesistemas.common.model.LoyaltyStatus;
 import co.edu.cedesistemas.commerce.loyalty.model.UserOrder;
 import co.edu.cedesistemas.commerce.loyalty.repository.UserOrderRepository;
-import lombok.AllArgsConstructor;
-import lombok.Value;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@RefreshScope
 @Slf4j
 public class UserOrderService {
     private final UserOrderRepository repository;
     private final UserStoreService userStoreService;
     private final EventPublisherService publisherService;
 
-   // @Value("${loyalty-service-dev-kathe20m.yml}")
-   // private Integer pointsConversionRate;
+    @Value("${app.loyalty.points-conversion-rate:50}")
+    private Integer pointsConversionRate;
+
 
     public UserOrder registerOrder(@NotNull final String orderId, @NotNull final String storeId,
                                    @NotNull String userId, @NotNull Float orderValue) {
@@ -30,8 +33,9 @@ public class UserOrderService {
         uo.setUserId(userId);
         uo.setStatus(LoyaltyStatus.REGISTERED);
         uo.setOrderValue(orderValue);
-       // uo.calculatePoints(pointsConversionRate);
-        uo.calculatePoints();
+        uo.calculatePoints(pointsConversionRate);
+
+        log.info("pointsConversionRate..{}",pointsConversionRate);
 
         userStoreService.updatePoints(storeId, userId, uo.getPoints());
 
