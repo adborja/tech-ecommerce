@@ -5,6 +5,6 @@ COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY ${DEPENDENCY}/META-INF /app/META-INF
 COPY ${DEPENDENCY}/BOOT-INF/classes /app
 
-ENTRYPOINT ["java","-cp","app:app/lib/*","co.edu.cedesistemas.commerce.ConfigurationServiceApp"]
+ENTRYPOINT ["java","-cp","app:app/lib/*","co.edu.cedesistemas.commerce.loyalty.LoyaltyApp"]
 
-EXPOSE 8760
+EXPOSE 8089

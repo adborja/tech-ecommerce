@@ -1,0 +1,13 @@
+version: '2'
+  services:
+    loyalty-service:
+      container_name: config.cedesistemas.local
+      build:
+        context: configuration-service
+      image: registry.cedesistemas.internal:5000/commerce/configuration-service:dev
+      expose:
+        - 8760
+      ports:
+        - 8760:8760
+      networks:
+        - cedesistemas_network
