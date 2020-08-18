@@ -4,7 +4,6 @@ import co.edu.cedesistemas.commerce.cart.model.Cart;
 import co.edu.cedesistemas.commerce.cart.service.CartService;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
