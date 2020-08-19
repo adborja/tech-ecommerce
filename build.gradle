@@ -85,3 +85,4 @@ dependencies {
     testImplementation "org.hamcrest:hamcrest:${versions.hamcrest}"
     testImplementation "org.junit.jupiter:junit-jupiter-engine:${versions.jupiter}"
 }
+
