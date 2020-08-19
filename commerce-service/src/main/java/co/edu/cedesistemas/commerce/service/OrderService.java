@@ -33,6 +33,8 @@ public class OrderService implements IOrderService {
         order.calculateValue();
         log.info("order created: {}", order.getId());
 
+        publisherService.publishOrderEvent(order);
+
         return repository.save(order);
     }
 
