@@ -24,7 +24,7 @@ services:
         aliases:
           - mongodb.cedesistemas.local
     volumes:
-      - /var/data/mongodb:/data/db
+      - C:\cedesistemas\data\mongo:/data/db
     restart: unless-stopped
 
   eureka:

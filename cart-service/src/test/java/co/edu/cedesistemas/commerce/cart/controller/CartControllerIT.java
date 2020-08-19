@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -75,5 +76,45 @@ public class CartControllerIT {
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(cart.getId())
                 .jsonPath("$.items[0].id").isEqualTo(item.getId());
+    }
+
+
+    @Test
+    void testGetTotalPrice() {
+        Cart cart = new Cart();
+        cart.setId(UUID.randomUUID().toString());
+        cart.setCreatedAt(LocalDateTime.now());
+        cart.setCurrency("COP");
+        cart.setTotal(10000F);
+
+        Cart.CartItem item1 = new Cart.CartItem();
+        item1.setId(UUID.randomUUID().toString());
+        item1.setName("the item");
+        item1.setCurrency("COP");
+        item1.setPrice(2000F);
+
+        Cart.CartItem item2 = new Cart.CartItem();
+        item2.setId(UUID.randomUUID().toString());
+        item2.setName("the item");
+        item2.setCurrency("COP");
+        item2.setPrice(3000F);
+        cart.addItem(item1);
+        cart.addItem(item2);
+
+
+        Flux<Cart.CartItem> cartItemFlux= Flux.fromIterable(cart.getItems());
+        Mono<Float> totalPrice = Mono.just(5000F);
+
+        Mockito.when(service.getTotalPrice(cart.getId())).thenReturn(Mono.just(5000F));
+
+        webClient.get()
+                .uri("/carts/total/" + cart.getId())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .returnResult().getResponseBody().equals(5000F);
+
+
+
     }
 }

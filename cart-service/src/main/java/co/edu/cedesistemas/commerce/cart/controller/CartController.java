@@ -33,6 +33,12 @@ public class CartController {
         return service.findById(id);
     }
 
+    @GetMapping("/carts/total/{id}")
+    public Mono<Float> getTotalPrice(@PathVariable String id) {
+        return service.getTotalPrice(id);
+    }
+
+
     @GetMapping("/carts/{id}/items")
     public Flux<Cart.CartItem> getCartItems(@PathVariable String id) {
         return service.getItems(id);
