@@ -28,6 +28,21 @@ version: '2'
         - config-service:config.cedesistemas.local
       depends_on:
         - config-service
+    loyalty-service:
+      build:
+        context: loyalty-service
+      ports:
+        - 8085:8085
+      networks:
+        - cedesistemas_network
+    social-service:
+      build:
+        context: social-service
+      ports:
+        - 8082:8082
+      networks:
+        - cedesistemas_network
+
   networks:
     cedesistemas_network:
       driver: bridge

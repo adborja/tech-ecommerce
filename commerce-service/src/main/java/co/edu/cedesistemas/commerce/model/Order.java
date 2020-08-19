@@ -1,8 +1,10 @@
 package co.edu.cedesistemas.commerce.model;
 
 import co.edu.cedesistemas.common.model.OrderStatus;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Document("order")
 public class Order {
@@ -30,4 +33,6 @@ public class Order {
             orderValue = (float) sum;
         }
     }
+
+
 }
