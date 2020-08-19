@@ -1,6 +1,10 @@
 package co.edu.cedesistemas.commerce.registration.config;
 
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
+
 import co.edu.cedesistemas.commerce.registration.model.converter.UserWriteConverter;
+
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -14,9 +18,6 @@ import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
-import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 @Configuration
 @Slf4j

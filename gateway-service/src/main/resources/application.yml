@@ -2,7 +2,7 @@ spring:
   application:
     name: gateway-service
   zipkin:
-    base-url: http://localhost:9411/
+    base-url: http://jaeger.cedesistemas.local:9411/
     sender:
       type: web
   sleuth:
@@ -44,7 +44,10 @@ zuul:
       #url: http://localhost:8082/
     registration:
       path: /registration/**
-      url: http://localhost:8083/
+      serviceId: registration-service
+    loyalty:
+      path: /loyalty/**
+      serviceId: loyalty-service
 
 ribbon:
   eureka:

@@ -9,6 +9,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public interface StoreRepository extends Neo4jRepository<Store, String> {
                                                      @Param("zone") String zone, @Param("limit") Integer limit);
 
     
-    @Query("MATCH (:User)-[:PURCHASES]->(p:Product)<-[:SERVES]-(:Store {id:$storeId}) "
+    @Query("MATCH (u:User)-[pur:PURCHASES]->(p:Product)<-[:HAS]-(s:Store {id: $storeId}) "
     		+ "RETURN p.id AS productId, count(*) AS ocurrence ORDER BY ocurrence DESC LIMIT $limit")
     List<ProductOccurrence> findTopNProducts(@Param("storeId") String storeId, @Param("limit") Integer limit);
 
@@ -51,8 +52,8 @@ public interface StoreRepository extends Neo4jRepository<Store, String> {
 
     @QueryResult
     @Data
-    class ProductOccurrence {
+    class ProductOccurrence implements Serializable {
         private String productId;
-        private Integer occurrence;
+        private String occurrence;
     }
 }

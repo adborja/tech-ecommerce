@@ -8,7 +8,8 @@ import co.edu.cedesistemas.commerce.social.repository.LocationRepository;
 import co.edu.cedesistemas.commerce.social.repository.ProductTypeRepository;
 import co.edu.cedesistemas.commerce.social.repository.StoreRepository;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 public class StoreService {
     private final StoreRepository repository;
     private final LocationRepository locationRepository;
@@ -25,7 +25,6 @@ public class StoreService {
     private final ProductService productService;
 
     public Store createStore(Store store) {
-        log.info("crear store {}", store);
         String country = store.getLocation().getCountry().toLowerCase().replace(" ", "_");
         String city = store.getLocation().getCity().toLowerCase().replace(" ", "_");
         String zone = store.getLocation().getZone().toLowerCase().replace(" ", "_");
@@ -59,13 +58,10 @@ public class StoreService {
     }
 
     public Set<Store> getByUserLiked(final String userId) {
-
-        log.info("getting user liked {}", userId);
         return repository.findByUserLiked(userId);
     }
 
     public void addProduct(final String storeId, final String productId) throws Exception {
-        log.info("creando producto con id {}", productId);
         Store store = getById(storeId);
     	   
         store.has(productService.getProduct(productId));
@@ -73,8 +69,7 @@ public class StoreService {
     }
 
     public void addProducts(final String storeId, final Set<String> productIds) throws Exception {
-        log.info("creando productos {}", productIds);
-        Store store = getById(storeId);
+    	Store store = getById(storeId);
     	   	
     	Set<Product> products = productIds.stream()
     			.map(productService::getProduct)
@@ -84,9 +79,8 @@ public class StoreService {
     	repository.save(store);
     }
 
-
+    @Cacheable(cacheNames = "store-topn-products", key = "#storeId + '-' + #limit")
     public List<StoreRepository.ProductOccurrence> getTopNProducts(final String storeId, final Integer limit) {
-        log.info("consultando top productos {}", storeId);
         return repository.findTopNProducts(storeId, limit);
     }
 
@@ -99,18 +93,15 @@ public class StoreService {
 
     public List<StoreRepository.StoreOccurrence> recommendStoreByProducts(final String userId, final String zone,
                                                                           final String productType, final Integer limit) {
-        log.info("recomendando por productos {}", productType);
         return repository.findRecommendationByStores(userId, zone, productType, limit);
     }
 
     public List<StoreRepository.StoreOccurrence> recommendStoresByZone(final String userId, final String zone,
                                                                        final Integer limit) {
-        log.info("recomendando por zona {}", zone);
         return repository.findRecommendationByStores(userId, zone, limit);
     }
 
     public Store getById(String id) {
-        log.info("consultando por id {}", id);
         return repository.findById(id).orElse(null);
     }
 }

@@ -32,7 +32,7 @@ public class StoreService implements IStoreService {
 
     @Override
     public Store getById(final String id) {
-        log.info("getting store by id: {}", id);
+//        log.info("getting store by id: {}", id);
         return repository.findById(id).orElse(null);
     }
 

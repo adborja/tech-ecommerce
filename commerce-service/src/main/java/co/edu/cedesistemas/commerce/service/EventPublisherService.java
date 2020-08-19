@@ -3,6 +3,7 @@ package co.edu.cedesistemas.commerce.service;
 import co.edu.cedesistemas.commerce.config.RabbitMQConfig;
 import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.common.event.OrderEvent;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
@@ -16,13 +17,14 @@ import java.util.UUID;
 public class EventPublisherService {
     private final RabbitTemplate template;
 
-    public void publishOrderEvent(Order order) {
+    public void publishOrderEvent(Order order, OrderStatus status) {
         OrderEvent event = OrderEvent.builder()
                 .id(order.getId())
                 .userId(order.getUserId())
                 .storeId(order.getStoreId())
-                 .build();
-//.status(order.getStatus())
+                .status(status)
+                .build();
+
         String json = event.toJSON();
         String msgId = UUID.randomUUID().toString();
         String correlationId = order.getId();

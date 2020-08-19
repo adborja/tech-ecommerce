@@ -45,7 +45,7 @@
     <logger name="org.springframework.cloud.sleuth" level="DEBUG" />
 
     <root level="WARN">
-        <appender-ref ref="GELF"/>
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="GELF"/>
     </root>
 </configuration>

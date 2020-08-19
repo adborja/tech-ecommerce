@@ -3,15 +3,19 @@ package co.edu.cedesistemas.commerce.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.model.User;
 import co.edu.cedesistemas.commerce.repository.UserRepository;
+import co.edu.cedesistemas.common.util.Utils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService implements IUserService{
 	
 	private final UserRepository repository;
@@ -35,8 +39,13 @@ public class UserService implements IUserService{
 	}
 	@Override
 	public User updateUser(final String id, final User user) {
-		return repository.findById(id).isEmpty() ? null : 
-    		repository.save(user);
+		User found = getById(id);
+		if(found == null) {
+			log.warn("User not found {}",id);
+			return null;
+		}
+		BeanUtils.copyProperties(user, found, Utils.getNullPropertyNames(user));
+		return  repository.save(found);
 	}
 	@Override
 	public void deleteUser(final String id) {

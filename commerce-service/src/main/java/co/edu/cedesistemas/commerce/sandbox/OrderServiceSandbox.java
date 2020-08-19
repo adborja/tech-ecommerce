@@ -1,4 +1,4 @@
-package co.edu.cedesistemas.commerce.sandbox;
+	package co.edu.cedesistemas.commerce.sandbox;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -9,12 +9,11 @@ import org.springframework.context.annotation.Profile;
 
 import co.edu.cedesistemas.commerce.model.Address;
 import co.edu.cedesistemas.commerce.model.Order;
-//import co.edu.cedesistemas.commerce.model.Order.Status;
-import co.edu.cedesistemas.common.model.OrderStatus;
 import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.model.OrderStatus;
 
 @Profile(SpringProfile.SANDBOX)
 public class OrderServiceSandbox implements IOrderService{
@@ -62,8 +61,13 @@ public class OrderServiceSandbox implements IOrderService{
 		o.setId(UUID.randomUUID().toString());
 		o.setStatus(OrderStatus.CREATED);
 		o.setShippingAddressId(a.getId());
-
+		
 		return o;
+	}
+
+	@Override
+	public void deleteOrder(String id) {
+		return;
 	}
 
 }
