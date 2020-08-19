@@ -11,7 +11,7 @@ services:
         aliases:
           - rabbitmq.cedesistemas.local
     volumes:
-      - /var/data/rabbitmq:/home/client
+      - /c/cedesistemas/data/rabbitmq:/var/data/rabbitmq
     restart: unless-stopped
 
   mongo:
@@ -24,7 +24,7 @@ services:
         aliases:
           - mongodb.cedesistemas.local
     volumes:
-      - /var/data/mongodb:/data/db
+      - /c/cedesistemas/data/mongo:/var/data/mongodb
     restart: unless-stopped
 
   eureka:
@@ -69,7 +69,7 @@ services:
         aliases:
           - config.cedesistemas.local
     volumes:
-      - ~/.ssh/:/root/.ssh/
+      - /.ssh:/root/.ssh
     environment:
       SPRING_PROFILES_ACTIVE: dev
       eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
@@ -96,12 +96,54 @@ services:
       - config
       - eureka
     extra_hosts:
-      - fastpay.cedesistemas.local:192.168.0.52
+      - fastpay.cedesistemas.local:192.168.1.9
     healthcheck:
       test: ["CMD", "curl", "-f", "http://fastpay.cedesistemas.local:9800/api/v1/actuator/health"]
       interval: 1m
       timeout: 10s
       retries: 3
+    restart: unless-stopped
+
+  loyalty:
+    container_name: loyalty.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/loyalty-service:dev
+    build: ./loyalty-service
+    ports:
+      - 8085:8085
+    networks:
+      default:
+        aliases:
+          - loyalty.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev-slotero
+      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - config
+      - eureka
+      - gateway
+      - mongo
+    restart: unless-stopped
+
+  social:
+    container_name: social.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/social-service:dev
+    build: ./social-service
+    ports:
+      - 8082:8082
+    networks:
+      default:
+        aliases:
+          - social.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - config
+      - eureka
+      - gateway
+      - mongo
     restart: unless-stopped
 
 networks:
