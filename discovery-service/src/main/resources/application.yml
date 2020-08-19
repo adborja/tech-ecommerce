@@ -10,7 +10,7 @@ server:
 
 eureka:
   instance:
-    hostname: eureka.cedesistemas.local
+    hostname: 13.58.94.14
   client:
     register-with-eureka: false
     fetch-registry: false
