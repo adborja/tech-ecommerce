@@ -5,17 +5,15 @@ import co.edu.cedesistemas.commerce.shipping.service.IShipmentService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class ShippingController {
     private final IShipmentService service;
 
@@ -24,6 +22,21 @@ public class ShippingController {
         Shipment created = service.createShipment(shipment);
         return DefaultResponseBuilder.defaultResponse(created, HttpStatus.CREATED);
     }
+
+    @PatchMapping("/shipments/{id}/deliver")
+    public ResponseEntity<Status<?>> deliverShipment(@PathVariable String id) {
+        log.info("Delivering shipment...");
+        Shipment delivered = service.deliverShipment(id);
+        return DefaultResponseBuilder.defaultResponse(delivered, HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/shipments/{id}/cancel")
+    public ResponseEntity<Status<?>> cancelShipment(@PathVariable String id) {
+        log.info("Cancelling shipment...");
+        Shipment delivered = service.cancelShipment(id);
+        return DefaultResponseBuilder.defaultResponse(delivered, HttpStatus.CREATED);
+    }
+
 
     @GetMapping("/shipments/{id}")
     public ResponseEntity<Status<?>> getShipmentById(@PathVariable String id) {
