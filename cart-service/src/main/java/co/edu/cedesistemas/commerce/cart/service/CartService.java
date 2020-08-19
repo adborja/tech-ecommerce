@@ -59,7 +59,9 @@ public class CartService implements ICartService {
 
     @Override
     public void empty(String id) {
-        // TODO: Implement method to empty the cart
+        Mono<Cart> found = findById(id)
+                .doOnNext(c -> c.setItems(null));
+        found.flatMap(repository::save).subscribe();
     }
 
     @Override
