@@ -1,0 +1,15 @@
+type UserStore {
+    id: ID!
+    userId: String
+    storeId: String
+    points: Int
+    status: String!
+}
+
+type UserOrder {
+    id: ID!
+    userId: String!
+    orderValue: Float
+    status: String!
+    points: Int
+}
