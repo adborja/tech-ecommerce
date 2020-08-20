@@ -1,7 +1,7 @@
 #!/bin/bash
 docker run \
-  --name=eureka.cedesistemas.local \
-  --hostname eureka.cedesistemas.local \
+  --name=discovery.cedesistemas.local \
+  --hostname discovery.cedesistemas.local \
   --net cedesistemas_network \
   -e "SPRING_PROFILES_ACTIVE=dev" \
   -p 8761:8761 \

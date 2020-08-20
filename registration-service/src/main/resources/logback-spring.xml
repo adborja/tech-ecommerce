@@ -23,6 +23,7 @@
         <maximumMessageSize>8192</maximumMessageSize>
 
         <facility>-</facility> <!--disable facility -->
+
         <extractStackTrace>true</extractStackTrace> <!-- we want stack-traces-->
         <filterStackTrace>true</filterStackTrace> <!-- trim stack-traces, see: http://logging.paluch.biz/stack-trace-filter.html -->
 

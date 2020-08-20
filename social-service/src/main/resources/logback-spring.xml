@@ -9,7 +9,7 @@
 
     <springProperty scope="context" name="APP_ORG" source="APP_ORG" defaultValue="cedesistemas"/>
 
-    <springProperty scope="context" name="APP_CTX" source="APP_CTX" defaultValue="registration-service"/>
+    <springProperty scope="context" name="APP_CTX" source="APP_CTX" defaultValue="social-service"/>
 
     <springProperty scope="context" name="APP_ENV" source="APP_ENV" defaultValue="dev"/>
 
@@ -23,6 +23,7 @@
         <maximumMessageSize>8192</maximumMessageSize>
 
         <facility>-</facility> <!--disable facility -->
+
         <extractStackTrace>true</extractStackTrace> <!-- we want stack-traces-->
         <filterStackTrace>true</filterStackTrace> <!-- trim stack-traces, see: http://logging.paluch.biz/stack-trace-filter.html -->
 

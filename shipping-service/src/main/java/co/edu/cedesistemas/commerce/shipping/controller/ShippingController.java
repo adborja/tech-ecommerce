@@ -5,17 +5,14 @@ import co.edu.cedesistemas.commerce.shipping.service.IShipmentService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class ShippingController {
     private final IShipmentService service;
 
@@ -36,4 +33,38 @@ public class ShippingController {
         Shipment found = service.getByTrackNumber(number);
         return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
     }
+
+    @PatchMapping("/shipments/{id}/status")
+    public ResponseEntity<Status<?>> updateStatusDeliver(@PathVariable String id, @RequestBody Shipment shipment) {
+        try {
+            Shipment updated = service.updateStatusDeliver(id, shipment);
+            if (updated != null) return DefaultResponseBuilder.defaultResponse(updated, HttpStatus.OK);
+            else return DefaultResponseBuilder.errorResponse("Shipment not found", null, HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping("/shipments/{id}/delivered")
+    public ResponseEntity<Status<?>> updateDelivery(@PathVariable String id) {
+        try {
+            Shipment updated = service.updateDelivery(id);
+            if (updated != null) return DefaultResponseBuilder.defaultResponse(updated, HttpStatus.OK);
+            else return DefaultResponseBuilder.errorResponse("Shipment not found", null, HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping("/shipments/{id}/cancelled")
+    public ResponseEntity<Status<?>> cancelDelivery(@PathVariable String id, @RequestBody Shipment shipment) {
+        try {
+            Shipment updated = service.cancelDelivery(id, shipment);
+            if (updated != null) return DefaultResponseBuilder.defaultResponse(updated, HttpStatus.OK);
+            else return DefaultResponseBuilder.errorResponse("Shipment not found", null, HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            return DefaultResponseBuilder.errorResponse(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

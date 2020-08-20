@@ -6,8 +6,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-public class RegistrationOrchestratorApp {
+public class OrchestratorApp {
     public static void main(String[] args) {
-        SpringApplication.run(RegistrationOrchestratorApp.class, args);
+        SpringApplication.run(OrchestratorApp.class, args);
     }
 }

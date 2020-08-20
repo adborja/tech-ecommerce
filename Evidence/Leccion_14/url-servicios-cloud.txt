@@ -1,0 +1,8 @@
+Discovery
+https://cld-discover-svc-albertojigar.herokuapp.com/
+
+Shipping
+https://cloud-shipp-serv-albertojigar.herokuapp.com/api/v1/actuator/info
+
+Config
+https://cloud-config-serv-albertojigar.herokuapp.com/login

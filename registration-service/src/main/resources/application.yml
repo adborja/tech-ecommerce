@@ -4,21 +4,28 @@ spring:
   data:
     mongodb:
       authentication-database: admin
-      database: tech-ecommerce
+      database: tech-ecommerce-test
       port: 27017
-      host: mongodb.cedesistemas.local
+      host: localhost
   zipkin:
-    base-url: http://jaeger.cedesistemas.local:9411/
+    base-url: http://localhost:9411/
     sender:
       type: web
   sleuth:
     sampler:
       probability: 1
   rabbitmq:
-    host: rabbitmq.cedesistemas.local
+    host: localhost
     port: 5672
     username: guest
     password: guest
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+  redis:
+    host: localhost
+    port: 6379
 
 server:
   port: ${PORT:8083}
@@ -43,7 +50,8 @@ management:
 info:
   app:
     name: ${spring.application.name}
-    description: e-commerce registration application
+    description: e-commerce registration service
+    port: ${server.port}
     version: 1.0.0
 
 eureka:
@@ -52,3 +60,4 @@ eureka:
     fetch-registry: true
     service-url:
       default-zone: http://eureka.cedesistemas.local:8761/eureka/
+

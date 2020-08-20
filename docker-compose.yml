@@ -11,7 +11,7 @@ services:
         aliases:
           - rabbitmq.cedesistemas.local
     volumes:
-      - /var/data/rabbitmq:/home/client
+      - /Users/Beto/Desktop/CursoSpring/data/rabbitmq:/home/client
     restart: unless-stopped
 
   mongo:
@@ -24,11 +24,11 @@ services:
         aliases:
           - mongodb.cedesistemas.local
     volumes:
-      - /var/data/mongodb:/data/db
+      - /Users/Beto/Desktop/CursoSpring/data/mongodb:/data/db
     restart: unless-stopped
 
   eureka:
-    container_name: eureka.cedesistemas.local
+    container_name: discovery.cedesistemas.local
     image: registry.cedesistemas.internal:5000/commerce/discovery-service:dev
     build: ./discovery-service
     ports:
@@ -36,7 +36,7 @@ services:
     networks:
       default:
         aliases:
-          - eureka.cedesistemas.local
+          - discovery.cedesistemas.local
     environment:
       SPRING_PROFILES_ACTIVE: dev
     restart: unless-stopped
@@ -53,7 +53,7 @@ services:
           - gateway.cedesistemas.local
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
     depends_on:
       - eureka
     restart: unless-stopped
@@ -69,10 +69,10 @@ services:
         aliases:
           - config.cedesistemas.local
     volumes:
-      - ~/.ssh/:/root/.ssh/
+      - /Users/Beto/.ssh/:/root/.ssh/
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
     depends_on:
       - rabbitmq
       - eureka
@@ -90,7 +90,7 @@ services:
           - payment.cedesistemas.local
     environment:
       SPRING_PROFILES_ACTIVE: dev-adborja
-      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
     depends_on:
       - rabbitmq
       - config
@@ -102,6 +102,42 @@ services:
       interval: 1m
       timeout: 10s
       retries: 3
+    restart: unless-stopped
+
+  loyalty:
+    container_name: loyalty.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/loyalty-service:dev
+    build: ./loyalty-service
+    ports:
+      - 8085:8085
+    networks:
+      default:
+        aliases:
+          - loyalty.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - mongo
+      - eureka
+    restart: unless-stopped
+
+  social:
+    container_name: social.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/social-service:dev
+    build: ./social-service
+    ports:
+      - 8082:8082
+    networks:
+      default:
+        aliases:
+          - social.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
+    depends_on:
+      - eureka
     restart: unless-stopped
 
 networks:

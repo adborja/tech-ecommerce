@@ -18,11 +18,9 @@ import java.util.UUID;
 public class EventPublisherService {
     private final RabbitTemplate template;
 
-    public void publishSocialUserEvent(User user, SocialEvent.Status status) {
-        SocialEvent event = SocialEvent.builder()
-                .userId(user.getId())
-                .status(status)
-                .build();
+    public void publishRegistrationEvent(User user, SocialEvent.Status status){
+
+        SocialEvent event = SocialEvent.builder().userId(user.getId()).status(status).build();
 
         String json = event.toJSON();
         String msgId = UUID.randomUUID().toString();
@@ -38,5 +36,6 @@ public class EventPublisherService {
 
         Message message = new Message(evtMsgBytes, msgProps);
         template.send(RabbitMQConfig.TOPIC_EXCHANGE, "social.event." + msgId, message);
+
     }
 }
