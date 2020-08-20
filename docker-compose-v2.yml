@@ -17,11 +17,11 @@ version: '2'
         context: shipping-service
       image: registry.cedesistemas.internal:5000/commerce/shipping-service:dev
       environment:
-        SPRING_PROFILES_ACTIVE: 'sandbox'
+        SPRING_PROFILES_ACTIVE: 'dev'
       expose:
-        - 8096
+        - 8086
       ports:
-        - 8096:8096
+        - 8086:8086
       networks:
         - cedesistemas_network
       links:

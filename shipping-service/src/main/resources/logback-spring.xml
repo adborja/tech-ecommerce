@@ -9,7 +9,7 @@
 
     <springProperty scope="context" name="APP_ORG" source="APP_ORG" defaultValue="cedesistemas"/>
 
-    <springProperty scope="context" name="APP_CTX" source="APP_CTX" defaultValue="registration-service"/>
+    <springProperty scope="context" name="APP_CTX" source="APP_CTX" defaultValue="shipping-service"/>
 
     <springProperty scope="context" name="APP_ENV" source="APP_ENV" defaultValue="dev"/>
 
