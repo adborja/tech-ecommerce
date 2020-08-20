@@ -1,12 +1,17 @@
 spring:
   application:
-    name: commerce-service
+    name: shipping-service
   data:
     mongodb:
       authentication-database: admin
-      database: tech-ecommerce
+      database: tech-ecommerce-test
       port: 27017
       host: localhost
+  cloud:
+    config:
+      uri: http://config.cedesistemas.local:8760
+      username: configadmin
+      password: cedesistemas
   zipkin:
     base-url: http://jaeger.cedesistemas.local:9411/
     sender:
@@ -14,14 +19,9 @@ spring:
   sleuth:
     sampler:
       probability: 1
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
 
 server:
-  port: ${PORT:8081}
+  port: ${PORT:8086}
   servlet:
     context-path: /api/v1/
 
@@ -33,18 +33,6 @@ springdoc:
     path: /swagger-ui.html
     display-request-duration: true
     groups-order: DESC
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-
-info:
-  app:
-    name: ${spring.application.name}
-    description: e-commerce application
-    version: 1.0.0
 
 eureka:
   client:

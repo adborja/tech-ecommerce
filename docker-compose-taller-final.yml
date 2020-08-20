@@ -1,0 +1,106 @@
+version: '3.8'
+services:
+  rabbitmq:
+    container_name: rabbitmq.cedesistemas.local
+    image: rabbitmq:3.7-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      default:
+        aliases:
+          - rabbitmq.cedesistemas.local
+    volumes:
+      - /Users/Beto/Desktop/CursoSpring/data/rabbitmq:/home/client
+    restart: unless-stopped
+
+  mongo:
+    container_name: mongodb.cedesistemas.local
+    image: mongo:4.2.1
+    ports:
+      - 27017:27017
+    networks:
+      default:
+        aliases:
+          - mongodb.cedesistemas.local
+    volumes:
+      - /Users/Beto/Desktop/CursoSpring/data/mongodb:/data/db
+    restart: unless-stopped
+
+  eureka:
+    container_name: discovery.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/discovery-service:dev
+    build: ./discovery-service
+    ports:
+      - 8761:8761
+    networks:
+      default:
+        aliases:
+          - discovery.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    restart: unless-stopped
+
+  config:
+    container_name: config.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/configuration-service:dev
+    build: ./configuration-service
+    ports:
+      - 8760:8760
+    networks:
+      default:
+        aliases:
+          - config.cedesistemas.local
+    volumes:
+      - /Users/Beto/.ssh/:/root/.ssh/
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - eureka
+    restart: unless-stopped
+
+  shipping:
+    container_name: shipping.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/shipping-service:dev
+    build: ./shipping-service
+    ports:
+      - 8086:8086
+    networks:
+      default:
+        aliases:
+          - shipping.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev-adborja
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - config
+      - eureka
+    restart: unless-stopped
+
+  commerce:
+    container_name: commerce.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/commerce-service:dev
+    build: ./commerce-service
+    ports:
+      - 8081:8081
+    networks:
+      default:
+        aliases:
+          - commerce.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - mongo
+      - eureka
+      - shipping
+    restart: unless-stopped
+
+networks:
+  default:
+    external:
+      name: cedesistemas_network
