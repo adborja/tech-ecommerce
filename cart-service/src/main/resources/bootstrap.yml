@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: cart-service
+  cloud:
+    config:
+      uri: http://config.cedesistemas.local:8760
+      username: configadmin
+      password: cedesistemas
+
+server:
+  port: ${PORT:8087}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: e-commerce cart management
+    version: 1.0.0
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://eureka.cedesistemas.local:8761/eureka/
+
+ribbon:
+  eureka:
+    enabled: false
+
+app:
+  mongo:
+    host: mongodb.cedesistemas.local
+    port: 27017
+    dbname: tech-ecommerce

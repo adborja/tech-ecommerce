@@ -4,7 +4,9 @@ import co.edu.cedesistemas.commerce.shipping.model.Address;
 import co.edu.cedesistemas.commerce.shipping.model.Cancel;
 import co.edu.cedesistemas.commerce.shipping.model.Order;
 import co.edu.cedesistemas.commerce.shipping.model.Shipment;
+import co.edu.cedesistemas.commerce.shipping.repository.ShipmentRepository;
 import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.event.ShipmentEvent;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.annotation.Profile;
@@ -14,31 +16,47 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.UUID;
 
-@Profile(SpringProfile.SANDBOX)
+@Profile("!" + SpringProfile.SANDBOX)
 @Service
 @AllArgsConstructor
-public class ShippingServiceSandbox implements IShipmentService {
+public class ShippingService implements IShipmentService {
+
+    private final ShipmentRepository repository;
+    private final EventPublisherService eventPublisherService;
+
     @Override
     public Shipment createShipment(final Shipment shipment) {
         shipment.setId(UUID.randomUUID().toString());
         shipment.setStatus(Shipment.Status.CREATED);
         shipment.setCreatedAt(LocalDateTime.now());
         shipment.setTrackNumber(RandomStringUtils.randomNumeric(5));
+
+        repository.save(shipment);
+
+        eventPublisherService.publishRegistrationEvent(shipment, ShipmentEvent.Status.CREATED);
+
         return shipment;
     }
 
     @Override
     public Shipment getById(final String id) {
-        return createDummyShipment(id, RandomStringUtils.randomNumeric(5));
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public Shipment getByTrackNumber(String trackNumber) {
-        return createDummyShipment(UUID.randomUUID().toString(), trackNumber);
+        return repository.findByTrackNumber(trackNumber).orElse(null);
     }
 
     @Override
     public Shipment updateStatus(String id) {
+
+        Shipment shipment = repository.findById(id).orElse(null);
+        if(shipment != null){
+            shipment.setStatus(Shipment.Status.CANCELLED);
+            repository.save(shipment);
+            eventPublisherService.publishRegistrationEvent(shipment, ShipmentEvent.Status.CANCELLED);
+        }
         return null;
     }
 
@@ -47,34 +65,4 @@ public class ShippingServiceSandbox implements IShipmentService {
         return null;
     }
 
-    private static Shipment createDummyShipment(final String id, final String trackNumber) {
-        Shipment shipment = new Shipment();
-        shipment.setId(id);
-        shipment.setStatus(Shipment.Status.IN_TRANSIT);
-        shipment.setTrackNumber(trackNumber);
-        shipment.setCreatedAt(LocalDateTime.now());
-
-        Order order = new Order();
-        order.setId(UUID.randomUUID().toString());
-        order.setStoreId("tech-store-id");
-        order.setUserId(UUID.randomUUID().toString());
-
-        Order.OrderItem item = new Order.OrderItem();
-        item.setId(UUID.randomUUID().toString());
-        item.setQuantity(3);
-        order.setItems(Collections.singletonList(item));
-
-        Address address = new Address();
-        address.setCity("Medellín");
-        address.setCountry("CO");
-        address.setState("ANT");
-        address.setStreet1("Cr. 80 # 65 - 22");
-        address.setZip("50030");
-
-        order.setShippingAddress(address);
-
-        shipment.setOrder(order);
-
-        return shipment;
-    }
 }
