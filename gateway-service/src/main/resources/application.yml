@@ -47,6 +47,9 @@ zuul:
     payment:
       path: /payment/**
       serviceId: payment-service
+    shipment:
+      path: /shipment/**
+      serviceId: shipment-service
 
 
 
