@@ -1,0 +1,8 @@
+Discovery
+https://cld-discover-svc-luisdaka.herokuapp.com/
+
+Shipping
+https://cloud-shipp-serv-luisdaka.herokuapp.com/api/v1/actuator/info
+
+Config
+https://cloud-config-serv-luisdaka.herokuapp.com/login
