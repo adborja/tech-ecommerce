@@ -23,7 +23,7 @@ public class UserStoreService {
         userStore.setCreatedAt(LocalDateTime.now());
         userStore.setStatus(LoyaltyStatus.USER_CREATED);
         userStore.setPoints(userStore.getPoints());
-
+        log.info("hola mundo");
         UserStore created = repository.save(userStore);
         
         publisherService.publishLoyaltyEvent(created);

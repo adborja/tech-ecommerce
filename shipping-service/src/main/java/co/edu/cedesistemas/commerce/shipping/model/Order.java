@@ -9,6 +9,7 @@ public class Order {
     private String id;
     private String userId;
     private String storeId;
+    private String status;
     private Address shippingAddress;
     private List<OrderItem> items;
 

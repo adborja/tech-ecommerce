@@ -36,4 +36,25 @@ public class ShippingController {
         Shipment found = service.getByTrackNumber(number);
         return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
     }
+
+    @GetMapping("/shipments/deliver")
+    public ResponseEntity<Status<?>> deliver(@PathVariable String id) {
+        Shipment found = service.deliver(id);
+        return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+    }
+
+    @GetMapping("/shipments/changeStatus")
+    public ResponseEntity<Status<?>> changeStatus(@PathVariable String id, @PathVariable Shipment.Status status) {
+        Shipment found = service.changeStatus(id,status);
+        return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/shipments/cancelDeliver")
+    public ResponseEntity<Status<?>> cancelDeliver(@PathVariable String id) {
+        Shipment found = service.cancelDeliver(id);
+        return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
+    }
+
+
 }

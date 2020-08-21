@@ -6,4 +6,7 @@ public interface IShipmentService {
     Shipment createShipment(Shipment shipment);
     Shipment getById(String id);
     Shipment getByTrackNumber(String trackNumber);
+    Shipment deliver(String id);
+    Shipment changeStatus(String id, Shipment.Status status);
+    Shipment cancelDeliver(String id);
 }
