@@ -39,8 +39,11 @@ public class CartService implements ICartService {
     @Override
     public Mono<Cart> addItem(String id, Cart.CartItem item) {
         Mono<Cart> found = findById(id);
-        found = found.doOnNext(c -> c.addItem(item));
-        return found.flatMap(repository::save);
+       // found =
+                return found.doOnNext(c -> c.addItem(item))
+                .flatMap(repository::save);
+
+        //return found.flatMap(repository::save);
     }
 
     @Override
@@ -60,6 +63,14 @@ public class CartService implements ICartService {
     @Override
     public void empty(String id) {
         // TODO: Implement method to empty the cart
+        Flux<Cart.CartItem> cartItemFlux = getItems(id);
+
+       // Flux.fromIterable()
+
+        Mono<Cart> found = findById(id);
+        found.map(Cart::getItems)
+                .flatMapMany(Flux::fromIterable);
+
     }
 
     @Override

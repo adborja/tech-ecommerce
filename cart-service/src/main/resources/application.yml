@@ -1,7 +1,7 @@
 spring:
   rabbitmq:
-    host: rabbitmq.cedesistemas.local
+    host: llama.rmq.cloudamqp.com
     port: 5672
-    username: guest
-    password: guest
-    virtual-host:
+    username: foxmowaw
+    password: GaVJ7_DMMl8PihaPcPuzWsNVcQVVdaai
+    virtual-host: foxmowaw

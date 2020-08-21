@@ -95,6 +95,24 @@ services:
       - eureka
     restart: unless-stopped    
 
+  shipping:
+    container_name: shipping.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/shipping-service:dev
+    build: ./shipping-service
+    ports:
+      - 8083:8083
+    networks:
+      default:
+        aliases:
+          - config.cedesistemas.local
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://discovery.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - eureka
+      - mongo
+    restart: unless-stopped
+
   loyalty:
     container_name: loyalty.cedesistemas.local
     image: registry.cedesistemas.internal:5000/commerce/loyalty-service:dev

@@ -37,4 +37,5 @@ public class PaymentEventConsumerService {
             log.info("order updated - id: {}, status: {}", order.getId(), order.getStatus());
         }
     }
+
 }
