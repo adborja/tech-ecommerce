@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class ShipmentCancellationReason {
 
     private String description;
-    private String reason;
+    private CancelledReason reason;
 
     public enum CancelledReason {
         ADDRESS_NOT_FOUND,

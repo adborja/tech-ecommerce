@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} [%X{svc_usr}]%clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <contextName>dev</contextName>
+    <jmxConfigurator/>
+
+    <springProperty scope="context" name="APP_ORG" source="APP_ORG" defaultValue="cedesistemas"/>
+
+    <springProperty scope="context" name="APP_CTX" source="APP_CTX" defaultValue="shipping-service"/>
+
+    <springProperty scope="context" name="APP_ENV" source="APP_ENV" defaultValue="dev"/>
+
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
+    <appender name="GELF" class="biz.paluch.logging.gelf.logback.GelfLogbackAppender">
+        <host>tcp://graylog.cedesistemas.local</host>
+        <port>12201</port>
+
+        <version>1.1</version>
+        <timestampPattern>yyyy-MM-dd HH:mm:ss,SSSS</timestampPattern>
+        <maximumMessageSize>8192</maximumMessageSize>
+
+        <facility>-</facility> <!--disable facility -->
+
+        <extractStackTrace>true</extractStackTrace> <!-- we want stack-traces-->
+        <filterStackTrace>true</filterStackTrace> <!-- trim stack-traces, see: http://logging.paluch.biz/stack-trace-filter.html -->
+
+        <mdcProfiling>false</mdcProfiling>
+
+        <additionalFields>org=${APP_ORG},ctx=${APP_CTX},svc=${APP_NAME},env=${APP_ENV}</additionalFields>
+        <additionalFieldTypes>org=String,ctx=String,svc=String,env=String</additionalFieldTypes>
+
+        <mdcFields>APP_STAGE</mdcFields>
+        <dynamicMdcFields>svc_.*</dynamicMdcFields>
+        <includeFullMdc>true</includeFullMdc>
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${LOG_LEVEL_GELF:-INFO}</level>
+        </filter>
+    </appender>
+
+    <logger name="co.edu.cedesistemas" level="DEBUG" />
+    <logger name="org.springframework.cloud.sleuth" level="DEBUG" />
+
+    <root level="WARN">
+        <appender-ref ref="GELF"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
