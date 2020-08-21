@@ -1,6 +1,7 @@
 package co.edu.cedesistemas.commerce.shipping.service;
 
 import co.edu.cedesistemas.commerce.shipping.model.Shipment;
+import co.edu.cedesistemas.common.model.ShipmentCancellationReason;
 
 public interface IShipmentService {
     Shipment createShipment(Shipment shipment);
@@ -11,5 +12,5 @@ public interface IShipmentService {
 
     Shipment deliverShipment(String id);
 
-    Shipment cancelShipment(String id);
+    Shipment cancelShipment(String id, ShipmentCancellationReason reason);
 }

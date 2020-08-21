@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.shipping.model.Address;
 import co.edu.cedesistemas.commerce.shipping.model.Order;
 import co.edu.cedesistemas.commerce.shipping.model.Shipment;
 import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.model.ShipmentCancellationReason;
 import co.edu.cedesistemas.common.model.ShipmentStatus;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -45,9 +46,10 @@ public class ShippingServiceSandbox implements IShipmentService {
     }
 
     @Override
-    public Shipment cancelShipment(String id) {
+    public Shipment cancelShipment(String id, ShipmentCancellationReason reason) {
         Shipment found = getById(id);
         found.setStatus(ShipmentStatus.CANCELLED);
+        found.setCancellationReason(reason);
         return found;
     }
 

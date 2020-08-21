@@ -1,5 +1,6 @@
 package co.edu.cedesistemas.commerce.shipping.model;
 
+import co.edu.cedesistemas.common.model.ShipmentCancellationReason;
 import co.edu.cedesistemas.common.model.ShipmentStatus;
 import lombok.Data;
 
@@ -12,4 +13,5 @@ public class Shipment {
     private String trackNumber;
     private ShipmentStatus status;
     private LocalDateTime createdAt;
+    private ShipmentCancellationReason cancellationReason;
 }

@@ -129,6 +129,25 @@ services:
       - mongo
     restart: unless-stopped
 
+  shipping:
+    container_name: shipping.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/shipping-service:dev
+    build: ./shipping-service
+    ports:
+      - 8792:8792
+    networks:
+      default:
+        aliases:
+          - config.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - eureka
+      - mongo
+    restart: unless-stopped
+
   payment:
     container_name: payment.cedesistemas.local
     image: registry.cedesistemas.internal:5000/commerce/payment-service:dev

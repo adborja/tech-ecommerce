@@ -3,6 +3,7 @@ package co.edu.cedesistemas.commerce.shipping.controller;
 import co.edu.cedesistemas.commerce.shipping.model.Shipment;
 import co.edu.cedesistemas.commerce.shipping.service.IShipmentService;
 import co.edu.cedesistemas.common.DefaultResponseBuilder;
+import co.edu.cedesistemas.common.model.ShipmentCancellationReason;
 import co.edu.cedesistemas.common.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,10 @@ public class ShippingController {
     }
 
     @PatchMapping("/shipments/{id}/cancel")
-    public ResponseEntity<Status<?>> cancelShipment(@PathVariable String id) {
+    public ResponseEntity<Status<?>> cancelShipment(@PathVariable String id,
+                                                    @RequestBody ShipmentCancellationReason cancelledReason) {
         log.info("Cancelling shipment...");
-        Shipment delivered = service.cancelShipment(id);
+        Shipment delivered = service.cancelShipment(id, cancelledReason);
         return DefaultResponseBuilder.defaultResponse(delivered, HttpStatus.CREATED);
     }
 
