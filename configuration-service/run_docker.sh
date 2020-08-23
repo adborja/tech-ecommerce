@@ -3,7 +3,7 @@ docker run \
   --name=config.cedesistemas.local \
   --hostname config.cedesistemas.local \
   --net cedesistemas_network \
-  -v ~/.ssh/:/C/Users/fede_/.ssh/ \
+  -v ~/.ssh/:/C/Users/jabarrer/.ssh/ \
   -e "SPRING_PROFILES_ACTIVE=dev" \
   -e "eureka.client.serviceUrl.defaultZone=http://eureka.cedesistemas.local:8761/eureka" \
   -p 8760:8760 \

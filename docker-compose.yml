@@ -115,7 +115,7 @@ services:
         aliases:
           - loyalty.cedesistemas.local
     environment:
-      SPRING_PROFILES_ACTIVE: dev-00Fede
+      SPRING_PROFILES_ACTIVE: dev-jbarrera027
       eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
     depends_on:
       - rabbitmq
