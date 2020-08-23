@@ -6,6 +6,7 @@ import co.edu.cedesistemas.commerce.shipping.model.Shipment;
 import co.edu.cedesistemas.commerce.shipping.repository.ShipmentRepository;
 import co.edu.cedesistemas.common.SpringProfile;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @Profile("!" + SpringProfile.SANDBOX)
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ShippingServiceSandbox implements IShipmentService {
     private final ShipmentRepository repository;
     private final EventPublisherService publisherService;
@@ -31,18 +33,21 @@ public class ShippingServiceSandbox implements IShipmentService {
         Shipment shipmentCreated =  repository.save(shipment);
 
         publisherService.publishShippingEvent(shipmentCreated);
-
+        log.info("Shipment created {}",shipment.getId());
         return shipmentCreated;
     }
 
 
+
     @Override
-    public Shipment cancelDeliver(final String id) {
+    public Shipment cancelDeliver(final String id, final Shipment.Motivo motivo, final String descMotivo) {
         Shipment shipment = getByTrackNumber(id);
         shipment.setStatus(Shipment.Status.CANCELLED);
+        shipment.setMotivo(motivo);
+        shipment.setMotivoDevolucion(descMotivo);
 
         publisherService.publishShippingEvent(shipment);
-
+        log.info("Deliver cancelled {}, motivo: {}",id,motivo);
         return repository.save(shipment);
     }
 
@@ -53,7 +58,7 @@ public class ShippingServiceSandbox implements IShipmentService {
         shipment.setStatus(Shipment.Status.DELIVERED);
 
         publisherService.publishShippingEvent(shipment);
-
+        log.info("Deliver sent {} ",id);
         return repository.save(shipment);
     }
 
@@ -63,7 +68,7 @@ public class ShippingServiceSandbox implements IShipmentService {
         shipment.setStatus(status);
 
         publisherService.publishShippingEvent(shipment);
-
+        log.info("Change status deliver {}, nuevo status: {}",id,status);
         return repository.save(shipment);
     }
 

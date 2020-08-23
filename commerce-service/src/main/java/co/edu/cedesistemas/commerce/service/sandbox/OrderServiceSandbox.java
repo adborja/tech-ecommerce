@@ -4,19 +4,25 @@ import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.model.User;
+import co.edu.cedesistemas.commerce.repository.OrderRepository;
 import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.common.SpringProfile;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Profile(SpringProfile.SANDBOX)
 @Service
+@AllArgsConstructor
 public class OrderServiceSandbox implements  IOrderService{
+    private final OrderRepository repository;
+
     @Override
     public List<OrderItem> getItemsByOrder(final String orderId)
     {
@@ -48,7 +54,8 @@ public class OrderServiceSandbox implements  IOrderService{
     public Order createOrder(final Order order) {
         order.setId(UUID.randomUUID().toString());
         order.setCreatedAt(LocalDateTime.now());
-        //order.setStatus(Order.status.CREATED);
+        //order.setStatus(Order.Status.CREATED);
+        repository.save(order);
         return order;
     }
 
@@ -67,7 +74,14 @@ public class OrderServiceSandbox implements  IOrderService{
         order.setId(id);
         order.setCreatedAt(LocalDateTime.now());
         order.setUserId(idNuevo);
-        return order;
+
+        //Optional<Order> order1 = repository.findById(id);
+        //return repository.findById(id);
+    }
+
+    @Override
+    public void deleteOrder(String id) {
+        repository.deleteById(id);
     }
 
 }

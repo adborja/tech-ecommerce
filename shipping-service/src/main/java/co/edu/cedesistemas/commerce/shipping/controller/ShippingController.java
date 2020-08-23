@@ -51,8 +51,8 @@ public class ShippingController {
 
 
     @GetMapping("/shipments/cancelDeliver")
-    public ResponseEntity<Status<?>> cancelDeliver(@PathVariable String id) {
-        Shipment found = service.cancelDeliver(id);
+    public ResponseEntity<Status<?>> cancelDeliver(@PathVariable String id,@PathVariable Shipment.Motivo motivo, @PathVariable String descMotivo ) {
+        Shipment found = service.cancelDeliver(id,motivo,descMotivo);
         return DefaultResponseBuilder.defaultResponse(found, HttpStatus.OK);
     }
 
