@@ -1,0 +1,5 @@
+https://cloud-config-service-dgklinker.herokuapp.com/login
+
+https://cloud-discovery-service-dgklin.herokuapp.com/
+
+https://cloud-shipping-service-dgklink.herokuapp.com/

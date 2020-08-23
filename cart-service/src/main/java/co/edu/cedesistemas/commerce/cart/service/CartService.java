@@ -69,8 +69,6 @@ public class CartService implements ICartService {
     @Override
     public Mono<Float> getTotalPrice(String cartId) {
 
-        //TODO: Implement method here
-
         return getItems(cartId)
                 .map(Cart.CartItem::getPrice)
                 .reduce(Float::sum);
