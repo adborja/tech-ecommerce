@@ -2,7 +2,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/maven,gradle,intellij+all,eclipse,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=maven,gradle,intellij+all,eclipse,java
 
-### Eclipse ###
+### Eclipse ####
 .metadata
 bin/
 tmp/
