@@ -10,11 +10,16 @@ public class Shipment {
     private Order order;
     private String trackNumber;
     private Status status;
+    private ShipmentCancelReason cancelReason;
     private LocalDateTime createdAt;
 
     public enum Status {
         CREATED,
         IN_TRANSIT,
-        DELIVERED
+        DELIVERED,
+        CANCELED
     }
+
 }
+
+

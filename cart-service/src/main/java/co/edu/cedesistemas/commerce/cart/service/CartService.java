@@ -59,13 +59,17 @@ public class CartService implements ICartService {
 
     @Override
     public void empty(String id) {
-        // TODO: Implement method to empty the cart
+        getItems(id)
+                .map(cartItem -> cartItem.getId())
+                .doOnNext(c -> removeItem(id, c))
+                .subscribe();
     }
 
     @Override
     public Mono<Float> getTotalPrice(String cartId) {
-        //TODO: Implement method here
-        return null;
+        Flux<Cart.CartItem> cartFound = getItems(cartId);
+        return cartFound.map(Cart.CartItem::getPrice)
+                .reduce(0f, Float::sum);
     }
 
     private void removeItem(String cartId, Cart.CartItem item) {

@@ -1,5 +1,5 @@
 docker run --restart=unless-stopped \
-        -v /var/data/rabbitmq:/home/client \
+        -v /Users/yefryalexiscalderonyepes/Documents/cedesistemas/data/rabbitmq:/home/client \
         --hostname rabbitmq.cedesistemas.local \
         --net cedesistemas_network \
         --name rabbitmq.cedesistemas.local \

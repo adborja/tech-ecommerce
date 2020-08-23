@@ -1,6 +1,6 @@
 #!/bin/bash
 docker run --restart=unless-stopped \
-        -v /var/data/mongodb:/data/db \
+        -v /Users/yefryalexiscalderonyepes/Documents/cedesistemas/data/mongodb:/data/db \
         --hostname mongodb.cedesistemas.local \
         --name mongodb.cedesistemas.local \
         --net cedesistemas_network \

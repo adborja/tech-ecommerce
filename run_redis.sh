@@ -1,5 +1,5 @@
 docker run --restart=unless-stopped \
-        -v /var/data/redis:/data \
+        -v /Users/yefryalexiscalderonyepes/Documents/cedesistemas/data/redis:/data \
         --hostname redis.cedesistemas.local \
         --net cedesistemas_network \
         --name redis.cedesistemas.local \

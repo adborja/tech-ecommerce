@@ -3,6 +3,7 @@ package co.edu.cedesistemas.commerce.shipping.service;
 import co.edu.cedesistemas.commerce.shipping.model.Address;
 import co.edu.cedesistemas.commerce.shipping.model.Order;
 import co.edu.cedesistemas.commerce.shipping.model.Shipment;
+import co.edu.cedesistemas.commerce.shipping.model.ShipmentCancelReason;
 import co.edu.cedesistemas.common.SpringProfile;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -34,6 +35,21 @@ public class ShippingServiceSandbox implements IShipmentService {
     @Override
     public Shipment getByTrackNumber(String trackNumber) {
         return createDummyShipment(UUID.randomUUID().toString(), trackNumber);
+    }
+
+    @Override
+    public Shipment deliverShipment(String id) {
+        return null;
+    }
+
+    @Override
+    public Shipment cancelShipment(String id, ShipmentCancelReason reason) {
+        return null;
+    }
+
+    @Override
+    public Shipment updateShipmentStatus(String id, Shipment.Status status) {
+        return null;
     }
 
     private static Shipment createDummyShipment(final String id, final String trackNumber) {
