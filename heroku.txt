@@ -1,0 +1,5 @@
+URLS:
+https://cloud-discovery-serv-alesgaco.herokuapp.com/
+https://cloud-shipping-serv-alesgaco.herokuapp.com/api/v1/actuator/health
+https://cloud-config-service-alesgaco.herokuapp.com/login
+
