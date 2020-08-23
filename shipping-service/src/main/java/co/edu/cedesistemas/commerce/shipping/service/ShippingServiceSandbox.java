@@ -47,6 +47,11 @@ public class ShippingServiceSandbox implements IShipmentService {
         return null;
     }
 
+    @Override
+    public Shipment deliverShipment(String id) {
+        return null;
+    }
+
     private static Shipment createDummyShipment(final String id, final String trackNumber) {
         Shipment shipment = new Shipment();
         shipment.setId(id);

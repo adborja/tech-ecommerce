@@ -9,5 +9,6 @@ public interface IShipmentService {
     Shipment getByTrackNumber(String trackNumber);
     Shipment updateStatus(String id);
     Shipment cancelShipment(String id, Cancel cancel);
+    Shipment deliverShipment(String id);
 
 }

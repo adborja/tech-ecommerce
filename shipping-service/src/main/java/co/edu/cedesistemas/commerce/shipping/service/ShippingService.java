@@ -1,8 +1,6 @@
 package co.edu.cedesistemas.commerce.shipping.service;
 
-import co.edu.cedesistemas.commerce.shipping.model.Address;
 import co.edu.cedesistemas.commerce.shipping.model.Cancel;
-import co.edu.cedesistemas.commerce.shipping.model.Order;
 import co.edu.cedesistemas.commerce.shipping.model.Shipment;
 import co.edu.cedesistemas.commerce.shipping.repository.ShipmentRepository;
 import co.edu.cedesistemas.common.SpringProfile;
@@ -13,7 +11,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.UUID;
 
 @Profile("!" + SpringProfile.SANDBOX)
@@ -53,6 +50,17 @@ public class ShippingService implements IShipmentService {
 
         Shipment shipment = repository.findById(id).orElse(null);
         if(shipment != null){
+            shipment.setStatus(Shipment.Status.IN_TRANSIT);
+            repository.save(shipment);
+            eventPublisherService.publishRegistrationEvent(shipment, ShipmentEvent.Status.IN_TRANSIT);
+        }
+        return null;
+    }
+
+    @Override
+    public Shipment cancelShipment(String id, Cancel cancel) {
+        Shipment shipment = repository.findById(id).orElse(null);
+        if(shipment != null){
             shipment.setStatus(Shipment.Status.CANCELLED);
             repository.save(shipment);
             eventPublisherService.publishRegistrationEvent(shipment, ShipmentEvent.Status.CANCELLED);
@@ -61,7 +69,13 @@ public class ShippingService implements IShipmentService {
     }
 
     @Override
-    public Shipment cancelShipment(String id, Cancel cancel) {
+    public Shipment deliverShipment(String id) {
+        Shipment shipment = repository.findById(id).orElse(null);
+        if(shipment != null){
+            shipment.setStatus(Shipment.Status.DELIVERED);
+            repository.save(shipment);
+            eventPublisherService.publishRegistrationEvent(shipment, ShipmentEvent.Status.DELIVERED);
+        }
         return null;
     }
 

@@ -34,7 +34,7 @@ public class ShippingController {
     }
 
     @PatchMapping("/shipments/{id}/deliver")
-    public ResponseEntity<Status<?>> updateShipmentDelivery(@PathVariable String id)
+    public ResponseEntity<Status<?>> deliverShipmentDelivery(@PathVariable String id)
     {
         Shipment updated = service.updateStatus(id);
         return DefaultResponseBuilder.defaultResponse(updated, HttpStatus.OK);
@@ -42,6 +42,14 @@ public class ShippingController {
 
     @PatchMapping("/shipments/{id}/cancel")
     public ResponseEntity<Status<?>> cancelShipmentDelivery(@PathVariable String id, @RequestBody Cancel cancel)
+    {
+        Shipment updated = service.cancelShipment(id,cancel);
+        return DefaultResponseBuilder.defaultResponse(updated, HttpStatus.OK);
+    }
+
+
+    @PatchMapping("/shipments/{id}/update")
+    public ResponseEntity<Status<?>> updateShipmentDelivery(@PathVariable String id, @RequestBody Cancel cancel)
     {
         Shipment updated = service.updateStatus(id);
         return DefaultResponseBuilder.defaultResponse(updated, HttpStatus.OK);
