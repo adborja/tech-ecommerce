@@ -60,7 +60,7 @@ public class CartService implements ICartService {
     @Override
     public void empty(String id) {
         getItems(id)
-                .map(cartItem -> cartItem.getId())
+                .map(Cart.CartItem::getId)
                 .doOnNext(c -> removeItem(id, c))
                 .subscribe();
     }
