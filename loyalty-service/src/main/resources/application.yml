@@ -1,8 +1,9 @@
 spring:
     rabbitmq:
-    host: rabbitmq.cedesistemas.local
-    port: 5672
-    username: guest
-    password: guest
+        host: rabbitmq.cedesistemas.local
+        port: 5672
+        username: guest
+        password: guest
+        virtual-host:
 
 

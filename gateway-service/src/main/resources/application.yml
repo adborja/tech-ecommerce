@@ -50,7 +50,9 @@ zuul:
     configuration:
       path: /configuration/**
       serviceId: configuration-service
-
+    shipping:
+      path: /shipping/**
+      serviceId: shipping-service
 
 ribbon:
   eureka:

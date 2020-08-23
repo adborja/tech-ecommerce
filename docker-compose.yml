@@ -111,6 +111,24 @@ services:
       - rabbitmq
       - eureka
     restart: unless-stopped
+  shipping:
+      container_name: shipping.cedesistemas.local
+      image: registry.cedesistemas.internal:5000/commerce/shipping-service:dev
+      build: ./shipping-service
+      ports:
+        - 8086:8086
+      networks:
+        default:
+          aliases:
+            - shipping.cedesistemas.local
+      environment:
+        SPRING_PROFILES_ACTIVE: dev-kathe20m
+        eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+      depends_on:
+        - rabbitmq
+        - eureka
+      restart: unless-stopped
+
   payment:
     container_name: payment.cedesistemas.local
     image: registry.cedesistemas.internal:5000/commerce/payment-service:dev

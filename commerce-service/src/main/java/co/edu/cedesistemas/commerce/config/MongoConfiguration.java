@@ -30,6 +30,7 @@ public class MongoConfiguration {
         converters.add(new ProductWriteConverter());
         converters.add(new UserWriterConverter());
         converters.add(new OrderWriteConverter());
+
         return new MongoCustomConversions(converters);
     }
 
