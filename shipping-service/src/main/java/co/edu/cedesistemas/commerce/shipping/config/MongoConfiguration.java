@@ -20,7 +20,6 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 @Configuration
 @Slf4j
-@RefreshScope
 public class MongoConfiguration {
     @Bean
     public MongoCustomConversions customConversions() {
