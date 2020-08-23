@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -59,13 +60,23 @@ public class CartService implements ICartService {
 
     @Override
     public void empty(String id) {
-        // TODO: Implement method to empty the cart
+
+         getItems(id)
+                 .doOnNext(cartItem -> removeItem(id,cartItem.getId()));
+
     }
 
     @Override
     public Mono<Float> getTotalPrice(String cartId) {
+
         //TODO: Implement method here
-        return null;
+
+        return getItems(cartId)
+                .map(Cart.CartItem::getPrice)
+                .reduce(Float::sum);
+
+
+
     }
 
     private void removeItem(String cartId, Cart.CartItem item) {
@@ -73,4 +84,9 @@ public class CartService implements ICartService {
         found = found.doOnNext(c -> c.removeItem(item));
         found.flatMap(repository::save).subscribe();
     }
+
+
+
+
+
 }
