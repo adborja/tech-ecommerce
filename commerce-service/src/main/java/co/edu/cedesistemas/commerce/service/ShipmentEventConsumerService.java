@@ -44,7 +44,7 @@ public class ShipmentEventConsumerService {
 
             _order.setStatus(OrderStatus.CONFIRMED);
             Order order = orderService.updateOrder(orderId, _order);
-            log.info("order updated - id: {}, status: {}", order.getId(), order.getStatus());
+            log.info("order updated - id: {}, status: {}", orderId, shipmentEvent.getShipmentId());
         }
 
         if(shipmentEvent.getStatus().equals(ShipmentEvent.Status.DELIVERED)) {

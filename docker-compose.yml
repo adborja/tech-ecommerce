@@ -151,7 +151,29 @@ services:
     #      timeout: 10s
     #      retries: 3
     restart: unless-stopped
-
+  shipment:
+    container_name: shipment.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/shipping-service:dev
+    build: ./social-service
+    ports:
+      - 8086:8086
+    networks:
+      default:
+        aliases:
+          - shipment.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - config
+      - eureka
+    #    healthcheck:
+    #      test: ["CMD", "curl", "-f", "http://fastpay.cedesistemas.local:9800/api/v1/actuator/health"]
+    #      interval: 1m
+    #      timeout: 10s
+    #      retries: 3
+    restart: unless-stopped
 
 networks:
   default:
