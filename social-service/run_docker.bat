@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run --name=social.cedesistemas.local --hostname social.cedesistemas.local --net cedesistemas_network -e "SPRING_PROFILES_ACTIVE=sandbox" -p 8080:8080 -d registry.cedesistemas.internal:5000/commerce/gateway-service:dev
+docker run --name=social.cedesistemas.local --hostname social.cedesistemas.local --net cedesistemas_network -e "SPRING_PROFILES_ACTIVE=sandbox" -p 8082:8082 -d registry.cedesistemas.internal:5000/commerce/social-service:dev

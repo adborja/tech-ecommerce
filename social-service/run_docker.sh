@@ -5,5 +5,5 @@ docker run \
   --net cedesistemas_network \
   -e "SPRING_PROFILES_ACTIVE=dev" \
   -p 8080:8080 \
-  -d registry.cedesistemas.internal:5000/commerce/gateway-service:dev
+  -d registry.cedesistemas.internal:5000/commerce/social-service:dev
 run
