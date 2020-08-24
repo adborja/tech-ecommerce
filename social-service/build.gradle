@@ -1,6 +1,6 @@
 apply plugin: 'idea'
 apply plugin: 'java'
-apply plugin: "org.springframework.boot"
+apply plugin: 'org.springframework.boot'
 apply plugin: 'com.palantir.docker'
 
 group 'co.edu.cedesistemas'
@@ -11,10 +11,16 @@ repositories {
 
 dependencies {
 	implementation project(":common")
+	implementation "com.graphql-java:graphql-spring-boot-starter:${versions.graphql}"
+	implementation "com.graphql-java:graphiql-spring-boot-starter:${versions.graphql}"
+	implementation "com.graphql-java:graphql-java-tools:${versions.graphqltools}"
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-neo4j'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation "org.springframework.boot:spring-boot-starter-data-redis"
+
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
 	implementation "org.springframework.cloud:spring-cloud-starter-zipkin"
