@@ -54,6 +54,12 @@ public class CartController {
                 .build();
         return Mono.just(status);
     }
+    
+    @GetMapping("/carts/{id}/totalPrice")
+    public Mono<Float> getTotalPrice(@PathVariable String id){
+		return service.getTotalPrice(id);
+    	
+    }
 
     @DeleteMapping("/carts/{id}/items/{itemId}")
     public Mono<Cart> removeItem(@PathVariable String id, @PathVariable String itemId) {
