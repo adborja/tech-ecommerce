@@ -9,6 +9,7 @@ import co.edu.cedesistemas.commerce.model.Product;
 import co.edu.cedesistemas.commerce.model.Store;
 import co.edu.cedesistemas.commerce.model.User;
 import co.edu.cedesistemas.common.BaseIT;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -74,7 +75,7 @@ public class OrderControllerIT extends BaseIT<Order> {
         mvc.perform(get("/orders/" + created.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._source[0].id", is(created.getId())))
-                .andExpect(jsonPath("$._source[0].status", is(Order.Status.CREATED.name())))
+                .andExpect(jsonPath("$._source[0].status", is(OrderStatus.CREATED.name())))
                 .andExpect(jsonPath("$._source[0].userId", is(created.getUserId())))
                 .andExpect(jsonPath("$._source[0].storeId", is(created.getStoreId())));
     }
@@ -131,7 +132,7 @@ public class OrderControllerIT extends BaseIT<Order> {
         JsonNode node = mapper.readTree(response.getContentAsString());
         JsonNode _source = node.get("_source");
 
-        List<Order> orders = mapper.convertValue(_source, new TypeReference<>(){});
+        List<Order> orders = mapper.convertValue(_source, new TypeReference<List>(){});
 
         assertThat(_source, notNullValue());
         assertThat(orders, notNullValue());

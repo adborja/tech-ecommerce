@@ -1,8 +1,10 @@
 package co.edu.cedesistemas.commerce.shipping.model;
 
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@Document("shipment_address")
 public class Address {
     private String id;
     private String city;

@@ -89,7 +89,7 @@ services:
         aliases:
           - payment.cedesistemas.local
     environment:
-      SPRING_PROFILES_ACTIVE: dev-adborja
+      SPRING_PROFILES_ACTIVE: dev-jfrave
       eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
     depends_on:
       - rabbitmq
@@ -102,6 +102,44 @@ services:
       interval: 1m
       timeout: 10s
       retries: 3
+    restart: unless-stopped
+
+  loyalty:
+    container_name: loyalty.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/loyalty-service:dev
+    build: ./loyalty-service
+    ports:
+      - 8084:8084
+    networks:
+      default:
+        aliases:
+          - loyalty.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev-jfrave
+      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - config
+      - eureka
+    restart: unless-stopped
+
+  social:
+    container_name: social.cedesistemas.local
+    image: social.cedesistemas.internal:5000/commerce/social-service:dev
+    build: ./social-service
+    ports:
+      - 8084:8084
+    networks:
+      default:
+        aliases:
+          - social.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev-jfrave
+      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - config
+      - eureka
     restart: unless-stopped
 
 networks:

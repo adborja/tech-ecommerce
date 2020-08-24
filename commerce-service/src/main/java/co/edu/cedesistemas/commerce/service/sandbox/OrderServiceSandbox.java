@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.service.interfaces.IOrderService;
 import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class OrderServiceSandbox implements IOrderService {
         order.setCreatedAt(LocalDateTime.now());
         order.setItems(orderItems);
         order.setShippingAddressId("Fake Street 123124");
-        order.setStatus(Order.Status.DELIVERED);
+        order.setStatus(OrderStatus.DELIVERED);
         order.setStoreId(UUID.randomUUID().toString());
         order.setUserId(UUID.randomUUID().toString());
         return order;
@@ -46,7 +47,7 @@ public class OrderServiceSandbox implements IOrderService {
         order.setCreatedAt(LocalDateTime.now());
         order.setItems(orderItems);
         order.setShippingAddressId("Fake Street 8979832");
-        order.setStatus(Order.Status.CREATED);
+        order.setStatus(OrderStatus.CREATED);
         order.setStoreId(UUID.randomUUID().toString());
         order.setUserId(UUID.randomUUID().toString());
         return order;

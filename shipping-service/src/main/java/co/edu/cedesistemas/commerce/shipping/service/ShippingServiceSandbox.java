@@ -4,6 +4,8 @@ import co.edu.cedesistemas.commerce.shipping.model.Address;
 import co.edu.cedesistemas.commerce.shipping.model.Order;
 import co.edu.cedesistemas.commerce.shipping.model.Shipment;
 import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.model.ShipmentCancelledReason;
+import co.edu.cedesistemas.common.model.ShipmentStatus;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.annotation.Profile;
@@ -20,7 +22,7 @@ public class ShippingServiceSandbox implements IShipmentService {
     @Override
     public Shipment createShipment(final Shipment shipment) {
         shipment.setId(UUID.randomUUID().toString());
-        shipment.setStatus(Shipment.Status.CREATED);
+        shipment.setStatus(ShipmentStatus.CREATED);
         shipment.setCreatedAt(LocalDateTime.now());
         shipment.setTrackNumber(RandomStringUtils.randomNumeric(5));
         return shipment;
@@ -36,10 +38,26 @@ public class ShippingServiceSandbox implements IShipmentService {
         return createDummyShipment(UUID.randomUUID().toString(), trackNumber);
     }
 
+    @Override
+    public Shipment cancelShipment(String id, ShipmentCancelledReason reason, String description) {
+        return null;
+    }
+
+    @Override
+    public Shipment updateStatus(String id, ShipmentStatus status) {
+        return null;
+    }
+
+    @Override
+    public Shipment deliveredShipment(String id) {
+        return null;
+    }
+
+
     private static Shipment createDummyShipment(final String id, final String trackNumber) {
         Shipment shipment = new Shipment();
         shipment.setId(id);
-        shipment.setStatus(Shipment.Status.IN_TRANSIT);
+        shipment.setStatus(ShipmentStatus.IN_TRANSIT);
         shipment.setTrackNumber(trackNumber);
         shipment.setCreatedAt(LocalDateTime.now());
 
