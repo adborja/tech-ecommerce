@@ -4,6 +4,7 @@ import co.edu.cedesistemas.commerce.model.Order;
 import co.edu.cedesistemas.commerce.model.OrderItem;
 import co.edu.cedesistemas.commerce.service.IOrderService;
 import co.edu.cedesistemas.common.SpringProfile;
+import co.edu.cedesistemas.common.model.OrderStatus;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -20,14 +21,19 @@ public class OrderServiceSandbox implements IOrderService {
     @Override
     public Order createOrder(Order order) {
         order.setId(UUID.randomUUID().toString());
-        order.setStatus(Order.Status.CREATED);
+        order.setStatus(OrderStatus.CREATED);
         return order;
+    }
+
+    @Override
+    public Order updateOrder(String id, Order order) {
+        return null;
     }
 
     @Override
     public Order getById(String id) {
         Order order = new Order();
-        order.setStatus(Order.Status.CREATED);
+        order.setStatus(OrderStatus.CREATED);
         order.setId(id);
         order.setCreatedAt(LocalDateTime.now());
         order.setShippingAddressId("1");
@@ -37,13 +43,7 @@ public class OrderServiceSandbox implements IOrderService {
     }
 
     @Override
-    public List<OrderItem> getItems(String id) {
-        List<OrderItem> list = new ArrayList<>();
-        OrderItem orderItem1 = new OrderItem();
-        orderItem1.setProductId("1");
-        orderItem1.setFinalPrice(500f);
-        orderItem1.setQuantity(10);
-        list.add(orderItem1);
-        return list;
+    public void deleteOrder(String id) {
+
     }
 }

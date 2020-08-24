@@ -33,6 +33,11 @@ eureka:
       default-zone: http://eureka.cedesistemas.local:8761/eureka/
 
 zuul:
+  host:
+    connect-timeout-millis: 5000
+    max-per-route-connections: 10000
+    max-total-connections: 5000
+    socket-timeout-millis: 60000
   prefix: /cedesistemas
   routes:
     commerce:
@@ -44,7 +49,12 @@ zuul:
     payment:
       path: /payment/**
       serviceId: payment-service
+    registration:
+      path: /registration/**
+      serviceId: registration-service
 
 ribbon:
+  ReadTimeout: 60000
+  connection-timeout: 3000
   eureka:
     enabled: true

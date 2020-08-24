@@ -15,7 +15,7 @@ public class UserService {
     private final EventPublisherService publisherService;
 
     public User createUser(final User user) {
-        user.setStatus(User.Status.ACTIVE);
+        user.setStatus(User.Status.INACTIVE);
         User created = repository.save(user);
         publisherService.publishRegistrationEvent(created, RegistrationEvent.Status.USER_CREATED);
         return created;
@@ -27,6 +27,12 @@ public class UserService {
             repository.deleteById(id);
             publisherService.publishRegistrationEvent(found, RegistrationEvent.Status.USER_DELETED);
         }
+    }
+
+    public User activateUser(final String id){
+        User found = getById(id);
+        found.setStatus(User.Status.ACTIVE);
+        return repository.save(found);
     }
 
     public User getById(final String id) {
