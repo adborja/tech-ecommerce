@@ -1,0 +1,110 @@
+version: '3.8'
+services:
+  rabbitmq:
+    container_name: rabbitmq.cedesistemas.local
+    image: rabbitmq:3.7-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      default:
+        aliases:
+          - rabbitmq.cedesistemas.local
+    volumes:
+      - /var/data/rabbitmq:/home/client
+    restart: unless-stopped
+
+  mongo:
+    container_name: mongodb.cedesistemas.local
+    image: mongo:4.2.1
+    ports:
+      - 27017:27017
+    networks:
+      default:
+        aliases:
+          - mongodb.cedesistemas.local
+    volumes:
+      - /var/data/mongodb:/data/db
+    restart: unless-stopped
+
+  eureka:
+    container_name: eureka.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/discovery-service:dev
+    build: ./discovery-service
+    ports:
+      - 8761:8761
+    networks:
+      default:
+        aliases:
+          - eureka.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    restart: unless-stopped
+
+  gateway:
+    container_name: gateway.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/gateway-service:dev
+    build: ./gateway-service
+    ports:
+      - 8080:8080
+    networks:
+      default:
+        aliases:
+          - gateway.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+    depends_on:
+      - eureka
+    restart: unless-stopped
+
+  config:
+    container_name: config.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/configuration-service:dev
+    build: ./configuration-service
+    ports:
+      - 8760:8760
+    networks:
+      default:
+        aliases:
+          - config.cedesistemas.local
+    volumes:
+      - ~/.ssh/:/root/.ssh/
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - eureka
+    restart: unless-stopped
+
+  payment:
+    container_name: payment.cedesistemas.local
+    image: registry.cedesistemas.internal:5000/commerce/payment-service:dev
+    build: ./payment-service
+    ports:
+      - 8084:8084
+    networks:
+      default:
+        aliases:
+          - payment.cedesistemas.local
+    environment:
+      SPRING_PROFILES_ACTIVE: dev-adborja
+      eureka.client.serviceUrl.defaultZone: http://eureka.cedesistemas.local:8761/eureka
+    depends_on:
+      - rabbitmq
+      - config
+      - eureka
+    extra_hosts:
+      - fastpay.cedesistemas.local:192.168.0.52
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://fastpay.cedesistemas.local:9800/api/v1/actuator/health"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+networks:
+  default:
+    external:
+      name: cedesistemas_network
