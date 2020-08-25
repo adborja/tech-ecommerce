@@ -29,7 +29,7 @@ public class ShippingService implements IShipmentService {
         
         
         publishService.publishShippingEvent(shipment, ShipmentEvent.Status.CREATED);
-        log.info("creating shipment {}", shipment.getId());
+        log.info("creatin shipment {}", shipment.getId());
         return repository.save(shipment);
     }
 
