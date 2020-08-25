@@ -46,7 +46,7 @@ public class UserService {
     }
     
     public User createUser(String id) {
-    	log.info("creating user with id {}",id);
+    	log.info("creating   user with id {}",id);
         User user = new User();
         user.setId(id);
         User created = repository.save(user);
