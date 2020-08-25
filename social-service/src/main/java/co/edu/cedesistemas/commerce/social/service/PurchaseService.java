@@ -4,12 +4,13 @@ import co.edu.cedesistemas.commerce.social.model.Product;
 import co.edu.cedesistemas.commerce.social.model.User;
 import co.edu.cedesistemas.commerce.social.model.relation.PurchaseRelation;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 @AllArgsConstructor
 public class PurchaseService {
@@ -19,11 +20,15 @@ public class PurchaseService {
     public PurchaseRelation purchase(final String userId, final String productId) throws Exception {
         User user = userService.getById(userId);
         if (user == null) {
+            log.error("User not found");
+
             throw new Exception("user not found");
         }
 
         Product product = productService.getById(productId);
         if (product == null) {
+            log.error("Product not found");
+
             throw new Exception("product not found");
         }
 
@@ -40,6 +45,8 @@ public class PurchaseService {
     public Set<PurchaseRelation> purchase(final String userId, final Set<String> productIds) throws Exception {
         User user = userService.getById(userId);
         if (user == null) {
+            log.error("User not found");
+
             throw new Exception("user not found");
         }
         Set<PurchaseRelation> purchases = productIds.stream()

@@ -16,7 +16,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-hateoas"
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation "org.springframework.boot:spring-boot-starter-data-redis"
-
+    implementation "org.graylog2:gelfj:${versions.gelf}"
+    implementation "biz.paluch.logging:logstash-gelf:${versions.logstash_gelf}"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
 
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
