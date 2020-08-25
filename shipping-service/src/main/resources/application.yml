@@ -1,35 +1,6 @@
 spring:
-  application:
-    name: shipping-service
-  cloud:
-    config:
-      uri: http://config.cedesistemas.local:8760
-      username: configadmin
-      password: cedesistemas
   rabbitmq:
     host: rabbitmq.cedesistemas.local
     port: 5672
     username: guest
     password: guest
-    virtual-host:
-
-server:
-  port: ${PORT:8086}
-  servlet:
-    context-path: /api/v1/
-
-springdoc:
-  api-docs:
-    groups:
-      enabled: true
-  swagger-ui:
-    path: /swagger-ui.html
-    display-request-duration: true
-    groups-order: DESC
-
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      default-zone: http://eureka.cedesistemas.local:8761/eureka/
