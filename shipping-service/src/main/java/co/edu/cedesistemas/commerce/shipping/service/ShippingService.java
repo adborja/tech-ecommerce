@@ -28,8 +28,8 @@ public class ShippingService implements IShipmentService {
         shipment.setCreatedAt(LocalDateTime.now());
         
         
-        publishService.publishShippingEvent(shipment, ShipmentEvent.Status.CREATED);
-        log.info("creatin shipment {}", shipment.getId());
+        publishService.publishShippingEvent(shipment);
+        log.info("creating shipment {}", shipment.getId());
         return repository.save(shipment);
     }
 
@@ -40,7 +40,7 @@ public class ShippingService implements IShipmentService {
 
     @Override
     public Shipment getByTrackNumber(final String trackNumber) {
-        return repository.findByTrackNumber(trackNumber).orElse(null);
+        return repository.findById(trackNumber).orElse(null);
     }
 
 	@Override
@@ -48,34 +48,32 @@ public class ShippingService implements IShipmentService {
 		Shipment found = getById(id);
 		if(found == null) return null;
 		found.setStatus(Status.DELIVERED);
-		found.setCancelReason(null);
-		publishService.publishShippingEvent(found, ShipmentEvent.Status.DELIVERED);
+		publishService.publishShippingEvent(found);
 		log.info("status of shipment {}: {}",found.getId(),found.getStatus().name());
 		return repository.save(found);
 	}
 
 	@Override
-	public Shipment cancel(final String id, final CancelReason reason) {
+	public Shipment cancelDeliver(final String id, final Shipment.Motivo reason) {
 		Shipment found = getById(id);
 		if(found == null) return null;
 		found.setStatus(Status.CANCELLED);
-		found.setCancelReason(reason);
-		publishService.publishShippingEvent(found, ShipmentEvent.Status.CANCELLED);
+		found.setMotivoDevolucion(reason.toString());
+		publishService.publishShippingEvent(found);
 		log.info("status of shipment {}: {}",found.getId(),found.getStatus().name());
 		return repository.save(found);
 		
 	}
 
 	@Override
-	public Shipment changeStatus(final String id, final String status) {
+	public  Shipment changeStatus(final String id, final Shipment.Status status) {
 		Shipment found = getById(id);
 		if(found == null) return null;
 		
-		Status newStatus = Status.valueOf(status);
+		Status newStatus = Status.valueOf(status.toString());
 		newStatus = newStatus != null ? newStatus : found.getStatus();
 		found.setStatus(newStatus);
-		found.setCancelReason(null);
-		publishService.publishShippingEvent(found, ShipmentEvent.Status.valueOf(found.getStatus().name()));
+		publishService.publishShippingEvent(found);
 		log.info("status of shipment {}: {}",found.getId(),found.getStatus().name());
 		return repository.save(found);
 	}

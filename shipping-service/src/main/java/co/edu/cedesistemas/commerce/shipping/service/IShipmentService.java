@@ -8,5 +8,5 @@ public interface IShipmentService {
     Shipment getByTrackNumber(String trackNumber);
     Shipment deliver(String id);
     Shipment changeStatus(String id, Shipment.Status status);
-    Shipment cancelDeliver(String id, Shipment.Motivo motivo, String descMotivo);
+    Shipment cancelDeliver(String id, Shipment.Motivo motivo);
 }
