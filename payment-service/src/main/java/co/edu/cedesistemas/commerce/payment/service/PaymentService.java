@@ -31,7 +31,7 @@ public class PaymentService {
         payment.setCreatedAt(LocalDateTime.now());
         payment.setStatus(PaymentStatus.PENDING);
 
-        log.info("calling external payment gateway");
+        log.info("calling externa payment gateway");
         TransactionReq txReq = toTransaction(payment);
         TransactionRes res = paymentGateway.pay(txReq);
 
@@ -95,7 +95,7 @@ public class PaymentService {
         paymentReq.setPaymentCountry("CO");
         paymentReq.setIpAddress("127.0.0.1");
         paymentReq.setCookie(RandomStringUtils.randomAlphanumeric(15));
-        paymentReq.setUserAgent("Mozilla");
+        paymentReq.setUserAgent("Prueba");
 
         return paymentReq;
     }
