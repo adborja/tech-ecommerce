@@ -33,8 +33,8 @@ public class CartService implements ICartService {
     @Override
     public Flux<Cart.CartItem> getItems(String cartId) {
         Mono<Cart> found = findById(cartId);
-        return found.map(Cart::getItems) //found se suscribe a map
-                .flatMapMany(Flux::fromIterable); //mono se suscribe flatmapmany
+        return found.map(Cart::getItems)
+                .flatMapMany(Flux::fromIterable);
     }
 
     @Override

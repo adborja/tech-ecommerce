@@ -23,7 +23,7 @@ public class BaseIT<T> {
 
     @BeforeEach
     public void setup() {
-        log.info("dropping collection {} ", _class);
+        log.info("dropping collection  {} ", _class);
         mongoTemplate.dropCollection(_class);
     }
 
