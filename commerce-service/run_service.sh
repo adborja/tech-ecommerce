@@ -7,6 +7,7 @@ docker run --restart=unless-stopped \
         --net cedesistemas_network \
         --memory=512m \
         -e "SPRING_PROFILES_ACTIVE=dev" \
+        -e "eureka.client.serviceUrl.defaultZone=http://eureka.cedesistemas.local:8761/eureka/" \
         -e "TZ=America/Bogota" \
         -p 8081:8081 \
         -d registry.cedesistemas.internal:5000/commerce/commerce-service:dev

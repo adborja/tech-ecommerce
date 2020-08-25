@@ -1,8 +1,10 @@
 package co.edu.cedesistemas.commerce.shipping.service;
 
 import co.edu.cedesistemas.commerce.shipping.model.Address;
+import co.edu.cedesistemas.commerce.shipping.model.CancelReason;
 import co.edu.cedesistemas.commerce.shipping.model.Order;
 import co.edu.cedesistemas.commerce.shipping.model.Shipment;
+import co.edu.cedesistemas.commerce.shipping.model.Shipment.Status;
 import co.edu.cedesistemas.common.SpringProfile;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -66,4 +68,32 @@ public class ShippingServiceSandbox implements IShipmentService {
 
         return shipment;
     }
+
+	@Override
+	public Shipment deliver(String id) {
+		Shipment shipment = createDummyShipment(id, RandomStringUtils.randomNumeric(5));
+		shipment.setStatus(Status.DELIVERED);
+		return shipment;
+		
+	}
+
+	@Override
+	public Shipment cancel(String id, CancelReason reason) {
+		Shipment shipment = createDummyShipment(id, RandomStringUtils.randomNumeric(5));
+		shipment.setStatus(Status.CANCELLED);
+		shipment.setCancelReason(reason);
+		return shipment;
+		
+	}
+
+	@Override
+	public Shipment changeStatus(String id, String status) {
+		Shipment shipment = createDummyShipment(id, RandomStringUtils.randomNumeric(5));
+		
+		Status newStatus = Status.valueOf(status) != null ? Status.valueOf(status) : shipment.getStatus();
+		
+		shipment.setStatus(newStatus);
+		return shipment;
+		
+	}
 }

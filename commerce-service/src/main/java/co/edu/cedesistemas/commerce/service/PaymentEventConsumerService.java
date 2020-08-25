@@ -1,16 +1,17 @@
 package co.edu.cedesistemas.commerce.service;
 
-import co.edu.cedesistemas.commerce.model.Order;
-import co.edu.cedesistemas.common.model.PaymentStatus;
-import co.edu.cedesistemas.common.event.PaymentEvent;
-import co.edu.cedesistemas.common.model.OrderStatus;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
+import co.edu.cedesistemas.commerce.model.Order;
+import co.edu.cedesistemas.common.event.PaymentEvent;
+import co.edu.cedesistemas.common.model.OrderStatus;
+import co.edu.cedesistemas.common.model.PaymentStatus;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
