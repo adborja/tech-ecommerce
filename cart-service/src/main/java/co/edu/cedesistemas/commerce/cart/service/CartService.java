@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -32,15 +33,18 @@ public class CartService implements ICartService {
     @Override
     public Flux<Cart.CartItem> getItems(String cartId) {
         Mono<Cart> found = findById(cartId);
-        return found.map(Cart::getItems)
-                .flatMapMany(Flux::fromIterable);
+        return found.map(Cart::getItems) //found se suscribe a map
+                .flatMapMany(Flux::fromIterable); //mono se suscribe flatmapmany
     }
 
     @Override
     public Mono<Cart> addItem(String id, Cart.CartItem item) {
         Mono<Cart> found = findById(id);
-        found = found.doOnNext(c -> c.addItem(item));
-        return found.flatMap(repository::save);
+        found = found.doOnNext(c -> {
+        	item.setId(UUID.randomUUID().toString());
+        	c.addItem(item);
+        }); //cuando el publicador found termina, retorna mono 
+        return found.flatMap(repository::save); //found se suscribe a flatmap
     }
 
     @Override
@@ -59,13 +63,22 @@ public class CartService implements ICartService {
 
     @Override
     public void empty(String id) {
-        // TODO: Implement method to empty the cart
+    	//eliminar elemento por elemento
+    	Mono<Cart> found = findById(id);
+    	
+    	found = found.doOnNext(c -> c.setItems(null));
+    	found.flatMap(repository::save).subscribe();
     }
 
     @Override
     public Mono<Float> getTotalPrice(String cartId) {
-        //TODO: Implement method here
-        return null;
+        Flux<Cart.CartItem> found = getItems(cartId); //found suscrito a getItems
+        
+        Mono<Float> result = found.map(item -> item.getPrice()*item.getQuantity())
+        		.reduce((float) 0, (a,b)-> a + b)
+        		;
+        
+        return result;
     }
 
     private void removeItem(String cartId, Cart.CartItem item) {

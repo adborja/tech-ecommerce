@@ -3,7 +3,7 @@ VOLUME /tmp
 
 RUN mkdir -p /root/.ssh/
 
-ARG DEPENDENCY=target/dependency
+ARG DEPENDENCY=build/dependency
 COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY ${DEPENDENCY}/META-INF /app/META-INF
 COPY ${DEPENDENCY}/BOOT-INF/classes /app
