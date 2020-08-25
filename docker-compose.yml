@@ -14,21 +14,6 @@ services:
       - /c/cedesistemas/data/rabbitmq:/var/data/rabbitmq
     restart: unless-stopped
 
-  mongo:
-    container_name: mongodb.cedesistemas.local
-    image: mongo:4.2.1
-    ports:
-      - 27017:27017
-    networks:
-      default:
-        aliases:
-          - mongodb.cedesistemas.local
-    environment:
-      TZ: America/Bogota 
-    volumes:
-      - /c/cedesistemas/data/mongo:/var/data/mongodb
-    restart: unless-stopped
-
   eureka:
     container_name: eureka.cedesistemas.local
     image: registry.cedesistemas.internal:5000/commerce/discovery-service:dev
@@ -41,6 +26,21 @@ services:
           - eureka.cedesistemas.local
     environment:
       SPRING_PROFILES_ACTIVE: dev
+    restart: unless-stopped
+
+  mongo:
+    container_name: mongodb.cedesistemas.local
+    image: mongo:4.2.1
+    ports:
+      - 27017:27017
+    networks:
+      default:
+        aliases:
+          - mongodb.cedesistemas.local
+    environment:
+      TZ: America/Bogota
+    volumes:
+      - /c/cedesistemas/data/mongo:/var/data/mongodb
     restart: unless-stopped
 
   gateway:
